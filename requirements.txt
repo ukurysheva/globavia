@@ -1,0 +1,17 @@
+flake8
+Flask
+requests
+Werkzeug
+Jinja2
+nltk
+yapf
+WTForms
+flask_wtf
+flask-login
+Flask-Admin
+email_validator
+Flask-security
+flask_restful
+pyjwt
+oauth
+flask_sqlalchemy
