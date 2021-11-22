@@ -22,6 +22,6 @@ jobs:
         # Устанавливаем зависимости
         run: pip install -r requirements.txt
       #- name: Run tests
-        #run: coverage run app/tests/tests.py
+        #run: coverage run api/tests/tests.py
       #- name: Tests report
         #run: coverage report
