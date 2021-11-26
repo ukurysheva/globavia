@@ -41,7 +41,7 @@
          .mybtn{
          border-radius:50px;
          }
-
+        
          .login-or {
          position: relative;
          color: #aaa;
@@ -95,41 +95,41 @@ $("#second").fadeOut("fast", function() {
 $("#first").fadeIn("fast");
 });
 });
-
+  
 });
-
+ 
          $(function() {
            $("form[name='login']").validate({
              rules: {
-
+               
                email: {
                  required: true,
                  email: true
                },
                password: {
                  required: true,
-
+                 
                }
              },
               messages: {
                email: "Please enter a valid email address",
-
+              
                password: {
                  required: "Please enter password",
-
+                
                }
-
+               
              },
              submitHandler: function(form) {
                form.submit();
              }
            });
          });
-
+         
 
 
 $(function() {
-
+  
   $("form[name='registration']").validate({
     rules: {
       firstname: "required",
@@ -146,7 +146,7 @@ $(function() {
         minlength: 5
       }
     },
-
+    
     messages: {
       firstname: "Пожалуйста, введите имя",
       lastname: "Пожалуйста, введите фамилию",
@@ -159,7 +159,7 @@ $(function() {
       },
       email: "Пожалуйста, введите корректный email"
     },
-
+  
     submitHandler: function(form) {
       form.submit();
     }
@@ -211,7 +211,7 @@ $(function() {
                               <p class="text-center">Еще не зарегистрированы? <a href="#" id="signup">Создать аккаунт</a></p>
                            </div>
                         </form>
-
+                 
 				</div>
 			</div>
 			  <div id="second">
@@ -263,6 +263,6 @@ $(function() {
                      </div>
 			</div>
 		</div>
-      </div>
-
+      </div>   
+         
 </body>

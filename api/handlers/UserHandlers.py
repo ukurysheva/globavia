@@ -7,11 +7,12 @@ import api.errors.errors as error
 from api.conf.auth import access_token, refresh_token, refresh_jwt
 
 
+
 class Index(Resource):
-    @app.route(defaults={'file': 'index.html'})
     @staticmethod
-    def index():
-        return render_template('index.html')
+    def get():
+        return render_template("index.html")
+
 
 
 class Register(Resource):
