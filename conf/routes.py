@@ -1,5 +1,5 @@
 from flask_restful import Api
-
+""" 
 from api.handlers.UserHandlers import (
     Index,
     Register, CreateUser, LoginUser, LogoutUser, RefreshToken, InfoAcc, ChangeInfoAcc, CreatePurchase, GetPurchase
@@ -69,3 +69,5 @@ def generate_routes(app):
 
     # Get Purchase by id.
     #api.add_resource(GetPurchase, "/v1/users/purchases/<int: id>")
+
+"""

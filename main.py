@@ -1,38 +1,46 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import json
+import requests
 
-from api.conf.routes import generate_routes
+app = Flask(__name__, template_folder='templates')
+app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
+
+# Create User.
+create_user = "/v1/auth/user/sign-up"
+
+# Login page User.
+login = "/v1/auth/user/sign-in"
+
+# Logout page User.
+logout = "/v1/auth/user/sign-out"
+
+# Refresh token.
+refresh = "/v1/auth/user/token/refresh"
+
+# Get Information Page.
+get_info = "/v1/users"
+
+# Change Information Page.
+change = "/v1/users"
+
+# Create Purchase.
+create_purchase = "/v1/users/purchases"
+
+# Get Purchase by id.
+get_purchase = "/v1/users/purchases/<int: id>"
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 
 
-def create_app():
-    # Create a flask api.
-    app = Flask(__name__, template_folder='template')
+@app.route('/', methods=('GET', 'POST'))
+def index():
 
-    # Set debug true for catching the errors.
-    app.config['DEBUG'] = True
-
-    # Set database url.
-    # app.config['PREFERRED_URL_SCHEME'] = Config.URL
-
-    # Generate routes.
-    #generate_routes(app)
-
-    @app.route("/")
-    def home():
-        return render_template('index.html')
-
-    @app.route("/about/")
-    def about():
-        return render_template('contact.html')
-
-    # Return api.
-    return app
+    return render_template('index.html')
 
 
-if __name__ == '__main__':
-    # Create api.
-    app = create_app()
+@app.route('/contact', methods=('GET', 'POST'))
+def contact():
+    return render_template('contact.html')
 
-    # Run api. For production use another web server.
-    # Set debug and use_reloader parameters as False.
-    app.run(port=5000, debug=True, #host='localhost',
-            use_reloader=True)
