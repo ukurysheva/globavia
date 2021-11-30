@@ -29,10 +29,6 @@ create_purchase = "/v1/users/purchases"
 # Get Purchase by id.
 get_purchase = "/v1/users/purchases/<int: id>"
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
-
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
@@ -43,6 +39,10 @@ def index():
 @app.route('/contact', methods=('GET', 'POST'))
 def contact():
     return render_template('contact.html')
+
+@app.route('/personal_cabinet', methods=('GET', 'POST'))
+def personal_cabinet():
+    return render_template('profile_edit_data_and_skills-Bootdey.com.html')
 
 
 if __name__ == '__main__':
