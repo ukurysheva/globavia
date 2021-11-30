@@ -45,5 +45,10 @@ def personal_cabinet():
     return render_template('profile_edit_data_and_skills-Bootdey.com.html')
 
 
+@app.route('/admin', methods=('GET', 'POST'))
+def admin_login():
+    return render_template('index_admin.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host="localhost")
