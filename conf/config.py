@@ -7,5 +7,6 @@ class Config:
     IP_ADRESS = "62.152.63.25"
     REFFERENCE = "www.globalavia-api.ru"
     URL = "globalavia-api.ru:8000/"
+    HEADERS = ''
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'templates/static'), ]
 
