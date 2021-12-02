@@ -1,10 +1,10 @@
 FROM python:3.8.6
 
-WORKDIR .
+WORKDIR . .
 
-RUN apt-get update
-RUN python -m pip install --upgrade pip
-RUN pip install python-dotenv
+RUN apt-get update -y
+RUN apt-get install -y python-pip python-dev build-essential
+
 
 COPY requirements.txt .
 
@@ -14,4 +14,6 @@ ENV FLASK_APP=main.py
 
 COPY . .
 
-CMD ["flask", "run"]
+EXPOSE 80
+
+CMD ["python", "main.py"]
