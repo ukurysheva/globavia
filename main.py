@@ -13,30 +13,8 @@ app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
 URL = Config.URL
 HEADERS = Config.HEADERS
 
-# Create User.
-create_user = "/v1/auth/user/sign-up"
 
-# Login page User.
-login = "/v1/auth/user/sign-in"
-
-# Logout page User.
-logout = "/v1/auth/user/sign-out"
-
-# Refresh token.
-refresh = "/v1/auth/user/token/refresh"
-
-# Get Information Page.
-get_info = "/v1/users"
-
-# Change Information Page.
-change = "/v1/users"
-
-# Create Purchase.
-create_purchase = "/v1/users/purchases"
-
-# Get Purchase by id.
-get_purchase = "/v1/users/purchases/<int: id>"
-
+##USER PAGES
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
@@ -48,31 +26,60 @@ def contact():
     return render_template('contact.html')
 
 
+@app.route('/user/purchases', methods=('GET', 'POST'))
+def purchases():
+    return render_template('buy_ticket.html')
+
+
+@app.route('/user/login', methods=('GET', 'POST'))
+def login():
+    body_register = {
+        "userEmail": "",
+        "userPassword": "",
+        "userFirstName": "",
+        "userLastName": "",
+        "userPhoneNum": "",
+        "birthDate": ""
+    }
+    body_login = {
+        "email": "",
+        "password": ""
+    }
+
+    if request.method == "GET":
+        return render_template('login.html')
+    else:
+        if request.form.get('firstname') is None:
+            body_login['email'] = request.form['email']
+            body_login['password'] = request.form['password']
+            print("Logged")
+            # requests.post(URL, headers=HEADERS, data=data)
+            return redirect('/personal_cabinet')
+        else:
+            body_register['userEmail'] = request.form['email']
+            body_register['userPassword'] = request.form['password']
+            body_register['userFirstName'] = request.form['firstname']
+            body_register['userLastName'] = request.form['lastname']
+            body_register['userPhoneNum'] = request.form['phone']
+            body_register['birthDate'] = request.form['birthdate']
+            print("Registered")
+            # requests.post(URL, headers=HEADERS, data=data)
+            return redirect('/personal_cabinet')
+
+
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
     return render_template('profile_edit_data_and_skills-Bootdey.com.html')
 
 
-class AdminLogin(FlaskForm):
-    username = StringField(label='Имя пользователя',
-                           validators=[DataRequired()])
-
-    password = StringField(label='Пароль',
-                           validators=[DataRequired()])
-
-    submit = SubmitField(label='войти')
-
-
 ##ADMIN PAGES
 @app.route('/admin/sign-in', methods=('GET', 'POST'))
 def admin_login():
-
     if request.method == "GET":
         return render_template('index_admin.html')
     else:
         body = {"email": '', "password": ''}
 
-        # form = AdminLogin()
         email = request.form.get("username")
         password = request.form.get("password")
         print("I'm here")
@@ -92,10 +99,24 @@ def admin_login():
             print("Unfortunately I'm here")
             return redirect('/admin/sign-in')
 
+
 @app.route('/admin/menu', methods=('GET', 'POST'))
 def menu():
+    if request.method == "GET":
+        return render_template('menu.html')
+    else:
+        pass
 
-    return render_template('menu.html')
+
+@app.route('/admin/list', methods=('GET', 'POST'))
+def list():
+    return render_template('list.html')
+
+
+@app.route('/admin/Adding', methods=('GET', 'POST'))
+def adding():
+    return render_template('Adding.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host="localhost")
