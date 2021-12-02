@@ -1,11 +1,9 @@
+from typing import Optional
+
 from flask import Flask, render_template, request, redirect
 import json
 
 from conf.config import Config
-
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
 
 app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
@@ -18,7 +16,10 @@ HEADERS = Config.HEADERS
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    return render_template('index.html')
+    if request.method == "GET":
+        return render_template('index.html')
+    else:
+        pass
 
 
 @app.route('/contact', methods=('GET', 'POST'))
@@ -69,7 +70,54 @@ def login():
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
-    return render_template('profile_edit_data_and_skills-Bootdey.com.html')
+    body_person = {
+        "passportSeries": "",
+        "passportNumber": "",
+        "phoneNumber": "",
+        "familyName": "",
+        "firstName": "",
+        "middleName": "",
+        "email": "",
+        "addressRegister": "",
+        "addressAccommodation": ""
+    }
+
+    familyname: Optional[str] = request.form.get("familyname")
+    firstname = request.form.get("firstname")
+    middlename = request.form.get("middlename")
+    email = request.form.get("email")
+    phone_number = request.form.get("phone_number")
+    seria_passport = request.form.get("seria_passport")
+    number_passport = request.form.get("number_passport")
+    address_register = request.form.get("address_register")
+    address_accommodation = request.form.get("address_accommodation")
+
+    if request.method == "GET" and firstname is not None:
+        name = familyname + " " + firstname[0] + ". " + middlename[0] + "."
+        number_of_tickets = "0"
+
+        return render_template('profile_edit_data_and_skills-Bootdey.com.html',
+                               name=name, email=email, number_of_tickets=number_of_tickets)
+    elif request.method == "GET":
+        return render_template('profile_edit_data_and_skills-Bootdey.com.html')
+
+    elif request.method == "POST":
+        if request.form['submit_button'] == "Сохранить":
+
+            body_person['familyName'] = familyname
+            body_person['passportSeries'] = seria_passport
+            body_person['passportNumber'] = number_passport
+            body_person['phoneNumber'] = phone_number
+            body_person['firstName'] = firstname
+            body_person['middleName'] = middlename
+            body_person['email'] = email
+            body_person['addressRegister'] = address_register
+            body_person['addressAccommodation'] = address_accommodation
+
+            data = json.dumps(body_person)
+
+            # requests.post(URL, headers=HEADERS, data=data)
+            return redirect('/personal_cabinet')
 
 
 ##ADMIN PAGES
