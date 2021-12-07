@@ -1,7 +1,12 @@
 from typing import Optional
 
 from flask import Flask, render_template, request, redirect
+import requests
 import json
+import socket
+import sys
+import http.client
+
 
 from conf.config import Config
 
@@ -17,7 +22,13 @@ HEADERS = Config.HEADERS
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == "GET":
-        return render_template('index.html')
+        r = requests.get('http://gvapi:8000/v1/countries')
+        data_hash = r.json()
+        countries = data_hash["data"]
+        # print(countries, flush=True)
+        # print([li["countryName"] for li in countries], flush=True)
+        
+        return render_template('index.html', countries=countries)
     else:
         pass
 
@@ -167,4 +178,5 @@ def adding():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, host="localhost")
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)

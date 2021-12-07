@@ -65,16 +65,9 @@ http://www.tooplate.com/view/2093-flight
                                                 <label for="from">Откуда:</label>
                                                 <select required name='from' onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
-                                                    <option value="Cambodia">Камбоджа</option>
-                                                    <option value="Hong Kong">Гонконг</option>
-                                                    <option value="India">Индия</option>
-                                                    <option value="Japan">Япония</option>
-                                                    <option value="Korea">Корея</option>
-                                                    <option value="Laos">Лаос</option>
-                                                    <option value="Myanmar">Мьянма</option>
-                                                    <option value="Singapore">Сингапур</option>
-                                                    <option value="Thailand">Таиланд</option>
-                                                    <option value="Vietnam">Вьетнам</option>
+                                                    {% for dictionary in countries %}
+                                                    <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </fieldset>
                                         </div>
@@ -82,17 +75,10 @@ http://www.tooplate.com/view/2093-flight
                                             <fieldset>
                                                 <label for="to">Куда:</label>
                                                 <select required name='to' onchange='this.form.()'>
-                                                      <option value="">Выбрать страну...</option>
-                                                    <option value="Cambodia">Камбоджа</option>
-                                                    <option value="Hong Kong">Гонконг</option>
-                                                    <option value="India">Индия</option>
-                                                    <option value="Japan">Япония</option>
-                                                    <option value="Korea">Корея</option>
-                                                    <option value="Laos">Лаос</option>
-                                                    <option value="Myanmar">Мьянма</option>
-                                                    <option value="Singapore">Сингапур</option>
-                                                    <option value="Thailand">Таиланд</option>
-                                                    <option value="Vietnam">Вьетнам</option>
+                                                    <option value="">Выбрать страну...</option>
+                                                    {% for dictionary in countries %}
+                                                    <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </fieldset>
                                         </div>
@@ -114,10 +100,10 @@ http://www.tooplate.com/view/2093-flight
                                                 <label for="return">Класс билетов</label>
 						   <select required="" name="from" onchange="this.form.()">
                                                     <option value="">Выбрать класс...</option>
-                                                    <option value="Cambodia">Эконом</option>
-                                                    <option value="Hong Kong">Эконом+</option>
-                                                    <option value="India">Бизнес-класс</option>
-                                                    <option value="Japan">Первый класс</option>
+                                                    <option value="economy">Эконом</option>
+                                                    <option value="economy_pr">Эконом+</option>
+                                                    <option value="business">Бизнес-класс</option>
+                                                    <option value="first_class">Первый класс</option>
                                                    </select>
                                                 
                                             </fieldset>
@@ -126,11 +112,11 @@ http://www.tooplate.com/view/2093-flight
                                             <fieldset>
                                                 <label for="return">Вес багажа</label>
 						<select required="" name="from" onchange="this.form.()">
-                                                    <option value="">Выбрать вес...</option>
-                                                    <option value="Cambodia">0-5 кг</option>
-                                                    <option value="Hong Kong">5-10 кг</option>
-                                                    <option value="India">10-15 кг</option>
-                                                    <option value="Japan">15+ кг</option>
+                                                    <option value="">Выбрать максимальный вес...</option>
+                                                    <option value="5">до 5 кг</option>
+                                                    <option value="10">до 10 кг</option>
+                                                    <option value="15">до 15 кг</option>
+                                                    <option value="20">до 20 кг</option>
                                                    </select>
                                                 
                                             </fieldset>
@@ -141,7 +127,7 @@ http://www.tooplate.com/view/2093-flight
                                                     
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="oneway">Питание включено</label>
-                                                        <input type="checkbox" name="trip" id="oneway" value="one-way" required="required" onchange="this.form.()">
+                                                        <input type="checkbox" name="food_flg" id="oneway" value="one-way" required="required" onchange="this.form.()">
                                                     </div>
                                                 </div>
                                             </div>

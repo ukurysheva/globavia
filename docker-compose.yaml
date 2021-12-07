@@ -6,3 +6,13 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    domainname: globalavia-21.ru
+    hostname: globalavia-21
+    ports:
+      - "5000:5000"
+    networks:
+      - app_gvnetwork
+networks:
+  app_gvnetwork:
+    external: true
+    name: globalavia-apiru_gvnetwork

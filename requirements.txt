@@ -12,3 +12,5 @@ python-dateutil
 pytz
 six
 Werkzeug
+waitress
+requests
