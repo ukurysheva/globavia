@@ -106,7 +106,7 @@ def login():
                     access_token = data["access_token"]
                     refresh_token = data["refresh_token"]
                     headers = {
-                        'Authorization': 'Bearer ' + 'access_token'
+                        'Authorization': 'Bearer ' + access_token
                     }
 
                     response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
