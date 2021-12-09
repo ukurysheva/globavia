@@ -177,7 +177,7 @@ def login():
 def personal_cabinet():
     global profile_user, access_token_user, refresh_token_user, email_g_user, \
         password_g_user, passport_number, passport_series, number_of_tickets, \
-        address_register, address_accommodation, phone_number
+        address_register, address_accommodation, phone_number, middlename
 
     body_person = {
         "passportSeries": "",
