@@ -39,6 +39,7 @@ ch.setLevel(logging.DEBUG)
 id = None
 access_token = None
 refresh_token = None
+profile = None
 
 
 @app.route('/', methods=('GET', 'POST'))
@@ -74,6 +75,7 @@ def login():
     global access_token
     global id
     global refresh_token
+    global profile
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -103,6 +105,14 @@ def login():
                     data = json.loads(r.text)
                     access_token = data["access_token"]
                     refresh_token = data["refresh_token"]
+                    headers = {
+                        'Authorization': 'Bearer ' + 'access_token'
+                    }
+
+                    response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+
+                    print(response.text)
+                    logger.debug(response.text)
 
                 return redirect('/personal_cabinet')
             except Exception:
@@ -152,6 +162,8 @@ def personal_cabinet():
     number_passport = request.form.get("number_passport")
     address_register = request.form.get("address_register")
     address_accommodation = request.form.get("address_accommodation")
+
+    # if request.method == "GET" and
 
     if request.method == "GET" and firstname is not None:
         name = familyname + " " + firstname[0] + ". " + middlename[0] + "."
