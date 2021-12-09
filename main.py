@@ -43,21 +43,21 @@ refresh_token_user = None
 profile_user = None
 email_g_user = None
 password_g_user = None
+passport_series = " Серия паспорта"
+passport_number = "Номер паспорта"
+phone_number = "Номер телефона"
+address_register = "Место регистрации"
+address_accommodation = "Фактическое место проживания"
+middlename = "Отчество"
+number_of_tickets = 0
 
-# USER
+# ADMIN
 id_admin = None
 access_token_admin = None
 refresh_token_admin = None
 profile_admin = None
 email_g_admin = None
 password_g_admin = None
-passport_series = ""
-passport_number = ""
-phone_number = ""
-address_register = ""
-address_accommodation = ""
-middlename = ""
-number_of_tickets = 0
 
 
 @app.route('/', methods=('GET', 'POST'))
@@ -191,8 +191,8 @@ def personal_cabinet():
         "addressAccommodation": ""
     }
 
-    familyname: Optional[str] = request.form.get("familyname")
-    firstname = request.form.get("firstname")
+    familyname: Optional[str] = profile_user["userLastName"]
+    firstname = profile_user["userFirstName"]
     middlename = request.form.get("middlename")
     email = request.form.get("email")
     phone_number = request.form.get("phone_number")
@@ -227,7 +227,7 @@ def personal_cabinet():
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
             }
-
+            logger.info("Trying to send")
             response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, params=body_person)
             if response.ok:
                 logger.info("OK")
