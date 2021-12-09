@@ -233,8 +233,8 @@ def admin_login():
 
         email_g_admin = request.form.get("username")
         password_g_admin = request.form.get("password")
-        r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login)
-        logger.info("Я здесь")
+        r = requests.post('http://gvapi:8000/v1/auth/admin/sign-in', json=body_login)
+        logger.info("I'm here")
         try:
             if r.ok:
                 data_tokens = json.loads(r.text)
@@ -244,10 +244,10 @@ def admin_login():
                 logger.info(access_token_admin)
 
                 return redirect('/admin/menu')
-            else:
+            elif r.status_code == 301:
                 redirect("/admin/sign-in")
         except (ValueError, KeyError, TypeError) as error:
-            logger.info("Я здесь")
+            logger.info("Now I'm here")
             print(error)
             resp = Response({"JSON Format Error."}, status=400, mimetype='application/json')
             return resp, redirect('/admin/sign-in')
