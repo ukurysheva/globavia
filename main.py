@@ -40,13 +40,13 @@ id = None
 access_token = None
 refresh_token = None
 profile = None
+email_g = None
+password_g = None
 
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    global id
-    global access_token
-    global refresh_token
+    global id, access_token, refresh_token
     direction = "/user/login"
     if access_token is not None or id is not None:
         direction = "/personal_cabinet"
@@ -72,10 +72,7 @@ def purchases():
 
 @app.route('/user/login', methods=('GET', 'POST'))
 def login():
-    global access_token
-    global id
-    global refresh_token
-    global profile
+    global access_token, id, refresh_token, profile, email_g, password_g
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -85,10 +82,6 @@ def login():
         "birthDate": ""
     }
     body_login = {
-        "email": "",
-        "password": ""
-    }
-    body_login_register = {
         "email": "",
         "password": ""
     }
@@ -128,25 +121,16 @@ def login():
                 body_register['userPhoneNum'] = request.form['phone']
                 body_register['birthDate'] = request.form['birthdate']
 
-                body_login_register['email'] = request.form['email']
-                body_login_register['password'] = request.form['password']
+                email_g = request.form['email']
+                password_g = request.form['password']
+                logger.info("Email and Password")
+                logger.info(email_g + " " + password_g)
 
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
                     data = json.loads(r.text)
                     logger.debug(data)
                     id = data["id"]
-                    r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login_register)
-                    data_tokens = json.load(r.text)
-                    access_token = data_tokens["access_token"]
-                    refresh_token = data_tokens["refresh_token"]
-
-                    headers = {
-                        'Authorization': 'Bearer ' + access_token
-                    }
-
-                    response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
-                    profile = json.loads(response.text)
                     return redirect('/personal_cabinet')
 
                 print("Registered")
@@ -158,7 +142,23 @@ def login():
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
-    global profile
+
+    global profile, access_token, refresh_token, email_g, password_g
+    body_login_register = {"email": email_g, "password": password_g}
+
+    r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login_register)
+    data_tokens = json.load(r.text)
+    access_token = data_tokens["access_token"]
+    refresh_token = data_tokens["refresh_token"]
+    logger.info("Access token")
+    logger.info(access_token)
+
+    headers = {
+        'Authorization': 'Bearer ' + access_token
+    }
+
+    response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+    profile = json.loads(response.text)
     body_person = {
         "passportSeries": "",
         "passportNumber": "",
