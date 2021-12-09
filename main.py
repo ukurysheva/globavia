@@ -43,6 +43,9 @@ refresh_token = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
+    global id
+    global access_token
+    global refresh_token
     direction = "/user/login"
     if access_token is not None or id is not None:
         direction = "/personal_cabinet"
@@ -53,7 +56,7 @@ def index():
         # print(countries, flush=True)
         # print([li["countryName"] for li in countries], flush=True)
 
-        return render_template('index.html', countries=countries)
+        return render_template('index.html', countries=countries, direction=direction)
 
 
 @app.route('/contact', methods=('GET', 'POST'))
