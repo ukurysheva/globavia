@@ -1,7 +1,10 @@
 from typing import Optional
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, Response
+import requests
 import json
+
+
 
 from conf.config import Config
 
@@ -10,14 +13,20 @@ app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
 
 URL = Config.URL
 HEADERS = Config.HEADERS
-
+http = 'http://gvapi:8000'
 
 ##USER PAGES
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == "GET":
-        return render_template('index.html')
+        r = requests.get('http://gvapi:8000/v1/countries')
+        data_hash = r.json()
+        countries = data_hash["data"]
+        # print(countries, flush=True)
+        # print([li["countryName"] for li in countries], flush=True)
+        
+        return render_template('index.html', countries=countries)
     else:
         pass
 
@@ -34,6 +43,8 @@ def purchases():
 
 @app.route('/user/login', methods=('GET', 'POST'))
 def login():
+    register = '/v1/auth/user/sign-up'
+    log_in = '/v1/auth/user/sign-in'
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -53,19 +64,34 @@ def login():
         if request.form.get('firstname') is None:
             body_login['email'] = request.form['email']
             body_login['password'] = request.form['password']
-            print("Logged")
-            # requests.post(URL, headers=HEADERS, data=data)
-            return redirect('/personal_cabinet')
+            try:
+                r = requests.post(http + log_in, json=body_login)
+                r.status_code
+                print(r.text)
+                print("Logged")
+                # requests.post(URL, headers=HEADERS, data=data)
+                return redirect('/personal_cabinet')
+            except Exception:
+                return redirect('/user/login')
         else:
-            body_register['userEmail'] = request.form['email']
-            body_register['userPassword'] = request.form['password']
-            body_register['userFirstName'] = request.form['firstname']
-            body_register['userLastName'] = request.form['lastname']
-            body_register['userPhoneNum'] = request.form['phone']
-            body_register['birthDate'] = request.form['birthdate']
-            print("Registered")
-            # requests.post(URL, headers=HEADERS, data=data)
-            return redirect('/personal_cabinet')
+            try:
+                body_register['userEmail'] = request.form['email']
+                body_register['userPassword'] = request.form['password']
+                body_register['userFirstName'] = request.form['firstname']
+                body_register['userLastName'] = request.form['lastname']
+                body_register['userPhoneNum'] = request.form['phone']
+                body_register['birthDate'] = request.form['birthdate']
+                r = requests.post(http + register, json=body_register)
+                if r.ok:
+                    print(r.text)
+                    return redirect('/personal_cabinet')
+
+                print("Registered")
+            except (ValueError, KeyError, TypeError) as error:
+                print(error)
+                resp = Response({"JSON Format Error."}, status=400, mimetype='application/json')
+                return resp, redirect('/user/login')
+
 
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
@@ -167,4 +193,5 @@ def adding():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, host="localhost")
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
