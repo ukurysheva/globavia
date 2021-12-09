@@ -214,27 +214,25 @@ def personal_cabinet():
 
     elif request.method == "POST":
         logger.info("after post")
-        if request.form['submit_button'] == "Сохранить":
-            logger.info("after_submit")
-            body_person['familyName'] = familyname
-            body_person['passportSeries'] = passport_series
-            body_person['passportNumber'] = passport_number
-            body_person['phoneNumber'] = phone_number
-            body_person['firstName'] = firstname
-            body_person['middleName'] = middlename
-            body_person['email'] = email
-            body_person['addressRegister'] = address_register
-            body_person['addressAccommodation'] = address_accommodation
+        body_person['familyName'] = familyname
+        body_person['passportSeries'] = passport_series
+        body_person['passportNumber'] = passport_number
+        body_person['phoneNumber'] = phone_number
+        body_person['firstName'] = firstname
+        body_person['middleName'] = middlename
+        body_person['email'] = email
+        body_person['addressRegister'] = address_register
+        body_person['addressAccommodation'] = address_accommodation
 
-            headers = {
-                'Authorization': 'Bearer ' + access_token_user
-            }
-            logger.info("Trying to send")
-            response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, params=body_person)
-            if response.ok:
-                logger.info("OK")
-                logger.info(response.text)
-                return redirect("/personal cabinet")
+        headers = {
+            'Authorization': 'Bearer ' + access_token_user
+        }
+        logger.info("Trying to send")
+        response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, params=body_person)
+        if response.ok:
+            logger.info("OK")
+            logger.info(response.text)
+            return redirect("/personal cabinet")
 
 
 ##ADMIN PAGES
