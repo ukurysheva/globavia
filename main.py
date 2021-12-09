@@ -66,7 +66,10 @@ def purchases():
 
 
 @app.route('/user/login', methods=('GET', 'POST'))
-def login(access_token, id, refresh_token):
+def login():
+    global access_token
+    global id
+    global refresh_token
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -92,7 +95,6 @@ def login(access_token, id, refresh_token):
             body_login['password'] = request.form['password']
             try:
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login)
-                r.status_code
                 print(r.text)
                 print("Logged")
                 logger.debug(r.text)
