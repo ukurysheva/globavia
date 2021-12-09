@@ -193,13 +193,6 @@ def personal_cabinet():
 
     familyname: Optional[str] = profile_user["userLastName"]
     firstname = profile_user["userFirstName"]
-    middlename = request.form.get("middlename")
-    email = request.form.get("email")
-    phone_number = request.form.get("phone_number")
-    passport_series = request.form.get("seria_passport")
-    passport_number = request.form.get("number_passport")
-    address_register = request.form.get("address_register")
-    address_accommodation = request.form.get("address_accommodation")
 
     if request.method == "GET":
         name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
@@ -213,6 +206,14 @@ def personal_cabinet():
                                address_accommodation=address_accommodation)
 
     elif request.method == "POST":
+        middlename = request.form.get("middlename")
+        email = request.form.get("email")
+        phone_number = request.form.get("phone_number")
+        passport_series = request.form.get("seria_passport")
+        passport_number = request.form.get("number_passport")
+        address_register = request.form.get("address_register")
+        address_accommodation = request.form.get("address_accommodation")
+
         logger.info("after post")
         body_person['familyName'] = familyname
         body_person['passportSeries'] = passport_series
@@ -229,7 +230,7 @@ def personal_cabinet():
         }
         logger.info("Trying to send")
         logger.info(headers)
-        response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
+        response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
 
         if response.ok:
             logger.info("OK")
