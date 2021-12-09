@@ -194,14 +194,14 @@ def personal_cabinet():
 
     # if request.method == "GET" and
 
-    if request.method == "GET" and firstname is not None:
-        name = familyname + " " + firstname[0] + ". " + middlename[0] + "."
-        number_of_tickets = "0"
+    if request.method == "GET":
+        name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + ". " +\
+               profile_user["userMiddleName"][0].upper() + "."
+        email = profile_user['userEmail']
+        number_of_tickets = 0
 
         return render_template('profile_edit_data_and_skills-Bootdey.com.html',
                                name=name, email=email, number_of_tickets=number_of_tickets)
-    elif request.method == "GET":
-        return render_template('profile_edit_data_and_skills-Bootdey.com.html')
 
     elif request.method == "POST":
         if request.form['submit_button'] == "Сохранить":
@@ -225,32 +225,31 @@ def personal_cabinet():
 @app.route('/admin/sign-in', methods=('GET', 'POST'))
 def admin_login():
     global access_token_admin, id_admin, refresh_token_admin, profile_admin, email_g_admin, password_g_admin
+
     if request.method == "GET" and (access_token_admin is None or id_admin is None):
         return render_template('index_admin.html')
-    else:
+    elif request.method == "GET" and (access_token_admin is not None or id_admin is not None):
+        return redirect('/admin/menu')
+    elif request.method == "POST":
 
         body_login = {"email": request.form.get("username"), "password": request.form.get("password")}
 
         email_g_admin = request.form.get("username")
         password_g_admin = request.form.get("password")
+
         r = requests.post('http://gvapi:8000/v1/auth/admin/sign-in', json=body_login)
         logger.info("I'm here")
-        try:
-            if r.ok:
-                data_tokens = json.loads(r.text)
-                access_token_admin = data_tokens['access_token']
-                refresh_token_admin = data_tokens['refresh_token']
-                logger.info("access_tokens")
-                logger.info(access_token_admin)
+        logger.info(r.status_code)
+        if r.ok:
+            data_tokens = json.loads(r.text)
+            access_token_admin = data_tokens['access_token']
+            refresh_token_admin = data_tokens['refresh_token']
+            logger.info("access_tokens")
+            logger.info(access_token_admin)
 
-                return redirect('/admin/menu')
-            elif r.status_code == 301:
-                redirect("/admin/sign-in")
-        except (ValueError, KeyError, TypeError) as error:
-            logger.info("Now I'm here")
-            print(error)
-            resp = Response({"JSON Format Error."}, status=400, mimetype='application/json')
-            return resp, redirect('/admin/sign-in')
+            return redirect('/admin/menu')
+        else:
+            return redirect("/admin/sign-in")
 
 
 @app.route('/admin/menu', methods=('GET', 'POST'))
