@@ -16,9 +16,25 @@ URL = Config.URL
 HEADERS = Config.HEADERS
 http = 'http://gvapi:8000'
 
-logging.basicConfig(filename='log.log', level=logging.INFO,
-format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+# ЛОГИРОВАНИЕ
+# СМОТРЕТЬ ЛОГИ В ОНЛАЙН РЕЖИМЕ $ docker logs --follow 73676c6275f0
+logger = logging.getLogger('globalavia')
+logger.setLevel(logging.DEBUG)
 
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
+
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
 ##USER PAGESx1
 
 @app.route('/', methods=('GET', 'POST'))
@@ -69,10 +85,9 @@ def login():
             try:
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login)
                 r.status_code
-                logging.info(r.status_code)
-                logging.info(r.text)
                 print(r.text)
                 print("Logged")
+                logger.debug(r.text)
                 # requests.post(URL, headers=HEADERS, data=data)
                 return redirect('/personal_cabinet')
             except Exception:
