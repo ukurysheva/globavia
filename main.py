@@ -179,6 +179,13 @@ def personal_cabinet():
         password_g_user, passport_number, passport_series, number_of_tickets, \
         address_register, address_accommodation, phone_number, middlename
 
+    middle_name = middlename
+    phoneNumber = phone_number
+    passportSeries = passport_series
+    passportNumber = passport_number
+    addressRegister = address_register
+    addressAccommodation = address_accommodation
+
     body_person = {
         "passportSeries": "",
         "passportNumber": "",
@@ -198,14 +205,6 @@ def personal_cabinet():
         name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
         email = profile_user['userEmail']
 
-        return render_template('profile_edit_data_and_skills-Bootdey.com.html',
-                               name=name, email=email, number_of_tickets=number_of_tickets,
-                               familyname=familyname, firstname=firstname, middlename=middlename,
-                               phone_number=phone_number, passport_series=passport_series,
-                               passport_number=passport_number, address_register=address_register,
-                               address_accommodation=address_accommodation)
-
-    elif request.method == "POST":
         middlename = request.form.get("middlename")
         email = request.form.get("email")
         phone_number = request.form.get("phone_number")
@@ -214,6 +213,15 @@ def personal_cabinet():
         address_register = request.form.get("address_register")
         address_accommodation = request.form.get("address_accommodation")
 
+        return render_template('profile_edit_data_and_skills-Bootdey.com.html',
+                               name=name, email=email, number_of_tickets=number_of_tickets,
+                               familyname=familyname, firstname=firstname, middlename=middle_name,
+                               phone_number=phoneNumber, passport_series=passportSeries,
+                               passport_number=passportNumber, address_register=addressRegister,
+                               address_accommodation=addressAccommodation)
+
+    elif request.method == "POST":
+
         logger.info("after post")
         body_person['familyName'] = familyname
         body_person['passportSeries'] = passport_series
@@ -221,7 +229,7 @@ def personal_cabinet():
         body_person['phoneNumber'] = phone_number
         body_person['firstName'] = firstname
         body_person['middleName'] = middlename
-        body_person['email'] = email
+        body_person['email'] = email_g_user
         body_person['addressRegister'] = address_register
         body_person['addressAccommodation'] = address_accommodation
 
