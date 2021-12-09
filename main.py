@@ -213,7 +213,9 @@ def personal_cabinet():
                                address_accommodation=address_accommodation)
 
     elif request.method == "POST":
+        logger.info("after post")
         if request.form['submit_button'] == "Сохранить":
+            logger.info("after_submit")
             body_person['familyName'] = familyname
             body_person['passportSeries'] = passport_series
             body_person['passportNumber'] = passport_number
