@@ -228,10 +228,14 @@ def personal_cabinet():
             'Authorization': 'Bearer ' + access_token_user
         }
         logger.info("Trying to send")
-        response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, params=body_person)
+        logger.info(headers)
+        response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
+
         if response.ok:
             logger.info("OK")
             logger.info(response.text)
+            return redirect("/personal cabinet")
+        else:
             return redirect("/personal cabinet")
 
 
