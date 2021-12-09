@@ -195,8 +195,7 @@ def personal_cabinet():
     # if request.method == "GET" and
 
     if request.method == "GET":
-        name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + ". " +\
-               profile_user["userMiddleName"][0].upper() + "."
+        name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
         email = profile_user['userEmail']
         number_of_tickets = 0
 
