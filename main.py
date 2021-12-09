@@ -16,7 +16,10 @@ URL = Config.URL
 HEADERS = Config.HEADERS
 http = 'http://gvapi:8000'
 
-##USER PAGES
+logging.basicConfig(filename='log.log', level=logging.INFO,
+format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+##USER PAGESx1
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
