@@ -86,7 +86,6 @@ def login():
         "password": ""
     }
 
-
     if request.method == "GET" and (access_token is None or id is None):
         return render_template('login.html')
 
@@ -160,7 +159,6 @@ def login():
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
-
     global profile, access_token, refresh_token, email_g, password_g
 
     body_person = {
