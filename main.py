@@ -86,6 +86,7 @@ def login():
         "password": ""
     }
 
+
     if request.method == "GET" and (access_token is None or id is None):
         return render_template('login.html')
 
@@ -126,11 +127,28 @@ def login():
                 logger.info("Email and Password")
                 logger.info(email_g + " " + password_g)
 
+                body_login_register = {"email": email_g, "password": password_g}
+
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
                     data = json.loads(r.text)
                     logger.debug(data)
                     id = data["id"]
+
+                    req = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login_register)
+                    data_tokens = json.loads(req.text)
+                    access_token = data_tokens["access_token"]
+                    refresh_token = data_tokens["refresh_token"]
+                    logger.info("Access token")
+                    logger.info(access_token)
+
+                    headers = {
+                        'Authorization': 'Bearer ' + access_token
+                    }
+
+                    response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+                    profile = json.loads(response.text)
+
                     return redirect('/personal_cabinet')
 
                 print("Registered")
@@ -144,21 +162,7 @@ def login():
 def personal_cabinet():
 
     global profile, access_token, refresh_token, email_g, password_g
-    body_login_register = {"email": email_g, "password": password_g}
 
-    r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login_register)
-    data_tokens = json.load(r.text)
-    access_token = data_tokens["access_token"]
-    refresh_token = data_tokens["refresh_token"]
-    logger.info("Access token")
-    logger.info(access_token)
-
-    headers = {
-        'Authorization': 'Bearer ' + access_token
-    }
-
-    response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
-    profile = json.loads(response.text)
     body_person = {
         "passportSeries": "",
         "passportNumber": "",
