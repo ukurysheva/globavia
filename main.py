@@ -47,7 +47,7 @@ passport_series = " Серия паспорта"
 passport_number = "Номер паспорта"
 phone_number = "Номер телефона"
 address_register = "Место регистрации"
-address_accommodation = "Фактическое место проживания"
+address_accommodation = None
 middlename = "Отчество"
 number_of_tickets = 0
 
