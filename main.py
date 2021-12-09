@@ -103,6 +103,7 @@ def login():
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
                     print(r.text)
+                    logger.debug(r.text)
                     return redirect('/personal_cabinet')
 
                 print("Registered")
