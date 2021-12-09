@@ -5,8 +5,6 @@ import requests
 import json
 import logging
 
-
-
 from conf.config import Config
 
 app = Flask(__name__, template_folder='templates')
@@ -37,6 +35,12 @@ ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
 ##USER PAGESx1
 
+# id and tokens for user to understand about cabinet
+id = None
+access_token = None
+refresh_token = None
+
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == "GET":
@@ -45,7 +49,7 @@ def index():
         countries = data_hash["data"]
         # print(countries, flush=True)
         # print([li["countryName"] for li in countries], flush=True)
-        
+
         return render_template('index.html', countries=countries)
     else:
         pass
@@ -62,7 +66,7 @@ def purchases():
 
 
 @app.route('/user/login', methods=('GET', 'POST'))
-def login():
+def login(access_token, id, refresh_token):
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -76,9 +80,13 @@ def login():
         "password": ""
     }
 
-    if request.method == "GET":
+    if request.method == "GET" and (access_token is None or id is None):
         return render_template('login.html')
-    else:
+
+    elif request.method == "GET" and (access_token is not None or id is not None):
+        return redirect('/personal_cabinet')
+
+    elif request.method == "POST":
         if request.form.get('firstname') is None:
             body_login['email'] = request.form['email']
             body_login['password'] = request.form['password']
@@ -88,7 +96,11 @@ def login():
                 print(r.text)
                 print("Logged")
                 logger.debug(r.text)
-                # requests.post(URL, headers=HEADERS, data=data)
+                if r.ok:
+                    data = json.loads(r.text)
+                    access_token = data["access_token"]
+                    refresh_token = data["refresh_token"]
+
                 return redirect('/personal_cabinet')
             except Exception:
                 return redirect('/user/login')
@@ -104,6 +116,8 @@ def login():
                 if r.ok:
                     print(r.text)
                     logger.debug(r.text)
+                    data = json.loads(r.text)
+                    id = data["id"]
                     return redirect('/personal_cabinet')
 
                 print("Registered")
@@ -111,7 +125,6 @@ def login():
                 print(error)
                 resp = Response({"JSON Format Error."}, status=400, mimetype='application/json')
                 return resp, redirect('/user/login')
-
 
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
@@ -149,7 +162,6 @@ def personal_cabinet():
 
     elif request.method == "POST":
         if request.form['submit_button'] == "Сохранить":
-
             body_person['familyName'] = familyname
             body_person['passportSeries'] = seria_passport
             body_person['passportNumber'] = number_passport
@@ -214,4 +226,5 @@ def adding():
 
 if __name__ == '__main__':
     from waitress import serve
+
     serve(app, host="0.0.0.0", port=5000)
