@@ -100,8 +100,11 @@ def login():
                 logger.debug(r.text)
                 if r.ok:
                     data = json.loads(r.text)
+                    logger.debug(data)
                     access_token = data["access_token"]
                     refresh_token = data["refresh_token"]
+                    logger.info("access_token")
+                    logger.debug(access_token)
 
                 return redirect('/personal_cabinet')
             except Exception:
@@ -119,7 +122,10 @@ def login():
                     print(r.text)
                     logger.debug(r.text)
                     data = json.loads(r.text)
+                    logger.debug(data)
                     id = data["id"]
+                    logger.info("ID")
+                    logger.debug(id)
                     return redirect('/personal_cabinet')
 
                 print("Registered")
