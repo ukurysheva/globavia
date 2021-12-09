@@ -234,9 +234,9 @@ def personal_cabinet():
         if response.ok:
             logger.info("OK")
             logger.info(response.text)
-            return redirect("/personal cabinet")
+            return redirect("/personal_cabinet")
         else:
-            return redirect("/personal cabinet")
+            return redirect("/personal_cabinet")
 
 
 ##ADMIN PAGES
