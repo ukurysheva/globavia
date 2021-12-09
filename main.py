@@ -3,6 +3,7 @@ from typing import Optional
 from flask import Flask, render_template, request, redirect, Response
 import requests
 import json
+import logging
 
 
 
@@ -67,6 +68,8 @@ def login():
             try:
                 r = requests.post(http + log_in, json=body_login)
                 r.status_code
+                logging.info(r.status_code)
+                logging.info(r.text)
                 print(r.text)
                 print("Logged")
                 # requests.post(URL, headers=HEADERS, data=data)
