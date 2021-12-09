@@ -44,8 +44,6 @@ def purchases():
 
 @app.route('/user/login', methods=('GET', 'POST'))
 def login():
-    register = '/v1/auth/user/sign-up'
-    log_in = '/v1/auth/user/sign-in'
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -66,7 +64,7 @@ def login():
             body_login['email'] = request.form['email']
             body_login['password'] = request.form['password']
             try:
-                r = requests.post(http + log_in, json=body_login)
+                r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login)
                 r.status_code
                 logging.info(r.status_code)
                 logging.info(r.text)
@@ -84,7 +82,7 @@ def login():
                 body_register['userLastName'] = request.form['lastname']
                 body_register['userPhoneNum'] = request.form['phone']
                 body_register['birthDate'] = request.form['birthdate']
-                r = requests.post(http + register, json=body_register)
+                r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
                     print(r.text)
                     return redirect('/personal_cabinet')
