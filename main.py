@@ -82,9 +82,12 @@ def login():
         "email": "",
         "password": ""
     }
+    logger.info(access_token)
 
     if request.method == "GET" and (access_token is None or id is None):
         return render_template('login.html')
+
+
 
     elif request.method == "GET" and (access_token is not None or id is not None):
         return redirect('/personal_cabinet')
