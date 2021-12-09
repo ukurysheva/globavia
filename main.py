@@ -88,6 +88,10 @@ def login():
         "email": "",
         "password": ""
     }
+    body_login_register = {
+        "email": "",
+        "password": ""
+    }
 
     if request.method == "GET" and (access_token is None or id is None):
         return render_template('login.html')
@@ -112,11 +116,6 @@ def login():
                     response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
                     profile = json.loads(response.text)
 
-                    logger.debug("response.text")
-                    logger.debug(response.text)
-                    logger.debug("profile")
-                    logger.debug(profile)
-
                 return redirect('/personal_cabinet')
             except Exception:
                 return redirect('/user/login')
@@ -128,11 +127,26 @@ def login():
                 body_register['userLastName'] = request.form['lastname']
                 body_register['userPhoneNum'] = request.form['phone']
                 body_register['birthDate'] = request.form['birthdate']
+
+                body_login_register['email'] = request.form['email']
+                body_login_register['password'] = request.form['password']
+
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
                     data = json.loads(r.text)
                     logger.debug(data)
                     id = data["id"]
+                    r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login_register)
+                    data_tokens = json.load(r.text)
+                    access_token = data_tokens["access_token"]
+                    refresh_token = data_tokens["refresh_token"]
+
+                    headers = {
+                        'Authorization': 'Bearer ' + access_token
+                    }
+
+                    response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+                    profile = json.loads(response.text)
                     return redirect('/personal_cabinet')
 
                 print("Registered")
