@@ -110,9 +110,12 @@ def login():
                     }
 
                     response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+                    profile = json.loads(response.text)
 
-                    print(response.text)
+                    logger.debug("response.text")
                     logger.debug(response.text)
+                    logger.debug("profile")
+                    logger.debug(profile)
 
                 return redirect('/personal_cabinet')
             except Exception:
@@ -141,6 +144,7 @@ def login():
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
+    global profile
     body_person = {
         "passportSeries": "",
         "passportNumber": "",
