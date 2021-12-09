@@ -180,26 +180,11 @@ def personal_cabinet():
         address_register, address_accommodation, phone_number
 
     body_person = {
-        "passportSeries": "",
-        "passportNumber": "",
-        "phoneNumber": "",
-        "familyName": "",
-        "firstName": "",
-        "middleName": "",
-        "email": "",
-        "addressRegister": "",
-        "addressAccommodation": ""
+        "email": ""
     }
 
     familyname: Optional[str] = profile_user["userLastName"]
     firstname = profile_user["userFirstName"]
-    middlename = request.form.get("middlename")
-    email = request.form.get("email")
-    phone_number = request.form.get("phone_number")
-    passport_series = request.form.get("seria_passport")
-    passport_number = request.form.get("number_passport")
-    address_register = request.form.get("address_register")
-    address_accommodation = request.form.get("address_accommodation")
 
     if request.method == "GET":
         name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
@@ -214,15 +199,14 @@ def personal_cabinet():
 
     elif request.method == "POST":
         logger.info("after post")
-        body_person['familyName'] = familyname
-        body_person['passportSeries'] = passport_series
-        body_person['passportNumber'] = passport_number
-        body_person['phoneNumber'] = phone_number
-        body_person['firstName'] = firstname
-        body_person['middleName'] = middlename
-        body_person['email'] = email
-        body_person['addressRegister'] = address_register
-        body_person['addressAccommodation'] = address_accommodation
+
+        phone_number = request.form.get("phone_number")
+        passport_series = request.form.get("seria_passport")
+        passport_number = request.form.get("number_passport")
+        address_register = request.form.get("address_register")
+        address_accommodation = request.form.get("address_accommodation")
+
+        body_person["email"] = request.form.get("email")
 
         headers = {
             'Authorization': 'Bearer ' + access_token_user
@@ -236,6 +220,7 @@ def personal_cabinet():
             logger.info(response.text)
             return redirect("/personal_cabinet")
         else:
+            logger.info("Not OK")
             return redirect("/personal_cabinet")
 
 
