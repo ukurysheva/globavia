@@ -177,7 +177,7 @@ def login():
 def personal_cabinet():
     global profile_user, access_token_user, refresh_token_user, email_g_user, \
         password_g_user, passport_number, passport_series, number_of_tickets, \
-        address_register, address_accommodation, phone_number, middlename
+        address_register, address_accommodation, phone_number
 
     body_person = {
         "passportSeries": "",
@@ -193,6 +193,13 @@ def personal_cabinet():
 
     familyname: Optional[str] = profile_user["userLastName"]
     firstname = profile_user["userFirstName"]
+    middlename = request.form.get("middlename")
+    email = request.form.get("email")
+    phone_number = request.form.get("phone_number")
+    passport_series = request.form.get("seria_passport")
+    passport_number = request.form.get("number_passport")
+    address_register = request.form.get("address_register")
+    address_accommodation = request.form.get("address_accommodation")
 
     if request.method == "GET":
         name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
@@ -206,14 +213,6 @@ def personal_cabinet():
                                address_accommodation=address_accommodation)
 
     elif request.method == "POST":
-        middlename = request.form.get("middlename")
-        email = request.form.get("email")
-        phone_number = request.form.get("phone_number")
-        passport_series = request.form.get("seria_passport")
-        passport_number = request.form.get("number_passport")
-        address_register = request.form.get("address_register")
-        address_accommodation = request.form.get("address_accommodation")
-
         logger.info("after post")
         body_person['familyName'] = familyname
         body_person['passportSeries'] = passport_series
