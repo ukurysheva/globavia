@@ -43,6 +43,9 @@ refresh_token = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
+    direction = "/user/login"
+    if access_token is not None or id is not None:
+        direction = "/personal_cabinet"
     if request.method == "GET":
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
@@ -51,8 +54,6 @@ def index():
         # print([li["countryName"] for li in countries], flush=True)
 
         return render_template('index.html', countries=countries)
-    else:
-        pass
 
 
 @app.route('/contact', methods=('GET', 'POST'))
@@ -82,12 +83,9 @@ def login():
         "email": "",
         "password": ""
     }
-    logger.info(access_token)
 
     if request.method == "GET" and (access_token is None or id is None):
         return render_template('login.html')
-
-
 
     elif request.method == "GET" and (access_token is not None or id is not None):
         return redirect('/personal_cabinet')
@@ -98,16 +96,10 @@ def login():
             body_login['password'] = request.form['password']
             try:
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login)
-                print(r.text)
-                print("Logged")
-                logger.debug(r.text)
                 if r.ok:
                     data = json.loads(r.text)
-                    logger.debug(data)
                     access_token = data["access_token"]
                     refresh_token = data["refresh_token"]
-                    logger.info("access_token")
-                    logger.debug(access_token)
 
                 return redirect('/personal_cabinet')
             except Exception:
@@ -122,13 +114,9 @@ def login():
                 body_register['birthDate'] = request.form['birthdate']
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
-                    print(r.text)
-                    logger.debug(r.text)
                     data = json.loads(r.text)
                     logger.debug(data)
                     id = data["id"]
-                    logger.info("ID")
-                    logger.debug(id)
                     return redirect('/personal_cabinet')
 
                 print("Registered")
