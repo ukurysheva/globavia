@@ -51,6 +51,13 @@ refresh_token_admin = None
 profile_admin = None
 email_g_admin = None
 password_g_admin = None
+passport_series = ""
+passport_number = ""
+phone_number = ""
+address_register = ""
+address_accommodation = ""
+middlename = ""
+number_of_tickets = 0
 
 
 @app.route('/', methods=('GET', 'POST'))
@@ -168,7 +175,9 @@ def login():
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
-    global profile_user, access_token_user, refresh_token_user, email_g_user, password_g_user
+    global profile_user, access_token_user, refresh_token_user, email_g_user, \
+        password_g_user, passport_number, passport_series, number_of_tickets, \
+        address_register, address_accommodation, phone_number
 
     body_person = {
         "passportSeries": "",
@@ -187,26 +196,27 @@ def personal_cabinet():
     middlename = request.form.get("middlename")
     email = request.form.get("email")
     phone_number = request.form.get("phone_number")
-    seria_passport = request.form.get("seria_passport")
-    number_passport = request.form.get("number_passport")
+    passport_series = request.form.get("seria_passport")
+    passport_number = request.form.get("number_passport")
     address_register = request.form.get("address_register")
     address_accommodation = request.form.get("address_accommodation")
-
-    # if request.method == "GET" and
 
     if request.method == "GET":
         name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
         email = profile_user['userEmail']
-        number_of_tickets = 0
 
         return render_template('profile_edit_data_and_skills-Bootdey.com.html',
-                               name=name, email=email, number_of_tickets=number_of_tickets)
+                               name=name, email=email, number_of_tickets=number_of_tickets,
+                               familyname=familyname, firstname=firstname, middlename=middlename,
+                               phone_number=phone_number, passport_series=passport_series,
+                               passport_number=passport_number, address_register=address_register,
+                               address_accommodation=address_accommodation)
 
     elif request.method == "POST":
         if request.form['submit_button'] == "Сохранить":
             body_person['familyName'] = familyname
-            body_person['passportSeries'] = seria_passport
-            body_person['passportNumber'] = number_passport
+            body_person['passportSeries'] = passport_series
+            body_person['passportNumber'] = passport_number
             body_person['phoneNumber'] = phone_number
             body_person['firstName'] = firstname
             body_person['middleName'] = middlename
@@ -214,10 +224,15 @@ def personal_cabinet():
             body_person['addressRegister'] = address_register
             body_person['addressAccommodation'] = address_accommodation
 
-            data = json.dumps(body_person)
+            headers = {
+                'Authorization': 'Bearer ' + access_token_user
+            }
 
-            # requests.post(URL, headers=HEADERS, data=data)
-            return redirect('/personal_cabinet')
+            response = requests.request("POSY", 'http://gvapi:8000/v1/users', headers=headers, params=body_person)
+            if response.ok:
+                logger.info("OK")
+                logger.info(response.text)
+                return redirect("/personal cabinet")
 
 
 ##ADMIN PAGES
