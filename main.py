@@ -259,7 +259,7 @@ def admin_login():
 @app.route('/admin/menu', methods=('GET', 'POST'))
 def menu():
     if request.method == "GET":
-        return render_template('menu.html')
+        return render_template('Menu.html')
     else:
         pass
 
