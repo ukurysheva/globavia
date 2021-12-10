@@ -205,6 +205,7 @@ def personal_cabinet():
         passport_number = request.form["number_passport"]
         address_register = request.form["address_register"]
         address_accommodation = request.form["address_accommodation"]
+        logger.info("after forms")
 
         body_person["email"] = request.form["email"]
 
