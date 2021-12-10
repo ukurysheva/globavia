@@ -227,7 +227,8 @@ def personal_cabinet():
 ##ADMIN PAGES
 @app.route('/admin/sign-in', methods=('GET', 'POST'))
 def admin_login():
-    global access_token_admin, id_admin, refresh_token_admin, profile_admin, email_g_admin, password_g_admin
+    global access_token_admin, id_admin, refresh_token_admin, \
+        profile_admin, email_g_admin, password_g_admin
 
     if request.method == "GET" and (access_token_admin is None or id_admin is None):
         return render_template('index_admin.html')
@@ -235,10 +236,10 @@ def admin_login():
         return redirect('/admin/menu')
     elif request.method == "POST":
 
-        body_login = {"email": request.form.get("username"), "password": request.form.get("password")}
+        body_login = {"email": request.form["username"], "password": request.form["password"]}
 
-        email_g_admin = request.form.get("username")
-        password_g_admin = request.form.get("password")
+        email_g_admin = body_login["email"]
+        password_g_admin = body_login["password"]
 
         r = requests.post('http://gvapi:8000/v1/auth/admin/sign-in', json=body_login)
         logger.info("I'm here")
