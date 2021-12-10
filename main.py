@@ -200,13 +200,13 @@ def personal_cabinet():
     elif request.method == "POST":
         logger.info("after post")
 
-        phone_number = request.form.get("phone_number")
-        passport_series = request.form.get("seria_passport")
-        passport_number = request.form.get("number_passport")
-        address_register = request.form.get("address_register")
-        address_accommodation = request.form.get("address_accommodation")
+        phone_number = request.form["phone_number"]
+        passport_series = request.form["seria_passport"]
+        passport_number = request.form["number_passport"]
+        address_register = request.form["address_register"]
+        address_accommodation = request.form["address_accommodation"]
 
-        body_person["email"] = request.form.get("email")
+        body_person["email"] = request.form["email"]
 
         headers = {
             'Authorization': 'Bearer ' + access_token_user
