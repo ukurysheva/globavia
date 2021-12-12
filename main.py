@@ -230,6 +230,9 @@ def admin_login():
     global access_token_admin, id_admin, refresh_token_admin, \
         profile_admin, email_g_admin, password_g_admin
 
+    access_token_admin = None
+    refresh_token_admin = None
+
     if request.method == "GET" and (access_token_admin is None or id_admin is None):
         return render_template('index_admin.html')
     elif request.method == "GET" and (access_token_admin is not None or id_admin is not None):
@@ -258,6 +261,15 @@ def admin_login():
 
 @app.route('/admin/menu', methods=('GET', 'POST'))
 def menu():
+    global access_token_admin, id_admin, refresh_token_admin, \
+        profile_admin, email_g_admin, password_g_admin
+
+    data_countries = {}
+    data_airports = {}
+    data_aviacompanies = {}
+    data_planes = {}
+    data_flights = {}
+
     if request.method == "GET":
         return render_template('Menu.html')
     else:
