@@ -292,13 +292,90 @@ def adding_country():
         continent = request.form.get("continent")
         country_wiki = request.form.get("country_wiki")
 
-        logger.info(country_id)
-        logger.info(name)
-        logger.info(continent)
-        logger.info(country_wiki)
-
         return redirect("/admin/adding/country")
 
+
+@app.route('/admin/adding/airport', methods=('GET', 'POST'))
+def adding_airport():
+    if request.method == "GET":
+        return render_template('adding_airports.html')
+    else:
+        country_id = request.form.get("country_id")
+        name = request.form.get("name")
+        continent = request.form.get("continent")
+        country_wiki = request.form.get("country_wiki")
+
+        return redirect("/admin/adding/airport")
+
+
+@app.route('/admin/adding/plane', methods=('GET', 'POST'))
+def adding_plane():
+    if request.method == "GET":
+        return render_template('adding_planes.html')
+    else:
+        aircraftIata = request.form.get("aircraftIata")
+        aircraftName = request.form.get("aircraftName")
+        aircraftManufacturer = request.form.get("aircraftManufacturer")
+        aircraftType = request.form.get("aircraftType")
+
+        aircraftIcaic = request.form.get("aircraftIcaic")
+        aircraftWingType = request.form.get("aircraftWingType")
+        economyClass = request.form.get("economyClass")
+        prEconomyClass = request.form.get("prEconomyClass")
+
+        businessClass = request.form.get("businessClass")
+        firstClass = request.form.get("firstClass")
+
+        return redirect("/admin/adding/plane")
+
+
+@app.route('/admin/adding/flight', methods=('GET', 'POST'))
+def adding_flight():
+    if request.method == "GET":
+        return render_template('adding_flights.html')
+    else:
+        flightName = request.form.get("flightName")
+        airlineId = request.form.get("airlineId")
+        ticketNumEconomy = request.form.get("ticketNumEconomy")
+        ticketNumPrEconomy = request.form.get("ticketNumPrEconomy")
+
+        ticketNumBusiness = request.form.get("ticketNumBusiness")
+        ticketNumFirstClass = request.form.get("ticketNumFirstClass")
+        costRubEconomy = request.form.get("costRubEconomy")
+        costRubPrEconomy = request.form.get("costRubPrEconomy")
+
+        costRubBusiness = request.form.get("costRubBusiness")
+        costRubFirstClass = request.form.get("costRubFirstClass")
+
+        aircraftId = request.form.get("aircraftId")
+        airportDepId = request.form.get("airportDepId")
+        airportLandId = request.form.get("airportLandId")
+        departureTime = request.form.get("departureTime")
+
+        landingTime = request.form.get("landingTime")
+        maxLuggageWeightKg = request.form.get("maxLuggageWeightKg")
+        costLuggageWeightRub = request.form.get("costLuggageWeightRub")
+        maxHandLuggageWeightKg = request.form.get("maxHandLuggageWeightKg")
+
+        costHandLuggageWeightRub = request.form.get("costHandLuggageWeightRub")
+        wifiFlg = request.form.get("wifiFlg")
+        foodFlg = request.form.get("foodFlg")
+        usbFlg = request.form.get("usbFlg")
+
+        return redirect("/admin/adding/flight")
+
+
+@app.route('/admin/adding/aviacompany', methods=('GET', 'POST'))
+def adding_aviacompany():
+    if request.method == "GET":
+        return render_template('adding_aviacompanies.html')
+    else:
+        aviacompany_id = request.form.get("aviacompany_id")
+        airlineIata = request.form.get("airlineIata")
+        airlineIcao = request.form.get("airlineIcao")
+        aviacompany_status = request.form.get("aviacompany_status")
+
+        return redirect("/admin/adding/aviacompany")
 
 
 if __name__ == '__main__':
