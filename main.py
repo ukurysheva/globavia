@@ -271,19 +271,20 @@ def menu():
     data_flights = {}
 
     if request.method == "GET":
-        return render_template('Menu.html')
-    else:
+        return render_template('menu.html')
+    elif request.method == "GET":
         pass
 
 
 @app.route('/admin/list', methods=('GET', 'POST'))
 def list():
-    return render_template('list.html')
+    if request.method == "GET":
+        return render_template('list.html')
 
 
-@app.route('/admin/Adding', methods=('GET', 'POST'))
+@app.route('/admin/adding', methods=('GET', 'POST'))
 def adding():
-    return render_template('Adding.html')
+    return render_template('adding.html')
 
 
 if __name__ == '__main__':
