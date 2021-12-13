@@ -282,9 +282,21 @@ def list():
         return render_template('list.html')
 
 
-@app.route('/admin/adding', methods=('GET', 'POST'))
+@app.route('/admin/adding/country', methods=('GET', 'POST'))
 def adding():
-    return render_template('adding.html')
+    if request.method == "GET":
+        return render_template('adding_country.html')
+    else:
+        country_id = request.form.get("country_id")
+        name = request.form.get("name")
+        continent = request.form.get("continent")
+        country_wiki = request.form.get("country_wiki")
+
+        logger.info(country_id)
+        logger.info(name)
+        logger.info(continent)
+        logger.info(country_wiki)
+
 
 
 if __name__ == '__main__':
