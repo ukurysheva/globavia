@@ -283,7 +283,7 @@ def list():
 
 
 @app.route('/admin/adding/country', methods=('GET', 'POST'))
-def adding():
+def adding_country():
     if request.method == "GET":
         return render_template('adding_country.html')
     else:
@@ -296,6 +296,8 @@ def adding():
         logger.info(name)
         logger.info(continent)
         logger.info(country_wiki)
+
+        return redirect("/admin/adding/country")
 
 
 
