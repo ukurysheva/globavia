@@ -14,3 +14,4 @@ six
 Werkzeug
 waitress
 requests
+flask_table
