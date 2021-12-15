@@ -269,7 +269,7 @@ def menu():
     data_aviacompanies = {}
     data_planes = {}
     data_flights = {}
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
             return render_template('menu.html')
@@ -280,7 +280,7 @@ def menu():
 
 @app.route('/admin/list', methods=('GET', 'POST'))
 def list():
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
         if request.method == "GET":
             return render_template('list.html')
     else:
@@ -290,7 +290,7 @@ def list():
 @app.route('/admin/adding/country', methods=('GET', 'POST'))
 def adding_country():
     global access_token_admin
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
         if request.method == "GET":
             return render_template('adding_country.html')
         else:
@@ -307,7 +307,7 @@ def adding_country():
 @app.route('/admin/adding/airport', methods=('GET', 'POST'))
 def adding_airport():
     global access_token_admin
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
         if request.method == "GET":
             return render_template('adding_airport.html')
         else:
@@ -324,7 +324,7 @@ def adding_airport():
 @app.route('/admin/adding/plane', methods=('GET', 'POST'))
 def adding_plane():
     global access_token_admin
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
             return render_template('adding_plane.html')
@@ -350,7 +350,7 @@ def adding_plane():
 @app.route('/admin/adding/flight', methods=('GET', 'POST'))
 def adding_flight():
     global access_token_admin
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
             return render_template('adding_flight.html')
@@ -391,7 +391,7 @@ def adding_flight():
 @app.route('/admin/adding/aviacompany', methods=('GET', 'POST'))
 def adding_aviacompany():
     global access_token_admin
-    if access_token_admin is not None:
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
             return render_template('adding_aviacompany.html')
