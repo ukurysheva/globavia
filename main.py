@@ -276,7 +276,7 @@ def menu():
         elif request.method == "GET":
             pass
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 @app.route('/admin/list', methods=('GET', 'POST'))
 def list():
@@ -284,7 +284,7 @@ def list():
         if request.method == "GET":
             return render_template('list.html')
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 
 @app.route('/admin/adding/country', methods=('GET', 'POST'))
@@ -301,7 +301,7 @@ def adding_country():
 
             return redirect("/admin/adding/country")
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 
 @app.route('/admin/adding/airport', methods=('GET', 'POST'))
@@ -318,7 +318,7 @@ def adding_airport():
 
             return redirect("/admin/adding/airport")
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 
 @app.route('/admin/adding/plane', methods=('GET', 'POST'))
@@ -344,7 +344,7 @@ def adding_plane():
 
             return redirect("/admin/adding/plane")
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 
 @app.route('/admin/adding/flight', methods=('GET', 'POST'))
@@ -385,7 +385,7 @@ def adding_flight():
 
             return redirect("/admin/adding/flight")
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 
 @app.route('/admin/adding/aviacompany', methods=('GET', 'POST'))
@@ -403,7 +403,7 @@ def adding_aviacompany():
 
             return redirect("/admin/adding/aviacompany")
     else:
-        redirect('/admin/sigh-in')
+        redirect('/admin/sign-in')
 
 
 if __name__ == '__main__':
