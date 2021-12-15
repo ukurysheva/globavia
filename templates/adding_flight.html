@@ -94,7 +94,7 @@
 
     <ul class="collapsible" data-collapsible="accordion">
       <li id="dash_users">
-        <div id="dash_users_header" class="collapsible-header waves-effect"><b>Модель самолета</b></div>
+        <div id="dash_users_header" class="collapsible-header waves-effect"><b>Рейсы</b></div>
         <div id="dash_users_body" class="collapsible-body">
           <ul>
             <li id="users_seller">
@@ -102,7 +102,7 @@
             </li>
 
             <li id="users_customer">
-              <a class="waves-effect" style="text-decoration: none;" href="#!">Добавить</a>
+              <a class="waves-effect" style="text-decoration: none;" href="/admin/adding/flight">Добавить</a>
             </li>
           </ul>
         </div>
@@ -113,7 +113,7 @@
           <ul>
             <li id="products_product">
               <a class="waves-effect" style="text-decoration: none;" href="#!">Список</a>
-              <a class="waves-effect" style="text-decoration: none;" href="#!">Добавить</a>
+              <a class="waves-effect" style="text-decoration: none;" href="/admin/adding/airport">Добавить</a>
             </li>
           </ul>
         </div>
@@ -128,14 +128,14 @@
             </li>
 
             <li id="categories_sub_category">
-              <a class="waves-effect" style="text-decoration: none;" href="#!">Добавить</a>
+              <a class="waves-effect" style="text-decoration: none;" href="aviacompany">Добавить</a>
             </li>
           </ul>
         </div>
       </li>
 
       <li id="dash_brands">
-        <div id="dash_brands_header" class="collapsible-header waves-effect"><b>Рейсы</b></div>
+        <div id="dash_brands_header" class="collapsible-header waves-effect"><b>Страны</b></div>
         <div id="dash_brands_body" class="collapsible-body">
           <ul>
             <li id="brands_brand">
@@ -143,7 +143,7 @@
             </li>
 
             <li id="brands_sub_brand">
-              <a class="waves-effect" style="text-decoration: none;" href="#!">Добавить</a>
+              <a class="waves-effect" style="text-decoration: none;" href="/admin/adding/country">Добавить</a>
             </li>
           </ul>
         </div>
@@ -157,7 +157,7 @@
             </li>
 
             <li id="models_sub_brand">
-              <a class="waves-effect" style="text-decoration: none;" href="#!">Добавить</a>
+              <a class="waves-effect" style="text-decoration: none;" href="/admin/adding/plane">Добавить</a>
             </li>
           </ul>
         </div>
@@ -196,7 +196,7 @@
   </header>
 
   <main>
-		<div class="text-block">Модель самолета</div>
+		<div class="text-block">Рейсы</div>
 		 <div class="text-block2">Добавление</div>
 		  <style>
 
@@ -204,45 +204,94 @@
   <form method="post">
 	<table>
 	   <tr>
-		<td width="200">Какой-то код</td>
-		<td><input type="text" name="aircraftIata" id="aircraftIata"></td>
+		<td width="200">Название полета</td>
+		<td><input type="text" name="flightName" id="flightName"></td>
 	   </tr>
 		<tr>
-		<td >Полное имя самолета</td>
-		<td> <input type="text" name="aircraftName" id="aircraftName"> </td>
+		<td >Код полета</td>
+		<td> <input type="text" name="airlineId" id="airlineId"> </td>
 	   </tr>
 		<tr>
-		<td>Производитель</td>
-		<td><input type="text" name="aircraftManufacturer" id="aircraftManufacturer"></td>
+		<td>Кол-во эконом билетов</td>
+		<td><input type="text" name="ticketNumEconomy" id="ticketNumEconomy"></td>
 	   </tr>
 		<tr>
-		<td>Тип самолета</td>
-		<td><input type="text" name="aircraftType" id="aircraftType"></td>
+		<td>Кол-во комфорт билетов</td>
+		<td><input type="text" name="ticketNumPrEconomy" id="ticketNumPrEconomy"></td>
 	   </tr>
       </tr>
 		<tr>
-		<td >Какой-то код</td>
-		<td> <input type="text" name="aircraftIcaic" id="aircraftIcaic"> </td>
+		<td >Кол-во бизнес билетов</td>
+		<td> <input type="text" name="ticketNumBusiness" id="ticketNumBusiness"> </td>
 	   </tr>
 		<tr>
-		<td>Тип крыльев</td>
-		<td><input type="text" name="aircraftWingType" id="aircraftWingType"></td>
+		<td>Кол-во первого класса билетов</td>
+		<td><input type="text" name="ticketNumFirstClass" id="ticketNumFirstClass"></td>
 	   </tr>
 		<tr>
-		<td>Эконом класс</td>
-		<td><input type="text" name="economyClass" id="economyClass"></td>
+		<td>Цена за эконом</td>
+		<td><input type="text" name="costRubEconomy" id="costRubEconomy"></td>
 	   </tr>
       <tr>
-		<td >Комфорт класс</td>
-		<td> <input type="text" name="prEconomyClass" id="prEconomyClass"> </td>
+		<td >Цена за комфорт</td>
+		<td> <input type="text" name="costRubPrEconomy" id="costRubPrEconomy"> </td>
 	   </tr>
 		<tr>
-		<td>Бизнес класс</td>
-		<td><input type="text" name="businessClass" id="businessClass"></td>
+		<td>Цена за бизнес</td>
+		<td><input type="text" name="costRubBusiness" id="costRubBusiness"></td>
 	   </tr>
       <tr>
-		<td>Первый класс</td>
-		<td><input type="text" name="firstClass" id="firstClass"></td>
+		<td>Цена за первый класс</td>
+		<td><input type="text" name="costRubFirstClass" id="costRubFirstClass"></td>
+	   </tr>
+      <tr>
+		<td >Код самолета</td>
+		<td> <input type="text" name="aircraftId" id="aircraftId"> </td>
+	   </tr>
+		<tr>
+		<td>Код место отправления</td>
+		<td><input type="text" name="airportDepId" id="airportDepId"></td>
+	   </tr>
+		<tr>
+		<td>Код места прибытия</td>
+		<td><input type="text" name="airportLandId" id="airportLandId"></td>
+	   </tr>
+      </tr>
+		<tr>
+		<td >Время отправления</td>
+		<td> <input type="text" name="departureTime" id="departureTime"> </td>
+	   </tr>
+		<tr>
+		<td>Время приземления</td>
+		<td><input type="text" name="landingTime" id="landingTime"></td>
+	   </tr>
+		<tr>
+		<td>Максимальный вес багажа</td>
+		<td><input type="text" name="maxLuggageWeightKg" id="maxLuggageWeightKg"></td>
+	   </tr>
+      <tr>
+		<td >Цена за багаж</td>
+		<td> <input type="text" name="costLuggageWeightRub" id="costLuggageWeightRub"> </td>
+	   </tr>
+		<tr>
+		<td>Максимальной вес ручки</td>
+		<td><input type="text" name="maxHandLuggageWeightKg" id="maxHandLuggageWeightKg"></td>
+	   </tr>
+      <tr>
+		<td>Цена за ручку</td>
+		<td><input type="text" name="costHandLuggageWeightRub" id="costHandLuggageWeightRub"></td>
+	   </tr>
+      <tr>
+		<td>Wi-Fi</td>
+		<td><input type="text" name="wifiFlg" id="wifiFlg"></td>
+	   </tr>
+      <tr>
+		<td>Еда</td>
+		<td><input type="text" name="foodFlg" id="foodFlg"></td>
+	   </tr>
+      <tr>
+		<td>USB</td>
+		<td><input type="text" name="usbFlg" id="usbFlg"></td>
 	   </tr>
 	</table>
 	<button type="submit" class="new">Добавить</button>
