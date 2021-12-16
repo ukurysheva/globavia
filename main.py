@@ -232,6 +232,7 @@ def personal_cabinet():
     else:
         return redirect("/user/login")
 
+
 ##ADMIN PAGES
 @app.route('/admin/sign-in', methods=('GET', 'POST'))
 def admin_login():
@@ -285,6 +286,7 @@ def menu():
             pass
     else:
         return redirect('/admin/sign-in')
+
 
 @app.route('/admin/list', methods=('GET', 'POST'))
 def list():
@@ -410,6 +412,98 @@ def adding_aviacompany():
             aviacompany_status = request.form.get("aviacompany_status")
 
             return redirect("/admin/adding/aviacompany")
+    else:
+        return redirect('/admin/sign-in')
+
+
+# LIST
+
+@app.route('/admin/list/airport', methods=('GET', 'POST'))
+def get_airport():
+    global access_token_admin
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
+
+        if request.method == "GET":
+            return render_template('list_airport.html')
+        else:
+            aviacompany_id = request.form.get("aviacompany_id")
+            airlineIata = request.form.get("airlineIata")
+            airlineIcao = request.form.get("airlineIcao")
+            aviacompany_status = request.form.get("aviacompany_status")
+
+            return redirect("/admin/list/airport")
+    else:
+        return redirect('/admin/sign-in')
+
+
+@app.route('/admin/list/aviacompany', methods=('GET', 'POST'))
+def get_aviacompany():
+    global access_token_admin
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
+
+        if request.method == "GET":
+            return render_template('list_aviacompany.html')
+        else:
+            aviacompany_id = request.form.get("aviacompany_id")
+            airlineIata = request.form.get("airlineIata")
+            airlineIcao = request.form.get("airlineIcao")
+            aviacompany_status = request.form.get("aviacompany_status")
+
+            return redirect("/admin/list/aviacompany")
+    else:
+        return redirect('/admin/sign-in')
+
+
+@app.route('/admin/list/country', methods=('GET', 'POST'))
+def get_country():
+    global access_token_admin
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
+
+        if request.method == "GET":
+            return render_template('list_country.html')
+        else:
+            aviacompany_id = request.form.get("aviacompany_id")
+            airlineIata = request.form.get("airlineIata")
+            airlineIcao = request.form.get("airlineIcao")
+            aviacompany_status = request.form.get("aviacompany_status")
+
+            return redirect("/admin/list/country")
+    else:
+        return redirect('/admin/sign-in')
+
+
+@app.route('/admin/list/flight', methods=('GET', 'POST'))
+def get_flight():
+    global access_token_admin
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
+
+        if request.method == "GET":
+            return render_template('list_flight.html')
+        else:
+            aviacompany_id = request.form.get("aviacompany_id")
+            airlineIata = request.form.get("airlineIata")
+            airlineIcao = request.form.get("airlineIcao")
+            aviacompany_status = request.form.get("aviacompany_status")
+
+            return redirect("/admin/list/flight")
+    else:
+        return redirect('/admin/sign-in')
+
+
+@app.route('/admin/list/plane', methods=('GET', 'POST'))
+def get_plane():
+    global access_token_admin
+    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
+
+        if request.method == "GET":
+            return render_template('list_plane.html')
+        else:
+            aviacompany_id = request.form.get("aviacompany_id")
+            airlineIata = request.form.get("airlineIata")
+            airlineIcao = request.form.get("airlineIcao")
+            aviacompany_status = request.form.get("aviacompany_status")
+
+            return redirect("/admin/list/plane")
     else:
         return redirect('/admin/sign-in')
 
