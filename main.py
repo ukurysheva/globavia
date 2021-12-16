@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, Response
 import requests
 import json
 import logging
+import pandas as pd
 
 from conf.config import Config
 
@@ -385,18 +386,17 @@ def adding_plane():
     global access_token_admin
 
     body = {
-    "aircraftIata": "",
-    "aircraftName" : "",
-    "aircraftManufacturer": "",
-    "aircraftType":"",
-    "aircraftIcaic": "",
-    "aircraftWingType" : "",
-    "economyClass" : "",
-    "prEconomyClass" : "",
-    "businessClass": "",
-    "firstClass":""
-}
-
+        "aircraftIata": "",
+        "aircraftName": "",
+        "aircraftManufacturer": "",
+        "aircraftType": "",
+        "aircraftIcaic": "",
+        "aircraftWingType": "",
+        "economyClass": "",
+        "prEconomyClass": "",
+        "businessClass": "",
+        "firstClass": ""
+    }
 
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
@@ -441,30 +441,29 @@ def adding_plane():
 def adding_flight():
     global access_token_admin
     body = {
-    "flightName": "",
-    "airlineId" :  None,
-    "ticketNumEconomy": None,
-    "ticketNumPrEconomy": None,
-    "ticketNumBusiness": None,
-    "ticketNumFirstClass" : None,
-    "costRubEconomy" : None,
-    "costRubPrEconomy" : None,
-    "costRubBusiness": None,
-    "costRubFirstClass":None,
-    "aircraftId": None,
-    "airportDepId":None,
-    "airportLandId": None,
-    "departureTime" : "",
-    "landingTime" : "",
-    "maxLuggageWeightKg" : None,
-    "costLuggageWeightRub": None,
-    "maxHandLuggageWeightKg":None,
-    "costHandLuggageWeightRub":None,
-    "wifiFlg": "",
-    "foodFlg" : "",
-    "usbFlg" : ""
-}
-
+        "flightName": "",
+        "airlineId": None,
+        "ticketNumEconomy": None,
+        "ticketNumPrEconomy": None,
+        "ticketNumBusiness": None,
+        "ticketNumFirstClass": None,
+        "costRubEconomy": None,
+        "costRubPrEconomy": None,
+        "costRubBusiness": None,
+        "costRubFirstClass": None,
+        "aircraftId": None,
+        "airportDepId": None,
+        "airportLandId": None,
+        "departureTime": "",
+        "landingTime": "",
+        "maxLuggageWeightKg": None,
+        "costLuggageWeightRub": None,
+        "maxHandLuggageWeightKg": None,
+        "costHandLuggageWeightRub": None,
+        "wifiFlg": "",
+        "foodFlg": "",
+        "usbFlg": ""
+    }
 
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
@@ -525,10 +524,10 @@ def adding_aviacompany():
     global access_token_admin
 
     body = {
-    "airlineCountryId": None,
-    "airlineIata" : "",
-    "airlineIcao": "",
-    "airlineActive":""
+        "airlineCountryId": None,
+        "airlineIata": "",
+        "airlineIcao": "",
+        "airlineActive": ""
     }
 
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
@@ -573,7 +572,16 @@ def get_airport():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/airports')
             data = response.json()
-            logger.info(data)
+            logger.info(data[0])
+
+            columns = ['id', 'airportName', 'airportCode',
+                       'airportCountryId', 'airportIsoRegion', 'airportMunicipality',
+                       'airportHomeLink', 'airportVisa', 'airportQuarantine', 'airportCovidTest',
+                       'airportLockDown']
+
+            # df = pd.DataFrame(data_dic, columns=columns)
+            # table = df.to_html(index=False)
+
             return render_template('list_airport.html')
     else:
         return redirect('/admin/sign-in')

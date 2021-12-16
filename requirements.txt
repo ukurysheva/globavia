@@ -15,3 +15,4 @@ Werkzeug
 waitress
 requests
 flask_table
+pandas
