@@ -571,14 +571,10 @@ def get_airport():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
+            response = requests.request("GET", 'http://gvapi:8000/v1/airports')
+            data = response.text
+            logger.info(data)
             return render_template('list_airport.html')
-        else:
-            aviacompany_id = request.form.get("aviacompany_id")
-            airlineIata = request.form.get("airlineIata")
-            airlineIcao = request.form.get("airlineIcao")
-            aviacompany_status = request.form.get("aviacompany_status")
-
-            return redirect("/admin/list/airport")
     else:
         return redirect('/admin/sign-in')
 
@@ -590,13 +586,6 @@ def get_aviacompany():
 
         if request.method == "GET":
             return render_template('list_aviacompany.html')
-        else:
-            aviacompany_id = request.form.get("aviacompany_id")
-            airlineIata = request.form.get("airlineIata")
-            airlineIcao = request.form.get("airlineIcao")
-            aviacompany_status = request.form.get("aviacompany_status")
-
-            return redirect("/admin/list/aviacompany")
     else:
         return redirect('/admin/sign-in')
 
@@ -608,13 +597,6 @@ def get_country():
 
         if request.method == "GET":
             return render_template('list_country.html')
-        else:
-            aviacompany_id = request.form.get("aviacompany_id")
-            airlineIata = request.form.get("airlineIata")
-            airlineIcao = request.form.get("airlineIcao")
-            aviacompany_status = request.form.get("aviacompany_status")
-
-            return redirect("/admin/list/country")
     else:
         return redirect('/admin/sign-in')
 
@@ -626,13 +608,6 @@ def get_flight():
 
         if request.method == "GET":
             return render_template('list_flight.html')
-        else:
-            aviacompany_id = request.form.get("aviacompany_id")
-            airlineIata = request.form.get("airlineIata")
-            airlineIcao = request.form.get("airlineIcao")
-            aviacompany_status = request.form.get("aviacompany_status")
-
-            return redirect("/admin/list/flight")
     else:
         return redirect('/admin/sign-in')
 
@@ -644,13 +619,6 @@ def get_plane():
 
         if request.method == "GET":
             return render_template('list_plane.html')
-        else:
-            aviacompany_id = request.form.get("aviacompany_id")
-            airlineIata = request.form.get("airlineIata")
-            airlineIcao = request.form.get("airlineIcao")
-            aviacompany_status = request.form.get("aviacompany_status")
-
-            return redirect("/admin/list/plane")
     else:
         return redirect('/admin/sign-in')
 
