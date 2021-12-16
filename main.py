@@ -596,6 +596,7 @@ def get_aviacompany():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/airlines')
             data = response.json()
+            logger.info(data)
 
             data_table = pd.DataFrame(data["data"])
             # df = pd.DataFrame(data_dic, columns=columns)
@@ -646,6 +647,7 @@ def get_plane():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/aircrafts')
             data = response.json()
+            logger.info(data)
 
             data_table = pd.DataFrame(data["data"])
             # df = pd.DataFrame(data_dic, columns=columns)
