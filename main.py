@@ -369,14 +369,13 @@ def adding_airport():
 
                 if response.ok:
                     logger.info(response.text)
-                    return redirect("/admin/adding/country")
+                    return redirect("/admin/adding/airport")
                 else:
                     return redirect('/admin/sign-in')
 
             else:
-                return redirect("/admin/adding/country")
+                return redirect("/admin/adding/airport")
 
-            return redirect("/admin/adding/airport")
     else:
         return redirect('/admin/sign-in')
 
