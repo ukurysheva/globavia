@@ -596,7 +596,11 @@ def get_aviacompany():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/airlines')
             data = response.json()
-            return render_template('list_aviacompany.html')
+
+            data_table = pd.DataFrame(data["data"])
+            # df = pd.DataFrame(data_dic, columns=columns)
+            table = data_table.to_html()
+            return render_template('list_aviacompany.html', table=table)
     else:
         return redirect('/admin/sign-in')
 
@@ -609,7 +613,10 @@ def get_country():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/countries')
             data = response.json()
-            return render_template('list_country.html')
+
+            data_table = pd.DataFrame(data["data"])
+            table = data_table.to_html()
+            return render_template('list_country.html', table=table)
     else:
         return redirect('/admin/sign-in')
 
@@ -622,7 +629,11 @@ def get_flight():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/flights')
             data = response.json()
-            return render_template('list_flight.html')
+
+            data_table = pd.DataFrame(data["data"])
+            # df = pd.DataFrame(data_dic, columns=columns)
+            table = data_table.to_html()
+            return render_template('list_flight.html', table=table)
     else:
         return redirect('/admin/sign-in')
 
@@ -635,7 +646,11 @@ def get_plane():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/aircrafts')
             data = response.json()
-            return render_template('list_plane.html')
+
+            data_table = pd.DataFrame(data["data"])
+            # df = pd.DataFrame(data_dic, columns=columns)
+            table = data_table.to_html()
+            return render_template('list_plane.html', table=table)
     else:
         return redirect('/admin/sign-in')
 
