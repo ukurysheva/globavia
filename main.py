@@ -184,14 +184,14 @@ def personal_cabinet():
         password_g_user, passport_number, passport_series, number_of_tickets, \
         address_register, address_accommodation, phone_number
 
-    body_person = {
-        "email": ""
-    }
-
-    familyname: Optional[str] = profile_user["userLastName"]
-    firstname = profile_user["userFirstName"]
-
     if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
+
+        body_person = {
+            "email": ""
+        }
+
+        familyname: Optional[str] = profile_user["userLastName"]
+        firstname = profile_user["userFirstName"]
 
         if request.method == "GET":
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
