@@ -579,10 +579,11 @@ def get_airport():
                        'airportHomeLink', 'airportVisa', 'airportQuarantine', 'airportCovidTest',
                        'airportLockDown']
 
+            data_table = pd.DataFrame(data["data"], columns=columns)
             # df = pd.DataFrame(data_dic, columns=columns)
-            # table = df.to_html(index=False)
+            table = data_table.to_html()
 
-            return render_template('list_airport.html')
+            return render_template('list_airport.html', table=table)
     else:
         return redirect('/admin/sign-in')
 

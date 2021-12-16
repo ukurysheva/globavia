@@ -190,11 +190,7 @@
   <main>
 		<div class="text-block">Страны</div>
 		 <div class="text-block2">Список</div>
-	     <table cellpadding="7">
-   <tr><th>Название аэропорта</th><th>Тип аэропорта</th><th>Код аэропорта</th><th>Код страны</th><th>Регион аэропорта</th><th>Муниципалетет аэропорта</th><th>Домашняя ссылка аэропорта</th><th>Виза</th><th>Карантин</th><th>Тест на ковид</th><th>Локдаун</th></tr>
-   <tr><td></td><td></td><td></td><td></td></tr>
-  </table>
- </table>
+   {{ table | safe }}
     </div>
 
     <div class="fixed-action-btn click-to-toggle" style="bottom: 45px; right: 24px;">
