@@ -572,7 +572,7 @@ def get_airport():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/airports')
             data = response.json()
-            logger.info(data[0])
+            logger.info(data['data'][0])
 
             columns = ['id', 'airportName', 'airportCode',
                        'airportCountryId', 'airportIsoRegion', 'airportMunicipality',
