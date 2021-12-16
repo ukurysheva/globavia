@@ -83,7 +83,12 @@ def contact():
 
 @app.route('/user/purchases', methods=('GET', 'POST'))
 def purchases():
-    return render_template('buy_ticket.html')
+    global access_token_user
+
+    if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
+        return render_template('buy_ticket.html')
+    else:
+        return redirect('/user/login')
 
 
 @app.route('/user/login', methods=('GET', 'POST'))
@@ -186,43 +191,46 @@ def personal_cabinet():
     familyname: Optional[str] = profile_user["userLastName"]
     firstname = profile_user["userFirstName"]
 
-    if request.method == "GET":
-        name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
-        email = profile_user['userEmail']
+    if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
 
-        return render_template('profile_edit_data_and_skills-Bootdey.com.html',
-                               name=name, email=email, number_of_tickets=number_of_tickets,
-                               familyname=familyname, firstname=firstname, middlename=middlename,
-                               phone_number=phone_number, passport_series=passport_series,
-                               passport_number=passport_number, address_register=address_register,
-                               address_accommodation=address_accommodation)
+        if request.method == "GET":
+            name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
+            email = profile_user['userEmail']
 
-    elif request.method == "POST":
-        logger.info("after post")
+            return render_template('profile_edit_data_and_skills-Bootdey.com.html',
+                                   name=name, email=email, number_of_tickets=number_of_tickets,
+                                   familyname=familyname, firstname=firstname, middlename=middlename,
+                                   phone_number=phone_number, passport_series=passport_series,
+                                   passport_number=passport_number, address_register=address_register,
+                                   address_accommodation=address_accommodation)
 
-        phone_number = request.form.get("phone_number")
-        passport_series = request.form.get("seria_passport")
-        passport_number = request.form.get("number_passport")
-        address_register = request.form.get("address_register")
-        address_accommodation = request.form.get("address_accommodation")
+        elif request.method == "POST":
+            logger.info("after post")
 
-        body_person["email"] = request.form.get("email")
+            phone_number = request.form.get("phone_number")
+            passport_series = request.form.get("seria_passport")
+            passport_number = request.form.get("number_passport")
+            address_register = request.form.get("address_register")
+            address_accommodation = request.form.get("address_accommodation")
 
-        headers = {
-            'Authorization': 'Bearer ' + access_token_user
-        }
-        logger.info("Trying to send")
-        logger.info(headers)
-        response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
+            body_person["email"] = request.form.get("email")
 
-        if response.ok:
-            logger.info("OK")
-            logger.info(response.text)
-            return redirect("/personal_cabinet")
-        else:
-            logger.info("Not OK")
-            return redirect("/personal_cabinet")
+            headers = {
+                'Authorization': 'Bearer ' + access_token_user
+            }
+            logger.info("Trying to send")
+            logger.info(headers)
+            response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
 
+            if response.ok:
+                logger.info("OK")
+                logger.info(response.text)
+                return redirect("/personal_cabinet")
+            else:
+                logger.info("Not OK")
+                return redirect("/personal_cabinet")
+    else:
+        return redirect("/user/login")
 
 ##ADMIN PAGES
 @app.route('/admin/sign-in', methods=('GET', 'POST'))
