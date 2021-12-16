@@ -288,19 +288,38 @@ def menu():
         return redirect('/admin/sign-in')
 
 
+# ADDITION
 @app.route('/admin/adding/country', methods=('GET', 'POST'))
 def adding_country():
     global access_token_admin
+    body = {"countryCode": "", "countryName": "", "countryContinent": "", "countryWiki": ""}
+
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
         if request.method == "GET":
             return render_template('adding_country.html')
         else:
-            country_id = request.form.get("country_id")
-            name = request.form.get("name")
-            continent = request.form.get("continent")
-            country_wiki = request.form.get("country_wiki")
+            body['countryCode'] = request.form.get("country_id")
+            body['countryName'] = request.form.get("name")
+            body['countryContinent'] = request.form.get("continent")
+            body['countryWiki'] = request.form.get("country_wiki")
 
-            return redirect("/admin/adding/country")
+            if body['countryCode'] is not None and body['countryCode'] != "":
+
+                headers = {
+                    'Authorization': 'Bearer ' + access_token_admin
+                }
+                logger.info("Trying to send")
+                logger.info(headers)
+                response = requests.request("POST", 'http://gvapi:8000/v1/countries', headers=headers, json=body)
+
+                if response.ok:
+                    logger.info(response.text)
+                    return redirect("/admin/adding/country")
+                else:
+                    return redirect('/admin/sign-in')
+
+            else:
+                return redirect("/admin/adding/country")
     else:
         return redirect('/admin/sign-in')
 
@@ -308,14 +327,54 @@ def adding_country():
 @app.route('/admin/adding/airport', methods=('GET', 'POST'))
 def adding_airport():
     global access_token_admin
+
+    body = {
+        "airportName": "",
+        "airportType": "",
+        "airportCode": "",
+        "airportCountryId": None,
+        "airportIsoRegion": "",
+        "airportMunicipality": "",
+        "airportHomeLink": "",
+        "airportVisa": "",
+        "airportQuarantine": "",
+        "airportCovidTest": "",
+        "airportLockDown": ""
+    }
+
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
         if request.method == "GET":
             return render_template('adding_airport.html')
         else:
-            country_id = request.form.get("country_id")
-            name = request.form.get("name")
-            continent = request.form.get("continent")
-            country_wiki = request.form.get("country_wiki")
+            body['airportName'] = request.form.get("country_id")
+            body['airportType'] = request.form.get("name")
+            body['airportCode'] = request.form.get("continent")
+            body['airportCountryId'] = request.form.get("country_wiki")
+            body['airportIsoRegion'] = request.form.get("country_id")
+            body['airportMunicipality'] = request.form.get("name")
+            body['airportHomeLink'] = request.form.get("continent")
+            body['airportVisa'] = request.form.get("country_wiki")
+            body['airportQuarantine'] = request.form.get("country_id")
+            body['airportCovidTest'] = request.form.get("name")
+            body['airportLockDown'] = request.form.get("continent")
+
+            if body['airportCode'] is not None and body['airportCode'] != "":
+
+                headers = {
+                    'Authorization': 'Bearer ' + access_token_admin
+                }
+                logger.info("Trying to send")
+                logger.info(headers)
+                response = requests.request("POST", 'http://gvapi:8000/v1/airports', headers=headers, json=body)
+
+                if response.ok:
+                    logger.info(response.text)
+                    return redirect("/admin/adding/country")
+                else:
+                    return redirect('/admin/sign-in')
+
+            else:
+                return redirect("/admin/adding/country")
 
             return redirect("/admin/adding/airport")
     else:
