@@ -290,7 +290,7 @@ def menu():
 def list():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
         if request.method == "GET":
-            return render_template('list.html')
+            return render_template('list_airport.html')
     else:
         return redirect('/admin/sign-in')
 
