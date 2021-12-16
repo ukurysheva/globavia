@@ -288,15 +288,6 @@ def menu():
         return redirect('/admin/sign-in')
 
 
-@app.route('/admin/list', methods=('GET', 'POST'))
-def list():
-    if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
-        if request.method == "GET":
-            return render_template('list_airport.html')
-    else:
-        return redirect('/admin/sign-in')
-
-
 @app.route('/admin/adding/country', methods=('GET', 'POST'))
 def adding_country():
     global access_token_admin
