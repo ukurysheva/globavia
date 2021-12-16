@@ -571,8 +571,8 @@ def get_airport():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
-            response = requests.request("GET", 'http://gvapi:8000/v1/airports')
-            data = response.text
+            response = requests.get('http://gvapi:8000/v1/airports')
+            data = response.json()
             logger.info(data)
             return render_template('list_airport.html')
     else:
@@ -585,6 +585,8 @@ def get_aviacompany():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
+            response = requests.get('http://gvapi:8000/v1/airlines')
+            data = response.json()
             return render_template('list_aviacompany.html')
     else:
         return redirect('/admin/sign-in')
@@ -596,6 +598,8 @@ def get_country():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
+            response = requests.get('http://gvapi:8000/v1/countries')
+            data = response.json()
             return render_template('list_country.html')
     else:
         return redirect('/admin/sign-in')
@@ -607,6 +611,8 @@ def get_flight():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
+            response = requests.get('http://gvapi:8000/v1/flights')
+            data = response.json()
             return render_template('list_flight.html')
     else:
         return redirect('/admin/sign-in')
@@ -618,6 +624,8 @@ def get_plane():
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
+            response = requests.get('http://gvapi:8000/v1/aircrafts')
+            data = response.json()
             return render_template('list_plane.html')
     else:
         return redirect('/admin/sign-in')
