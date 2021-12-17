@@ -86,8 +86,11 @@ def contact():
 def purchases():
     global access_token_user
 
-    if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
-        return render_template('buy_ticket.html')
+    if access_token_user is not None:
+        if request.method == "GET":
+            return render_template('buy_ticket.html')
+        else:
+            pass
     else:
         return redirect('/user/login')
 
@@ -234,7 +237,7 @@ def personal_cabinet():
         return redirect("/user/login")
 
 
-##ADMIN PAGES
+########################################### ADMIN PAGES #############################################
 @app.route('/admin/sign-in', methods=('GET', 'POST'))
 def admin_login():
     global access_token_admin, id_admin, refresh_token_admin, \
