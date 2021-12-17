@@ -74,6 +74,8 @@ def index():
         # print([li["countryName"] for li in countries], flush=True)
 
         return render_template('index.html', countries=countries, direction=direction)
+    elif request.method == "POST":
+        pass
 
 
 @app.route('/contact', methods=('GET', 'POST'))
