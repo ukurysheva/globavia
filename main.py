@@ -88,7 +88,9 @@ def purchases():
 
     if access_token_user is not None:
         if request.method == "GET":
-            return render_template('buy_ticket.html')
+            name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
+            email = email_g_user
+            return render_template('buy_ticket.html', name=name, email=email)
         else:
             pass
     else:
