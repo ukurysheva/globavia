@@ -50,7 +50,6 @@ phone_number = "Номер телефона"
 address_register = "Место регистрации"
 address_accommodation = "Фактическое место проживания"
 middlename = "Отчество"
-number_of_tickets = 0
 
 # ADMIN
 id_admin = None
@@ -84,12 +83,12 @@ def contact():
 
 @app.route('/user/purchases', methods=('GET', 'POST'))
 def purchases():
-    global access_token_user
+    global access_token_user, profile_user
 
     if access_token_user is not None:
         if request.method == "GET":
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
-            email = email_g_user
+            email = profile_user['userEmail']
             return render_template('buy_ticket.html', name=name, email=email)
         else:
             pass
@@ -187,7 +186,7 @@ def login():
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
     global profile_user, access_token_user, refresh_token_user, email_g_user, \
-        password_g_user, passport_number, passport_series, number_of_tickets, \
+        password_g_user, passport_number, passport_series, \
         address_register, address_accommodation, phone_number
 
     if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
@@ -204,7 +203,7 @@ def personal_cabinet():
             email = profile_user['userEmail']
 
             return render_template('profile_edit_data_and_skills-Bootdey.com.html',
-                                   name=name, email=email, number_of_tickets=number_of_tickets,
+                                   name=name, email=email,
                                    familyname=familyname, firstname=firstname, middlename=middlename,
                                    phone_number=phone_number, passport_series=passport_series,
                                    passport_number=passport_number, address_register=address_register,
