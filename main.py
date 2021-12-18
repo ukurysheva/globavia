@@ -102,12 +102,11 @@ def index():
         if from_country == to_country:
             return redirect("/")
         else:
-            now = datetime.datetime.now()
+            now = str(datetime.date.today())
             logger.info(now)
             logger.info(type(now))
             return redirect('/')
 
-        return redirect('/')
 
 @app.route('/contact', methods=('GET', 'POST'))
 def contact():
