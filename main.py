@@ -73,8 +73,8 @@ def index():
 
         return render_template('index.html', countries=countries, direction=direction)
     elif request.method == "POST":
-        logger.info(request.form.get("fromCountry"))
-        return redirect('/personal_cabinet')
+        logger.info(request.form.get("from"))
+        return redirect('/')
 
 @app.route('/contact', methods=('GET', 'POST'))
 def contact():
