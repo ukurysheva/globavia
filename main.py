@@ -77,8 +77,8 @@ def index():
         from_country = request.form.get("from")
         to_country = request.form.get("to")
 
-        departure_time = request.form.get("depature")
-        return_time = request.form.get("return")
+        departure_time_raw = request.form.get("depature")
+        return_time_raw = request.form.get("return")
 
         clas = request.form.get("clas")
         weihgt_luggage = request.form.get("weight")
@@ -89,8 +89,8 @@ def index():
 
         logger.info(from_country)
         logger.info(to_country)
-        logger.info(departure_time)
-        logger.info(return_time)
+        logger.info(departure_time_raw)
+        logger.info(return_time_raw)
         logger.info(clas)
         logger.info(weihgt_luggage)
 
@@ -102,13 +102,13 @@ def index():
         if from_country == to_country:
             return redirect("/")
         else:
-            now = str(datetime.date.today())
-            year, month, day = now.split('-')
-            today = month + "/" + day + "/" + year
-            logger.info(now)
-            logger.info(type(now))
-            logger.info(today)
-            logger.info(today == departure_time)
+            now = datetime.date.today()
+            month, day, year = departure_time_raw.split('/')
+            departure_time = datetime.date(year=year, month=month, day=day)
+
+            logger.info(departure_time)
+            logger.info(departure_time >= now)
+
             return redirect('/')
 
 
