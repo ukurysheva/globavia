@@ -74,7 +74,7 @@ http://www.tooplate.com/view/2093-flight
                                         <div class="col-md-6">
                                             <fieldset>
                                                 <label for="to">Куда:</label>
-                                                <select id="toCountry" required name='to' onchange='this.form.()'>
+                                                <select  required name='to' onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
                                                     {% for dictionary in countries %}
                                                     <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
@@ -98,7 +98,7 @@ http://www.tooplate.com/view/2093-flight
 					<div class="col-md-6">
                                             <fieldset>
                                                 <label for="return">Класс билетов</label>
-						   <select required="" name="from" onchange="this.form.()">
+						   <select required="" name="clas" onchange="this.form.()">
                                                     <option value="">Выбрать класс...</option>
                                                     <option value="economy">Эконом</option>
                                                     <option value="economy_pr">Эконом+</option>
@@ -111,7 +111,7 @@ http://www.tooplate.com/view/2093-flight
 					<div class="col-md-6">
                                             <fieldset>
                                                 <label for="return">Вес багажа</label>
-						<select required="" name="from" onchange="this.form.()">
+						<select required="" name="weight" onchange="this.form.()">
                                                     <option value="">Выбрать максимальный вес...</option>
                                                     <option value="5">до 5 кг</option>
                                                     <option value="10">до 10 кг</option>
@@ -137,11 +137,11 @@ http://www.tooplate.com/view/2093-flight
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="round">Туда и обратно</label>
-                                                        <input type="radio" name="trip" id="round" value="round" required="required"onchange='this.form.()'>
+                                                        <input type="radio" name="trip_from_to" id="round" value="round" required="required"onchange='this.form.()'>
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="oneway">Только туда</label>
-                                                        <input type="radio" name="trip" id="oneway" value="one-way" required="required"onchange='this.form.()'>
+                                                        <input type="radio" name="trip_to" id="oneway" value="one-way" required="required"onchange='this.form.()'>
                                                     </div>
                                                 </div>
                                             </div>

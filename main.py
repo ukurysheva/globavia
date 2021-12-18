@@ -73,7 +73,36 @@ def index():
 
         return render_template('index.html', countries=countries, direction=direction)
     elif request.method == "POST":
-        logger.info(request.form.get("from"))
+        from_country = request.form.get("from")
+        to_country = request.form.get("to")
+
+        departure_time = request.form.get("deparure")
+        return_time = request.form.get("return")
+
+        clas = request.form.get("clas")
+        weihgt_luggage = request.form.get("weight")
+
+        food_flag = request.form.get("food_flg")
+        dep_and_return = request.form.get("trip_from_to")
+        dep_only = request.form.get("trip_to")
+
+        logger.info(from_country)
+        logger.info(to_country)
+        logger.info(departure_time)
+        logger.info(return_time)
+        logger.info(clas)
+        logger.info(weihgt_luggage)
+
+        logger.info(food_flag)
+        logger.info(dep_and_return)
+        logger.info(dep_only)
+
+
+        if from_country == to_country:
+            return redirect("/")
+        else:
+            pass
+
         return redirect('/')
 
 @app.route('/contact', methods=('GET', 'POST'))
