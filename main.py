@@ -70,12 +70,10 @@ def index():
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
         countries = data_hash["data"]
-        # print(countries, flush=True)
-        # print([li["countryName"] for li in countries], flush=True)
 
         return render_template('index.html', countries=countries, direction=direction)
     elif request.method == "POST":
-        pass
+        logger.info(request.form.get("fromCountry"))
 
 
 @app.route('/contact', methods=('GET', 'POST'))
@@ -279,12 +277,6 @@ def admin_login():
 def menu():
     global access_token_admin, id_admin, refresh_token_admin, \
         profile_admin, email_g_admin, password_g_admin
-
-    data_countries = {}
-    data_airports = {}
-    data_aviacompanies = {}
-    data_planes = {}
-    data_flights = {}
     if (request.method == "GET" or request.method == "POST") and access_token_admin is not None:
 
         if request.method == "GET":
@@ -586,7 +578,6 @@ def get_airport():
                        'airportLockDown']
 
             data_table = pd.DataFrame(data["data"], columns=columns)
-            # df = pd.DataFrame(data_dic, columns=columns)
             table = data_table.to_html()
 
             return render_template('list_airport.html', table=table)
@@ -605,7 +596,6 @@ def get_aviacompany():
             logger.info(data)
 
             data_table = pd.DataFrame(data["data"])
-            # df = pd.DataFrame(data_dic, columns=columns)
             table = data_table.to_html()
             return render_template('list_aviacompany.html', table=table)
     else:
@@ -638,7 +628,6 @@ def get_flight():
             data = response.json()
 
             data_table = pd.DataFrame(data["data"])
-            # df = pd.DataFrame(data_dic, columns=columns)
             table = data_table.to_html()
             return render_template('list_flight.html', table=table)
     else:
@@ -656,7 +645,6 @@ def get_plane():
             logger.info(data)
 
             data_table = pd.DataFrame(data["data"])
-            # df = pd.DataFrame(data_dic, columns=columns)
             table = data_table.to_html()
             return render_template('list_plane.html', table=table)
     else:

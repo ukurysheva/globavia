@@ -58,12 +58,12 @@ http://www.tooplate.com/view/2093-flight
                         <div id="tab1">
                             <div class="submit-form">
                                 <h4><em>Найти билеты</em>:</h4>
-                                <form id="form-submit" action="" method="get">
+                                <form id="form-submit" action="" method="post">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <fieldset>
                                                 <label for="from">Откуда:</label>
-                                                <select required name='from' onchange='this.form.()'>
+                                                <select id="fromCountry" required name='from' onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
                                                     {% for dictionary in countries %}
                                                     <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
@@ -74,7 +74,7 @@ http://www.tooplate.com/view/2093-flight
                                         <div class="col-md-6">
                                             <fieldset>
                                                 <label for="to">Куда:</label>
-                                                <select required name='to' onchange='this.form.()'>
+                                                <select id="toCountry" required name='to' onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
                                                     {% for dictionary in countries %}
                                                     <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
