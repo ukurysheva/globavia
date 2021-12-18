@@ -77,7 +77,7 @@ def index():
         from_country = request.form.get("from")
         to_country = request.form.get("to")
 
-        departure_time = request.form.get("deparure")
+        departure_time = request.form.get("depature")
         return_time = request.form.get("return")
 
         clas = request.form.get("clas")
@@ -103,8 +103,12 @@ def index():
             return redirect("/")
         else:
             now = str(datetime.date.today())
+            year, month, day = now.split('-')
+            today = month + "/" + day + "/" + year
             logger.info(now)
             logger.info(type(now))
+            logger.info(today)
+            logger.info(today == departure_time)
             return redirect('/')
 
 
