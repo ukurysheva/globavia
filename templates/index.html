@@ -63,10 +63,10 @@ http://www.tooplate.com/view/2093-flight
                                         <div class="col-md-6">
                                             <fieldset>
                                                 <label for="from">Откуда:</label>
-                                                <select id="fromCountry" required name='from' onchange='this.form.()'>
+                                                <select required name='from' onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
                                                     {% for dictionary in countries %}
-                                                    <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
+                                                    <option id="fromCountry" value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </fieldset>
