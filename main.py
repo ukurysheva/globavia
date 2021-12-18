@@ -104,7 +104,7 @@ def index():
         else:
             now = datetime.date.today()
             month, day, year = departure_time_raw.split('/')
-            departure_time = datetime.date(year=year, month=month, day=day)
+            departure_time = datetime.date(year=int(year), month=int(month), day=int(day))
 
             logger.info(departure_time)
             logger.info(departure_time >= now)
