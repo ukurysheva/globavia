@@ -5,6 +5,7 @@ import requests
 import json
 import logging
 import pandas as pd
+import datetime
 
 from conf.config import Config
 
@@ -101,7 +102,10 @@ def index():
         if from_country == to_country:
             return redirect("/")
         else:
-            pass
+            now = datetime.datetime.now()
+            logger.info(now)
+            logger.info(type(now))
+            return redirect('/')
 
         return redirect('/')
 
