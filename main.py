@@ -699,11 +699,11 @@ def get_flight():
                           'costRubPrEconomy':'ECONOMY+ стоимость (руб)',
                           'costRubBusiness':'BUSINESS стоимость (руб)',
                           'costRubFirstClass':'FIRST CLASS стоимость (руб)',
-                          'aircraftId':'Модель самолета',
-                          'airportDepId':'Аэропорт отправления',
-                          'airportLandId':'Аэропорт прибытия',
-                          'countryFromId':'Страна отправления',
-                          'countryToId':'Страна прибытия',
+                          'aircraftName':'Модель самолета',
+                          'airportDepName':'Аэропорт отправления',
+                          'airportLandName':'Аэропорт прибытия',
+                          'countryFromName':'Страна отправления',
+                          'countryToName':'Страна прибытия',
                           'departureTime':'Время отправления',
                           'landingTime':'Время прибытия',
                           'maxLuggageWeightKg':'Макс.вес багажа',
@@ -715,6 +715,7 @@ def get_flight():
                           'usbFlg':'Доступ к USB',
                           }, 
                  inplace=True)
+            data_table = data_table.drop(['airportDepId', 'airportLandId','countryFromId', 'countryToId', 'aircraftId'], axis=1)
             table = data_table.to_html()
             return render_template('list_flight.html', table=table)
     else:
