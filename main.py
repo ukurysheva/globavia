@@ -686,7 +686,7 @@ def get_flight():
             data = response.json()
             data_table = pd.DataFrame(data["data"])
             data_table.rename(columns={'flightName':'Название',
-                          'airlineId':'Авиакомпания',
+                          'airlineName':'Авиакомпания',
                           'ticketNumEconomy':'ECONOMY - кол-во билетов',
                           'ticketNumEconomyAvail':'Свободно билетов',
                           'ticketNumPrEconomy':'ECONOMY+ - кол-во билетов',
@@ -715,7 +715,7 @@ def get_flight():
                           'usbFlg':'Доступ к USB',
                           }, 
                  inplace=True)
-            data_table = data_table.drop(['airportDepId', 'airportLandId','countryFromId', 'countryToId', 'aircraftId'], axis=1)
+            data_table = data_table.drop(['airportDepId', 'airportLandId','countryFromId', 'countryToId', 'aircraftId', 'airlineId'], axis=1)
             table = data_table.to_html()
             return render_template('list_flight.html', table=table)
     else:
