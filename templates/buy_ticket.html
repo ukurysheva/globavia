@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- saved from url=(0065)file:///C:/Users/Yana/Downloads/profile_edit_data_and_skills.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+
     <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
     <!--  All snippets are MIT license http://bootdey.com/license -->
     <title>profile edit data and skills - Bootdey.com</title>
@@ -10,7 +10,7 @@
     <link href="../static/purchase_tickets/bootstrap.min.css" rel="stylesheet">
     <!-- <link href="./profile edit data and skills - Bootdey.com_files/style.scss" rel="stylesheet"> -->
 	<script src="../static/purchase_tickets/bootstrap.bundle.min.js.Без названия"></script>
-	
+
 </head>
 <body style="">
 <div class="container">
@@ -23,7 +23,7 @@
 								<div class="mt-3">
 									<h4>{{ name }}</h4>
 									<p class="text-secondary mb-1">{{ email }}</p>
-						  		<a href="/"><button class="btn btn-primary">Главная страница</button></a>	
+						  		<a href="/"><button class="btn btn-primary">Главная страница</button></a>
 									<a href="/contact"><button class="btn btn-outline-primary">FAQ</button></a>
 								</div>
 							</div>
@@ -37,26 +37,26 @@
 								<div class="ticket__body">
 									<section class="ticket__section">
 										<h3>Информация о билете</h3>
-										<p><b>ID: 3234</b></p>
-										<p>Вылет: 22.10.2021 12:34, MSC, Аэропорт Шереметьево </p>
-										<p>Прилет: 22.10.2021 13:34, PR, Аэропорт Paris-main-Airport </p>
-										<p>Класс билета: эконом </p>
-										<p>Питание: включено </p>
+										<p><b>ID: {{ flightId}}</b></p>
+										<p>Вылет: {{dep_info}}</p>
+										<p>Прилет: {{land_info}}</p>
+										<p>Класс билета: {{class_ticket}}</p>
+										<p>Питание: {{food_flg}}</p>
 										<p>Разрешен багаж: до 5 кг </p>
 									</section>
 									<section class="ticket__section">
 										<h3>Контактные данные</h3>
-										<p>ФИО: Курышева Яна Александровна</p>
-										<p>Паспорт: 2243 2343412 </p>
-										<p>Пол: Женский </p>
-										<p>Адрес регистрации: "Адрес" </p>
-										<p>Адрес проживания: "Адрес" </p>
+										<p>ФИО: {{FIO}}</p>
+										<p>Паспорт: {{passport}}</p>
+										<p>Пол: {{sex}}</p>
+										<p>Адрес регистрации: {{address_reg}}</p>
+										<p>Адрес проживания: {{address_liv}}</p>
 									</section>
 									<section class="ticket__section">
 										<h3>Способ оплаты</h3>
 										<p>Mastercard **** 8765</p>
 										<p><span>Итого:</span>
-											<span>8999.0 руб</span></p>
+											<span>{{price}}</span></p>
 									</section>
 								</div>
 								<footer class="ticket__footer">
@@ -65,39 +65,16 @@
 											<input type="button" class="btn btn-primary px-4" value="Купить">
 										</div>
 										<div class="col-sm-6 mb-2">
-											<input type="button" class="btn btn-primary px-4" value="Изменить данные">
+											<input href="/personal_cabinet" type="button" class="btn btn-primary px-4" value="Изменить данные">
 										</div>
                     <div class="col-sm-4 mb-2">
-											До конца брони: 14 мин
+											До конца брони: 15 мин
 										</div>
 									</div>
 								</footer>
-							
+
 							</article>
-							
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="d-flex align-items-center mb-3">Мои билеты</h5>
-									<p><b>ID: 3234</b></p>
-									<p>Вылет: 22.10.2021 12:34, MSC, Аэропорт Шереметьево </p>
-									<p>Прилет: 22.10.2021 13:34, PR, Аэропорт Paris-main-Airport </p>
-									<p>Питание: включено </p>
-									<p>Разрешен багаж: до 5 кг </p>
-									<div class="progress mb-3" style="height: 5px">
-									</div>
-									<p><b>ID: 32232</b></p>
-									<p>Вылет: 09.11.2021 12:34, MSC, Аэропорт Внуково </p>
-									<p>Прилет: 09.10.2021 12:34, PR, Аэропорт Paris-main-Airport </p>
-									<p>Питание: включено </p>
-									<p>Разрешен багаж: до 5 кг </p>
-									<div class="progress mb-3" style="height: 5px">
-									</div>
-								</div>
-							</div>
+
 						</div>
 					</div>
 				</div>

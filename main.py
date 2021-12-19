@@ -74,18 +74,24 @@ def index():
 
         return render_template('index.html', countries=countries, direction=direction)
     elif request.method == "POST":
-        from_country = request.form.get("from")
+        from_country: Optional[str] = request.form.get("from")
         to_country = request.form.get("to")
 
         departure_time_raw = request.form.get("depature")
+
+        month_dep, day_dep, year_dep = departure_time_raw.split('/')
+        departure_time = datetime.date(year=int(year_dep), month=int(month_dep), day=int(day_dep))
+
         return_time_raw = request.form.get("return")
+
+        month_ret, day_ret, year_ret = return_time_raw.split('/')
+        return_time = datetime.date(year=int(year_ret), month=int(month_ret), day=int(day_ret))
 
         clas = request.form.get("clas")
         weihgt_luggage = request.form.get("weight")
 
         food_flag = request.form.get("food_flg")
-        dep_and_return = request.form.get("trip_from_to")
-        dep_only = request.form.get("trip_to")
+        directs = request.form.get("trip_to_from")
 
         logger.info(from_country)
         logger.info(to_country)
@@ -95,21 +101,26 @@ def index():
         logger.info(weihgt_luggage)
 
         logger.info(food_flag)
-        logger.info(dep_and_return)
-        logger.info(dep_only)
-
 
         if from_country == to_country:
             return redirect("/")
         else:
             now = datetime.date.today()
-            month, day, year = departure_time_raw.split('/')
-            departure_time = datetime.date(year=int(year), month=int(month), day=int(day))
+            if departure_time >= now:
+                # Прописать условие на то, что если выбрано 2 направления
+                # Иначе начинаем поиски билетов согласно заданным критериям
+                if directs == "Y":
+                    if departure_time < return_time:
+                        # Формируем запрос на бронь билетов
+                        pass
+                    else:
+                        redirect('/')
+                else:
+                    # Формирую запрос на билеты
+                    pass
+            else:
+                return redirect('/')
 
-            logger.info(departure_time)
-            logger.info(departure_time >= now)
-
-            return redirect('/')
 
 
 @app.route('/contact', methods=('GET', 'POST'))
