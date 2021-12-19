@@ -288,19 +288,14 @@ def personal_cabinet():
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
             }
-            logger.info("Trying to send")
-            logger.info(headers)
-            response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
 
-            if response.ok:
-                logger.info("OK")
-                logger.info(response.text)
-                response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
-                profile_user = json.loads(response.text)
-                return redirect("/personal_cabinet")
-            else:
-                logger.info("Not OK")
-                return redirect("/personal_cabinet")
+            # if response.ok:
+            logger.info(body_person)
+            logger.info("OK")
+            response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+            profile_user = json.loads(response.text)
+            logger.info(profile_user)
+            return redirect("/personal_cabinet")
     else:
         return redirect("/user/login")
 
