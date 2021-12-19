@@ -612,8 +612,22 @@ def get_airport():
                        'airportCountryId', 'airportIsoRegion', 'airportMunicipality',
                        'airportHomeLink', 'airportVisa', 'airportQuarantine', 'airportCovidTest',
                        'airportLockDown']
+            
 
             data_table = pd.DataFrame(data["data"], columns=columns)
+            data_table.rename(columns={'id':'ID',
+                          'airportName':'Название',
+                          'airportCode':'Код',
+                          'airportCountryId':'Страна',
+                          'airportIsoRegion':'Регион',
+                          'airportMunicipality':'Муниципалитет',
+                          'airportHomeLink':'Ссылка (инфо)',
+                          'airportVisa':'Нужна Виза',
+                          'airportQuarantine':'Необходим карантин',
+                          'airportCovidTest':'Необходим ПЦР тест',
+                          'airportLockDown':'Локдаун',
+                          }, 
+                 inplace=True)
             table = data_table.to_html()
 
             return render_template('list_airport.html', table=table)
@@ -632,6 +646,14 @@ def get_aviacompany():
             logger.info(data)
 
             data_table = pd.DataFrame(data["data"])
+            data_table.rename(columns={'airlineId':'ID',
+                          'airlineName':'Авиакомпания',
+                          'airlineIata':'IATA код',
+                          'airlineIcao':'ICAO код',
+                          'airlineCountryId':'Страна',
+                          'airlineActive':'Доступна',
+                          }, 
+                 inplace=True)
             table = data_table.to_html()
             return render_template('list_aviacompany.html', table=table)
     else:
@@ -662,8 +684,37 @@ def get_flight():
         if request.method == "GET":
             response = requests.get('http://gvapi:8000/v1/flights')
             data = response.json()
-
             data_table = pd.DataFrame(data["data"])
+            data_table.rename(columns={'flightName':'Название',
+                          'airlineId':'Авиакомпания',
+                          'ticketNumEconomy':'ECONOMY - кол-во билетов',
+                          'ticketNumEconomyAvail':'Свободно билетов',
+                          'ticketNumPrEconomy':'ECONOMY+ - кол-во билетов',
+                          'ticketNumPrEconomyAvail':'Свободно билетов',
+                          'ticketNumBusiness':'BUSINESS - кол-во билетов',
+                          'ticketNumBusinessAvail':'Свободно билетов',
+                          'ticketNumFirstClass':'FIRST CLASS - кол-во билетов',
+                          'ticketNumFirstAvail':'Свободно билетов',
+                          'costRubEconomy':'ECONOMY стоимость (руб)',
+                          'costRubPrEconomy':'ECONOMY+ стоимость (руб)',
+                          'costRubBusiness':'BUSINESS стоимость (руб)',
+                          'costRubFirstClass':'FIRST CLASS стоимость (руб)',
+                          'aircraftId':'Модель самолета',
+                          'airportDepId':'Аэропорт отправления',
+                          'airportLandId':'Аэропорт прибытия',
+                          'countryFromId':'Страна отправления',
+                          'countryToId':'Страна прибытия',
+                          'departureTime':'Время отправления',
+                          'landingTime':'Время прибытия',
+                          'maxLuggageWeightKg':'Макс.вес багажа',
+                          'costLuggageWeightRub':'Стоимость багажа',
+                          'maxHandLuggageWeightKg':'Макс.вес ручной клади',
+                          'costHandLuggageWeightRub':'Стоимость ручной клади',
+                          'wifiFlg':'WIFI',
+                          'foodFlg':'Питание',
+                          'usbFlg':'Доступ к USB',
+                          }, 
+                 inplace=True)
             table = data_table.to_html()
             return render_template('list_flight.html', table=table)
     else:
