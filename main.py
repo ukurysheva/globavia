@@ -122,7 +122,6 @@ def index():
                 return redirect('/')
 
 
-
 @app.route('/contact', methods=('GET', 'POST'))
 def contact():
     return render_template('contact.html')
@@ -221,8 +220,6 @@ def login():
                     response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
                     profile_user = json.loads(response.text)
 
-                    logger.info(profile_user)
-
                     return redirect('/personal_cabinet')
 
                 print("Registered")
@@ -240,10 +237,13 @@ def personal_cabinet():
 
     if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
 
+        logger.info(profile_user)
+
         body_person = {
             "userEmail": profile_user['userEmail'], "userFirstName": profile_user['userFirstName'],
             "userLastName": profile_user['userLastName'], "userMiddleName": profile_user['userMiddleName'],
-            "userPhoneNum": profile_user['userPhoneNum'], "birthDate": profile_user['birthDate'], "passportNumber": "", "passportSeries": "",
+            "userPhoneNum": profile_user['userPhoneNum'], "birthDate": profile_user['birthDate'], "passportNumber": "",
+            "passportSeries": "",
             "passportAddress": "", "livingAddress": "", "cardNumber": "", "cardExpDate": "",
             "cardIndividual": ""
         }
@@ -356,16 +356,16 @@ def adding_country():
             body['countryWiki'] = request.form.get("country_wiki")
 
             if body['countryCode'] is not None and body['countryCode'] != "":
-                
-                if (  body['countryName'] is None 
-                   or body['countryName'] == "" 
-                   or body['countryContinent'] is None 
-                   or body['countryContinent'] == ""
-                   or body['countryWiki'] is None 
-                   or body['countryWiki'] == ""
-                   ):
-                   return render_template('adding_country.html', error="Пожалуйста, заполните все поля.")
-                   
+
+                if (body['countryName'] is None
+                        or body['countryName'] == ""
+                        or body['countryContinent'] is None
+                        or body['countryContinent'] == ""
+                        or body['countryWiki'] is None
+                        or body['countryWiki'] == ""
+                ):
+                    return render_template('adding_country.html', error="Пожалуйста, заполните все поля.")
+
                 headers = {
                     'Authorization': 'Bearer ' + access_token_admin
                 }
@@ -381,7 +381,8 @@ def adding_country():
                 elif data['message'] is not None:
                     return render_template('adding_country.html', error=data['message'])
                 else:
-                    return render_template('adding_country.html', error="Произошла ошибка. Пожалуйста, повторите попытку.")
+                    return render_template('adding_country.html',
+                                           error="Произошла ошибка. Пожалуйста, повторите попытку.")
 
             else:
                 return redirect("/admin/adding/country")
@@ -642,22 +643,21 @@ def get_airport():
                        'airportCountryId', 'airportIsoRegion', 'airportMunicipality',
                        'airportHomeLink', 'airportVisa', 'airportQuarantine', 'airportCovidTest',
                        'airportLockDown']
-            
 
             data_table = pd.DataFrame(data["data"], columns=columns)
-            data_table.rename(columns={'id':'ID',
-                          'airportName':'Название',
-                          'airportCode':'Код',
-                          'airportCountryId':'Страна',
-                          'airportIsoRegion':'Регион',
-                          'airportMunicipality':'Муниципалитет',
-                          'airportHomeLink':'Ссылка (инфо)',
-                          'airportVisa':'Нужна Виза',
-                          'airportQuarantine':'Необходим карантин',
-                          'airportCovidTest':'Необходим ПЦР тест',
-                          'airportLockDown':'Локдаун',
-                          }, 
-                 inplace=True)
+            data_table.rename(columns={'id': 'ID',
+                                       'airportName': 'Название',
+                                       'airportCode': 'Код',
+                                       'airportCountryId': 'Страна',
+                                       'airportIsoRegion': 'Регион',
+                                       'airportMunicipality': 'Муниципалитет',
+                                       'airportHomeLink': 'Ссылка (инфо)',
+                                       'airportVisa': 'Нужна Виза',
+                                       'airportQuarantine': 'Необходим карантин',
+                                       'airportCovidTest': 'Необходим ПЦР тест',
+                                       'airportLockDown': 'Локдаун',
+                                       },
+                              inplace=True)
             table = data_table.to_html()
 
             return render_template('list_airport.html', table=table)
@@ -676,14 +676,14 @@ def get_aviacompany():
             logger.info(data)
 
             data_table = pd.DataFrame(data["data"])
-            data_table.rename(columns={'airlineId':'ID',
-                          'airlineName':'Авиакомпания',
-                          'airlineIata':'IATA код',
-                          'airlineIcao':'ICAO код',
-                          'airlineCountryId':'Страна',
-                          'airlineActive':'Доступна',
-                          }, 
-                 inplace=True)
+            data_table.rename(columns={'airlineId': 'ID',
+                                       'airlineName': 'Авиакомпания',
+                                       'airlineIata': 'IATA код',
+                                       'airlineIcao': 'ICAO код',
+                                       'airlineCountryId': 'Страна',
+                                       'airlineActive': 'Доступна',
+                                       },
+                              inplace=True)
             table = data_table.to_html(index=False)
             return render_template('list_aviacompany.html', table=table)
     else:
@@ -700,13 +700,13 @@ def get_country():
             data = response.json()
 
             data_table = pd.DataFrame(data["data"])
-            data_table.rename(columns={'countryId':'ID',
-                          'countryCode':'Код',
-                          'countryName':'Название',
-                          'countryContinent':'Континент',
-                          'countryWiki':'Ссылка (инфо)'
-                          }, 
-                 inplace=True)
+            data_table.rename(columns={'countryId': 'ID',
+                                       'countryCode': 'Код',
+                                       'countryName': 'Название',
+                                       'countryContinent': 'Континент',
+                                       'countryWiki': 'Ссылка (инфо)'
+                                       },
+                              inplace=True)
             table = data_table.to_html(index=False)
             return render_template('list_country.html', table=table)
     else:
@@ -722,37 +722,38 @@ def get_flight():
             response = requests.get('http://gvapi:8000/v1/flights')
             data = response.json()
             data_table = pd.DataFrame(data["data"])
-            data_table.rename(columns={'flightName':'Название',
-                          'airlineName':'Авиакомпания',
-                          'ticketNumEconomy':'ECONOMY - кол-во билетов',
-                          'ticketNumEconomyAvail':'Свободно билетов',
-                          'ticketNumPrEconomy':'ECONOMY+ - кол-во билетов',
-                          'ticketNumPrEconomyAvail':'Свободно билетов',
-                          'ticketNumBusiness':'BUSINESS - кол-во билетов',
-                          'ticketNumBusinessAvail':'Свободно билетов',
-                          'ticketNumFirstClass':'FIRST CLASS - кол-во билетов',
-                          'ticketNumFirstAvail':'Свободно билетов',
-                          'costRubEconomy':'ECONOMY стоимость (руб)',
-                          'costRubPrEconomy':'ECONOMY+ стоимость (руб)',
-                          'costRubBusiness':'BUSINESS стоимость (руб)',
-                          'costRubFirstClass':'FIRST CLASS стоимость (руб)',
-                          'aircraftName':'Модель самолета',
-                          'airportDepName':'Аэропорт отправления',
-                          'airportLandName':'Аэропорт прибытия',
-                          'countryFromName':'Страна отправления',
-                          'countryToName':'Страна прибытия',
-                          'departureTime':'Время отправления',
-                          'landingTime':'Время прибытия',
-                          'maxLuggageWeightKg':'Макс.вес багажа',
-                          'costLuggageWeightRub':'Стоимость багажа',
-                          'maxHandLuggageWeightKg':'Макс.вес ручной клади',
-                          'costHandLuggageWeightRub':'Стоимость ручной клади',
-                          'wifiFlg':'WIFI',
-                          'foodFlg':'Питание',
-                          'usbFlg':'Доступ к USB',
-                          }, 
-                 inplace=True)
-            data_table = data_table.drop(['airportDepId', 'airportLandId','countryFromId', 'countryToId', 'aircraftId', 'airlineId'], axis=1)
+            data_table.rename(columns={'flightName': 'Название',
+                                       'airlineName': 'Авиакомпания',
+                                       'ticketNumEconomy': 'ECONOMY - кол-во билетов',
+                                       'ticketNumEconomyAvail': 'Свободно билетов',
+                                       'ticketNumPrEconomy': 'ECONOMY+ - кол-во билетов',
+                                       'ticketNumPrEconomyAvail': 'Свободно билетов',
+                                       'ticketNumBusiness': 'BUSINESS - кол-во билетов',
+                                       'ticketNumBusinessAvail': 'Свободно билетов',
+                                       'ticketNumFirstClass': 'FIRST CLASS - кол-во билетов',
+                                       'ticketNumFirstAvail': 'Свободно билетов',
+                                       'costRubEconomy': 'ECONOMY стоимость (руб)',
+                                       'costRubPrEconomy': 'ECONOMY+ стоимость (руб)',
+                                       'costRubBusiness': 'BUSINESS стоимость (руб)',
+                                       'costRubFirstClass': 'FIRST CLASS стоимость (руб)',
+                                       'aircraftName': 'Модель самолета',
+                                       'airportDepName': 'Аэропорт отправления',
+                                       'airportLandName': 'Аэропорт прибытия',
+                                       'countryFromName': 'Страна отправления',
+                                       'countryToName': 'Страна прибытия',
+                                       'departureTime': 'Время отправления',
+                                       'landingTime': 'Время прибытия',
+                                       'maxLuggageWeightKg': 'Макс.вес багажа',
+                                       'costLuggageWeightRub': 'Стоимость багажа',
+                                       'maxHandLuggageWeightKg': 'Макс.вес ручной клади',
+                                       'costHandLuggageWeightRub': 'Стоимость ручной клади',
+                                       'wifiFlg': 'WIFI',
+                                       'foodFlg': 'Питание',
+                                       'usbFlg': 'Доступ к USB',
+                                       },
+                              inplace=True)
+            data_table = data_table.drop(
+                ['airportDepId', 'airportLandId', 'countryFromId', 'countryToId', 'aircraftId', 'airlineId'], axis=1)
             table = data_table.to_html(index=False)
             return render_template('list_flight.html', table=table)
     else:
@@ -769,20 +770,20 @@ def get_plane():
             data = response.json()
             logger.info(data)
             data_table = pd.DataFrame(data["data"])
-            data_table.rename(columns={'aircraftId':'ID',
-                          'aircraftIata':'IATA',
-                          'aircraftName':'Название',
-                          'aircraftManufacturer':'Производитель',
-                          'aircraftWingType':'Тип крыльев',
-                          'aircraftType':'Тип самолета',
-                          'aircraftIcaic':'Icaic',
-                          'economyClass':'Эконом класс',
-                          'prEconomyClass':'Эконом+ класс',
-                          'businessClass':'Бизнес класс',
-                          'firstClass':'Первый класс',
-                          }, 
-                 inplace=True)
-            
+            data_table.rename(columns={'aircraftId': 'ID',
+                                       'aircraftIata': 'IATA',
+                                       'aircraftName': 'Название',
+                                       'aircraftManufacturer': 'Производитель',
+                                       'aircraftWingType': 'Тип крыльев',
+                                       'aircraftType': 'Тип самолета',
+                                       'aircraftIcaic': 'Icaic',
+                                       'economyClass': 'Эконом класс',
+                                       'prEconomyClass': 'Эконом+ класс',
+                                       'businessClass': 'Бизнес класс',
+                                       'firstClass': 'Первый класс',
+                                       },
+                              inplace=True)
+
             table = data_table.to_html(index=False)
             return render_template('list_plane.html', table=table)
     else:
