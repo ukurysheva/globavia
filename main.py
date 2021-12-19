@@ -349,7 +349,9 @@ def adding_country():
 
                 if response.ok:
                     logger.info(response.text)
-                    return redirect("/admin/adding/country")
+                    data = response.json()
+                    return render_template('adding_country.html', id=data['id'])
+                    # return redirect("/admin/adding/country")
                 else:
                     return redirect('/admin/menu')
 
@@ -654,7 +656,7 @@ def get_aviacompany():
                           'airlineActive':'Доступна',
                           }, 
                  inplace=True)
-            table = data_table.to_html()
+            table = data_table.to_html(index=False)
             return render_template('list_aviacompany.html', table=table)
     else:
         return redirect('/admin/sign-in')
@@ -670,7 +672,14 @@ def get_country():
             data = response.json()
 
             data_table = pd.DataFrame(data["data"])
-            table = data_table.to_html()
+            data_table.rename(columns={'countryId':'ID',
+                          'countryCode':'Код',
+                          'countryName':'Название',
+                          'countryContinent':'Континент',
+                          'countryWiki':'Ссылка (инфо)'
+                          }, 
+                 inplace=True)
+            table = data_table.to_html(index=False)
             return render_template('list_country.html', table=table)
     else:
         return redirect('/admin/sign-in')
@@ -716,7 +725,7 @@ def get_flight():
                           }, 
                  inplace=True)
             data_table = data_table.drop(['airportDepId', 'airportLandId','countryFromId', 'countryToId', 'aircraftId', 'airlineId'], axis=1)
-            table = data_table.to_html()
+            table = data_table.to_html(index=False)
             return render_template('list_flight.html', table=table)
     else:
         return redirect('/admin/sign-in')
@@ -731,9 +740,22 @@ def get_plane():
             response = requests.get('http://gvapi:8000/v1/aircrafts')
             data = response.json()
             logger.info(data)
-
             data_table = pd.DataFrame(data["data"])
-            table = data_table.to_html()
+            data_table.rename(columns={'aircraftId':'ID',
+                          'aircraftIata':'IATA',
+                          'aircraftName':'Название',
+                          'aircraftManufacturer':'Производитель',
+                          'aircraftWingType':'Тип крыльев',
+                          'aircraftType':'Тип самолета',
+                          'aircraftIcaic':'Icaic',
+                          'economyClass':'Эконом класс',
+                          'prEconomyClass':'Эконом+ класс',
+                          'businessClass':'Бизнес класс',
+                          'firstClass':'Первый класс',
+                          }, 
+                 inplace=True)
+            
+            table = data_table.to_html(index=False)
             return render_template('list_plane.html', table=table)
     else:
         return redirect('/admin/sign-in')

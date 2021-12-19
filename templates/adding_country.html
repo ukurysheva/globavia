@@ -73,6 +73,9 @@
 	margin-left:390px;
 	margin-top: 10px;
 	}
+  .success {
+    color: green;
+  }
   </style>
 </head>
 
@@ -198,30 +201,32 @@
   <main>
 		<div class="text-block">Страны</div>
 		 <div class="text-block2">Добавление</div>
-		  <style>
-
-  </style>
-  <form method="post">
-	<table>
-	   <tr>
-		<td width="200">Код страны</td>
-		<td><input type="text" name="country_id" id="country_id"></td>
-	   </tr>
-		<tr>
-		<td >Название</td>
-		<td> <input type="text" name="name" id="name"> </td>
-	   </tr>
-		<tr>
-		<td>Континент</td>
-		<td><input type="text" name="continent" id="continent"></td>
-	   </tr>
-		<tr>
-		<td>Часовой пояс</td>
-		<td><input type="text" name="country_wiki" id="country_wiki"></td>
-	   </tr>
-	</table>
-	<button type="submit" class="new">Добавить</button>
-	</form>
+     {% if id %}
+     <div class="text-block2 success">Страна успешно добавлена. ID новой записи: {{ id }}</div>
+     {% else %}
+     <form method="post">
+      <table>
+         <tr>
+        <td width="200">Код страны</td>
+        <td><input type="text" name="country_id" id="country_id"></td>
+         </tr>
+        <tr>
+        <td >Название</td>
+        <td> <input type="text" name="name" id="name"> </td>
+         </tr>
+        <tr>
+        <td>Континент</td>
+        <td><input type="text" name="continent" id="continent"></td>
+         </tr>
+        <tr>
+        <td>Ссылка на Wiki (инфо)</td>
+        <td><input type="text" name="country_wiki" id="country_wiki"></td>
+         </tr>
+      </table>
+      <button type="submit" class="new">Добавить</button>
+      </form>
+     {% endif  %}
+  
     </div>
 
     <div class="fixed-action-btn click-to-toggle" style="bottom: 45px; right: 24px;">
