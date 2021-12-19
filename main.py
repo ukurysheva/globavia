@@ -221,6 +221,8 @@ def login():
                     response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
                     profile_user = json.loads(response.text)
 
+                    logger.info(profile_user)
+
                     return redirect('/personal_cabinet')
 
                 print("Registered")
@@ -239,7 +241,11 @@ def personal_cabinet():
     if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
 
         body_person = {
-            "email": ""
+            "userEmail": profile_user['userEmail'], "userFirstName": profile_user['userFirstName'],
+            "userLastName": profile_user['userLastName'], "userMiddleName": profile_user['userMiddleName'],
+            "userPhoneNum": profile_user['userPhoneNum'], "birthDate": profile_user['birthDate'], "passportNumber": "", "passportSeries": "",
+            "passportAddress": "", "livingAddress": "", "cardNumber": "", "cardExpDate": "",
+            "cardIndividual": ""
         }
 
         familyname: Optional[str] = profile_user["userLastName"]
@@ -259,11 +265,11 @@ def personal_cabinet():
         elif request.method == "POST":
             logger.info("after post")
 
-            phone_number = request.form.get("phone_number")
-            passport_series = request.form.get("seria_passport")
-            passport_number = request.form.get("number_passport")
-            address_register = request.form.get("address_register")
-            address_accommodation = request.form.get("address_accommodation")
+            body_person["email"] = request.form.get("phone_number")
+            body_person["email"] = request.form.get("seria_passport")
+            body_person["email"] = request.form.get("number_passport")
+            body_person["email"] = request.form.get("address_register")
+            body_person["email"] = request.form.get("address_accommodation")
 
             body_person["email"] = request.form.get("email")
 
