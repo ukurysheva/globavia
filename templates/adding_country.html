@@ -76,6 +76,9 @@
   .success {
     color: green;
   }
+  .error {
+    color: red;
+  }
   </style>
 </head>
 
@@ -190,8 +193,8 @@
 
     <nav>
       <div class="nav-wrapper indigo darken-2">
-        <a style="margin-left: 20px;" class="breadcrumb" href="#!">Admin</a>
-        <a class="breadcrumb" href="#!">Index</a>
+        <a style="margin-left: 20px;" class="breadcrumb" href="#!">Меню</a>
+        <a class="breadcrumb" href="#!">Добавление страны</a>
 
         <div style="margin-right: 20px;" id="timestamp" class="right"></div>
       </div>
@@ -203,6 +206,29 @@
 		 <div class="text-block2">Добавление</div>
      {% if id %}
      <div class="text-block2 success">Страна успешно добавлена. ID новой записи: {{ id }}</div>
+     {% elif error %}
+     <div class="text-block2 error">{{ error}}</div>
+     <form method="post">
+      <table>
+         <tr>
+        <td width="200">Код страны</td>
+        <td><input type="text" name="country_id" id="country_id"></td>
+         </tr>
+        <tr>
+        <td >Название</td>
+        <td> <input type="text" name="name" id="name"> </td>
+         </tr>
+        <tr>
+        <td>Континент</td>
+        <td><input type="text" name="continent" id="continent"></td>
+         </tr>
+        <tr>
+        <td>Ссылка на Wiki (инфо)</td>
+        <td><input type="text" name="country_wiki" id="country_wiki"></td>
+         </tr>
+      </table>
+      <button type="submit" class="new">Добавить</button>
+      </form>
      {% else %}
      <form method="post">
       <table>

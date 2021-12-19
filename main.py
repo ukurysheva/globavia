@@ -339,21 +339,32 @@ def adding_country():
             body['countryWiki'] = request.form.get("country_wiki")
 
             if body['countryCode'] is not None and body['countryCode'] != "":
-
+                
+                if (  body['countryName'] is None 
+                   or body['countryName'] == "" 
+                   or body['countryContinent'] is None 
+                   or body['countryContinent'] == ""
+                   or body['countryWiki'] is None 
+                   or body['countryWiki'] == ""
+                   ):
+                   return render_template('adding_country.html', error="Пожалуйста, заполните все поля.")
+                   
                 headers = {
                     'Authorization': 'Bearer ' + access_token_admin
                 }
                 logger.info("Trying to send")
                 logger.info(headers)
                 response = requests.request("POST", 'http://gvapi:8000/v1/countries', headers=headers, json=body)
-
+                logger.info(response.text)
                 if response.ok:
                     logger.info(response.text)
                     data = response.json()
                     return render_template('adding_country.html', id=data['id'])
                     # return redirect("/admin/adding/country")
+                elif data['message'] is not None:
+                    return render_template('adding_country.html', error=data['message'])
                 else:
-                    return redirect('/admin/menu')
+                    return render_template('adding_country.html', error="Произошла ошибка. Пожалуйста, повторите попытку.")
 
             else:
                 return redirect("/admin/adding/country")
