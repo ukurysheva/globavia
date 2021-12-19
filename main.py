@@ -242,14 +242,22 @@ def personal_cabinet():
         body_person = {
             "userEmail": profile_user['userEmail'], "userFirstName": profile_user['userFirstName'],
             "userLastName": profile_user['userLastName'], "userMiddleName": profile_user['userMiddleName'],
-            "userPhoneNum": profile_user['userPhoneNum'], "birthDate": profile_user['birthDate'], "passportNumber": "",
-            "passportSeries": "",
-            "passportAddress": "", "livingAddress": "", "cardNumber": "", "cardExpDate": "",
-            "cardIndividual": ""
+            "userPhoneNum": profile_user['userPhoneNum'],
+            "passportNumber": profile_user['passportNumber'],
+            "passportSeries": profile_user['passportSeries'],
+            "passportAddress": profile_user['passportAddress'],
+            "livingAddress": profile_user['livingAddress']
         }
 
         familyname: Optional[str] = profile_user["userLastName"]
         firstname = profile_user["userFirstName"]
+
+        middlename = profile_user["userMiddleName"]
+        phone_number = profile_user["userPhoneNum"]
+        passport_number = profile_user["passportNumber"]
+        passport_series = profile_user["passportSeries"]
+        address_register = profile_user["passportAddress"]
+        address_accommodation = profile_user["livingAddress"]
 
         if request.method == "GET":
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
@@ -265,13 +273,17 @@ def personal_cabinet():
         elif request.method == "POST":
             logger.info("after post")
 
-            body_person["email"] = request.form.get("phone_number")
-            body_person["email"] = request.form.get("seria_passport")
-            body_person["email"] = request.form.get("number_passport")
-            body_person["email"] = request.form.get("address_register")
-            body_person["email"] = request.form.get("address_accommodation")
+            body_person["userLastName"] = "" if request.form.get("familyname") is None else request.form.get("familyname")
+            body_person["userFirstName"] = "" if request.form.get("firstname") is None else request.form.get("firstname")
+            body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get("middlename")
+            body_person["userEmail"] = "" if request.form.get("email") is None else request.form.get("email")
+            body_person["userPhoneNum"] = "" if request.form.get("phone_number") is None else request.form.get("phone_number")
+            body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get("seria_passport")
 
-            body_person["email"] = request.form.get("email")
+            body_person["passportNumber"] = "" if request.form.get("number_passport") is None else request.form.get("number_passport")
+            body_person["passportAddress"] = "" if request.form.get("address_register") is None else request.form.get("address_register")
+            body_person["livingAddress"] = "" if request.form.get("address_accommodation") is None else request.form.get("address_accommodation")
+
 
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
@@ -283,6 +295,8 @@ def personal_cabinet():
             if response.ok:
                 logger.info("OK")
                 logger.info(response.text)
+                response = requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers)
+                profile_user = json.loads(response.text)
                 return redirect("/personal_cabinet")
             else:
                 logger.info("Not OK")
