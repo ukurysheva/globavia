@@ -190,23 +190,18 @@ def login():
 
                 email_g_user = request.form['email']
                 password_g_user = request.form['password']
-                logger.info("Email and Password")
-                logger.info(email_g_user + " " + password_g_user)
 
                 body_login_register = {"email": email_g_user, "password": password_g_user}
 
                 r = requests.post('http://gvapi:8000/v1/auth/user/sign-up', json=body_register)
                 if r.ok:
                     data = json.loads(r.text)
-                    logger.debug(data)
                     id_user = data["id"]
 
                     req = requests.post('http://gvapi:8000/v1/auth/user/sign-in', json=body_login_register)
                     data_tokens = json.loads(req.text)
                     access_token_user = data_tokens["access_token"]
                     refresh_token_user = data_tokens["refresh_token"]
-                    logger.info("Access token")
-                    logger.info(access_token_user)
 
                     headers = {
                         'Authorization': 'Bearer ' + access_token_user
@@ -230,8 +225,6 @@ def personal_cabinet():
         password_g_user
 
     if access_token_user is not None:
-
-        logger.info(profile_user)
 
         if request.method == "GET":
 
@@ -263,7 +256,6 @@ def personal_cabinet():
 
         elif request.method == "POST":
 
-            logger.info("after post")
             body_person = {}
 
             body_person["userLastName"] = request.form.get("familyname")
@@ -290,10 +282,7 @@ def personal_cabinet():
             }
             response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
 
-            logger.info(response.text)
             if response.ok:
-                logger.info("I got here")
-                logger.info(json.loads(requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers).text))
                 profile_user = json.loads(requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers).text)
                 return redirect("/personal_cabinet")
     else:
