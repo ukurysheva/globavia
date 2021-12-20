@@ -37,12 +37,10 @@
 								<div class="ticket__body">
 									<section class="ticket__section">
 										<h3>Информация о билете</h3>
-										<p><b>ID: {{ flightId }}</b></p>
-										<p>Вылет: {{dep_info }}</p>
-										<p>Прилет: {{land_info }}</p>
-										<p>Класс билета: {{class_ticket }}</p>
-										<p>Питание: {{food_flg }}</p>
-										<p>Разрешен багаж: до {{ weightLuggage }} кг </p>
+										<p><b>ID: {{ order_id }}</b></p>
+										<p>Класс билета: {{classFlg }}</p>
+										<p>Питание: {{foodFlg }}</p>
+										<p>Разрешен багаж: до 5 кг </p>
 									</section>
 									<section class="ticket__section">
 										<h3>Контактные данные</h3>
@@ -54,8 +52,6 @@
 									<section class="ticket__section">
 										<h3>Способ оплаты</h3>
 										<p>Номер карты: {{card_number}}</p>
-										<p><span>Итого:</span>
-											<span>{{price}}</span></p>
 									</section>
 								</div>
 								<footer class="ticket__footer">

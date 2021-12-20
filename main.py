@@ -48,6 +48,7 @@ password_g_user = None
 flag_tickets = False
 flights_airlines = None
 countryId = None
+ticket = {}
 
 # ADMIN
 id_admin = None
@@ -60,7 +61,7 @@ password_g_admin = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines, countryId
+    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines, ticket
     direction = "/user/login"
     if access_token_user is not None or id_user is not None:
         direction = "/personal_cabinet"
@@ -161,7 +162,18 @@ def index():
             else:
                 return redirect('/')
     elif request.method == "POST" and request.form.get("flightid") is not None:
-        logger.info('I`m here')
+        body_buy_ticket = {}
+
+        body_buy_ticket["flightId"] = request.form.get("flightid")
+        body_buy_ticket["classFlg"] = request.form.get("class")
+        body_buy_ticket["foodsFlg"] = request.form.get("food_flg")
+
+
+        headers = {
+            'Authorization': 'Bearer ' + access_token_user
+        }
+        response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_buy_ticket)
+
         return redirect('/user/purchases')
 
 
@@ -172,10 +184,21 @@ def contact():
 
 @app.route('/user/purchases', methods=('GET', 'POST'))
 def purchases():
-    global access_token_user, profile_user, button_flag
+    global access_token_user, profile_user, ticket
 
     if access_token_user is not None:
         if request.method == "GET":
+            headers = {
+                'Authorization': 'Bearer ' + access_token_user
+            }
+            response = requests.request("GET", 'http://gvapi:8000/v1/users/purchases/basket', headers=headers)
+
+            data = json.loads(response.text)
+
+            order_id = data['id']
+            classFlg = data['classFlg']
+            foodFlg = data['foodFlg']
+
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
             email = profile_user['userEmail']
             FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
@@ -184,8 +207,12 @@ def purchases():
             address_reg = profile_user['passportAddress']
             address_liv = profile_user['livingAddress']
             card_number = profile_user['cardNumber']
+
+
+
             return render_template('buy_ticket.html', name=name, email=email, FIO=FIO, passport=passport,
-                                   address_reg=address_reg, address_liv=address_liv, card_number=card_number)
+                                   address_reg=address_reg, address_liv=address_liv, card_number=card_number,
+                                   order_id=order_id, classFlg=classFlg, foodFlg=foodFlg)
         else:
             pass
     else:
