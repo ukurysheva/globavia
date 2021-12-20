@@ -343,6 +343,7 @@ def admin_login():
         r = requests.post('http://gvapi:8000/v1/auth/admin/sign-in', json=body_login)
         logger.info("I'm here")
         logger.info(r.status_code)
+        data = r.json()
         if r.ok:
             data_tokens = json.loads(r.text)
             access_token_admin = data_tokens['access_token']
@@ -351,8 +352,12 @@ def admin_login():
             logger.info(access_token_admin)
 
             return redirect('/admin/menu')
+        elif data['message'] is not None:
+            return render_template('index_admin.html', error=data['message'])
         else:
-            return redirect("/admin/sign-in")
+            return render_template('index_admin.html',
+                                    error="Произошла ошибка. Пожалуйста, повторите попытку.")
+            # return redirect("/admin/sign-in")
 
 
 @app.route('/admin/menu', methods=('GET', 'POST'))
@@ -402,9 +407,9 @@ def adding_country():
                 logger.info(headers)
                 response = requests.request("POST", 'http://gvapi:8000/v1/countries', headers=headers, json=body)
                 logger.info(response.text)
+                data = response.json()
                 if response.ok:
                     logger.info(response.text)
-                    data = response.json()
                     return render_template('adding_country.html', id=data['id'])
                     # return redirect("/admin/adding/country")
                 elif data['message'] is not None:
