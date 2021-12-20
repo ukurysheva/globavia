@@ -113,7 +113,7 @@ def index():
                         return redirect('/')
                 else:
                     # Формирую запрос на билеты
-                    pass
+                    return redirect('/')
             else:
                 return redirect('/')
 
