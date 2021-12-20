@@ -284,13 +284,15 @@ def personal_cabinet():
 
             body_person["userLastName"] = profile_user["userLastName"] if request.form.get("familyname") is None else request.form.get(
                 "familyname")
+
             logger.info(request.form.get("familyname"))
+
             body_person["userFirstName"] = profile_user["userFirstName"] if request.form.get("firstname") is None else request.form.get(
                 "firstname")
             body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get(
                 "middlename")
             body_person["userEmail"] = profile_user["userEmail"] if request.form.get("email") is None else request.form.get("email")
-            body_person["userPhoneNum"] = "" if request.form.get("phone_number") is None else request.form.get(
+            body_person["userPhoneNum"] = profile_user["userPhoneNum"] if request.form.get("phone_number") is None else request.form.get(
                 "phone_number")
             body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get(
                 "seria_passport")
