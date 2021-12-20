@@ -235,7 +235,7 @@ def personal_cabinet():
         password_g_user, passport_number, passport_series, \
         address_register, address_accommodation, phone_number
 
-    if (request.method == "GET" or request.method == "POST") and access_token_user is not None:
+    if access_token_user is not None:
 
         logger.info(profile_user)
 
@@ -284,7 +284,7 @@ def personal_cabinet():
 
             body_person["userLastName"] = profile_user["userLastName"] if request.form["familyname"] is None else \
                 request.form["familyname"]
-
+            logger.info("I'm here")
             logger.info(request.form["familyname"])
 
             body_person["userFirstName"] = profile_user["userFirstName"] if request.form.get(
