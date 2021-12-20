@@ -285,7 +285,6 @@ def personal_cabinet():
             body_person["userLastName"] = profile_user["userLastName"] if request.form["familyname"] is None else \
                 request.form["familyname"]
             logger.info("I'm here")
-            logger.info(request.form["familyname"])
 
             body_person["userFirstName"] = profile_user["userFirstName"] if request.form.get(
                 "firstname") is None else request.form.get(
@@ -311,6 +310,7 @@ def personal_cabinet():
                 "card_number")
             body_person["cardExpDate"] = "" if request.form.get("card_date") is None else request.form.get(
                 "card_date")
+            logger.info("Now I'm here")
             body_person["cardIndividual"] = "" if request.form["card_name"] is None \
                 else request.form["card_name"]
 
