@@ -138,7 +138,7 @@ def index():
                 # Иначе начинаем поиски билетов согласно заданным критериям
                 if directs == "Y":
                     if departure_time < return_time:
-                    # Формируем запрос на бронь билетов
+                        # Формируем запрос на бронь билетов
                         logger.info(body_ticket)
                         response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
                         logger.info(response.text)
@@ -171,7 +171,14 @@ def purchases():
         if request.method == "GET":
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
             email = profile_user['userEmail']
-            return render_template('buy_ticket.html', name=name, email=email)
+            FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
+                "userMiddleName"]
+            passport = profile_user['passportNumber'] + " " + profile_user["passportSeries"]
+            address_reg = profile_user['passportAddress']
+            address_liv = profile_user['livingAddress']
+            card_number = profile_user['cardNumber']
+            return render_template('buy_ticket.html', name=name, email=email, FIO=FIO, passport=passport,
+                                   address_reg=address_reg, address_liv=address_liv, card_number=card_number)
         else:
             pass
     else:
