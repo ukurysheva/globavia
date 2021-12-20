@@ -160,8 +160,7 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
-        elif request.method == "POST" and button_flag == True:
-            button_flag = False
+        elif request.method == "POST" and button_flag is True:
             logger.info('I`m here')
             return redirect('/user/purchases')
 
@@ -173,7 +172,8 @@ def contact():
 
 @app.route('/user/purchases', methods=('GET', 'POST'))
 def purchases():
-    global access_token_user, profile_user
+    global access_token_user, profile_user, button_flag
+    button_flag = False
 
     if access_token_user is not None:
         if request.method == "GET":
