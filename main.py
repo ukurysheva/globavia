@@ -173,7 +173,7 @@ def index():
         headers = {
             'Authorization': 'Bearer ' + access_token_user
         }
-        response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_buy_ticket)
+        response = requests.request("POST", 'http://gvapi:8000/v1/users/purchases', headers=headers, json=body_buy_ticket)
         logger.info(response.status_code)
         logger.info("response.text")
         logger.info(response.text)
