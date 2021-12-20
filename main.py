@@ -246,7 +246,10 @@ def personal_cabinet():
             "passportNumber": profile_user['passportNumber'],
             "passportSeries": profile_user['passportSeries'],
             "passportAddress": profile_user['passportAddress'],
-            "livingAddress": profile_user['livingAddress']
+            "livingAddress": profile_user['livingAddress'],
+            'cardNumber': profile_user['cardNumber'],
+            'cardExpDate': profile_user['cardExpDate'],
+            'cardIndividual': profile_user['cardIndividual']
         }
 
         familyname: Optional[str] = profile_user["userLastName"]
@@ -259,6 +262,10 @@ def personal_cabinet():
         address_register = profile_user["passportAddress"]
         address_accommodation = profile_user["livingAddress"]
 
+        card_number = profile_user["cardNumber"]
+        card_date = profile_user["cardExpDate"]
+        card_name = profile_user["cardIndividual"]
+
         if request.method == "GET":
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
             email = profile_user['userEmail']
@@ -268,23 +275,39 @@ def personal_cabinet():
                                    familyname=familyname, firstname=firstname, middlename=middlename,
                                    phone_number=phone_number, passport_series=passport_series,
                                    passport_number=passport_number, address_register=address_register,
-                                   address_accommodation=address_accommodation)
+                                   address_accommodation=address_accommodation,
+                                   card_number=card_number, card_date=card_date,
+                                   card_name=card_name)
 
         elif request.method == "POST":
             logger.info("after post")
 
-            body_person["userLastName"] = "" if request.form.get("familyname") is None else request.form.get("familyname")
+            body_person["userLastName"] = profile_user["userLastName"] if request.form.get("familyname") is None else request.form.get(
+                "familyname")
             logger.info(request.form.get("familyname"))
-            body_person["userFirstName"] = "" if request.form.get("firstname") is None else request.form.get("firstname")
-            body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get("middlename")
-            body_person["userEmail"] = "" if request.form.get("email") is None else request.form.get("email")
-            body_person["userPhoneNum"] = "" if request.form.get("phone_number") is None else request.form.get("phone_number")
-            body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get("seria_passport")
+            body_person["userFirstName"] = profile_user["userFirstName"] if request.form.get("firstname") is None else request.form.get(
+                "firstname")
+            body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get(
+                "middlename")
+            body_person["userEmail"] = profile_user["userEmail"] if request.form.get("email") is None else request.form.get("email")
+            body_person["userPhoneNum"] = "" if request.form.get("phone_number") is None else request.form.get(
+                "phone_number")
+            body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get(
+                "seria_passport")
 
-            body_person["passportNumber"] = "" if request.form.get("number_passport") is None else request.form.get("number_passport")
-            body_person["passportAddress"] = "" if request.form.get("address_register") is None else request.form.get("address_register")
-            body_person["livingAddress"] = "" if request.form.get("address_accommodation") is None else request.form.get("address_accommodation")
+            body_person["passportNumber"] = "" if request.form.get("number_passport") is None else request.form.get(
+                "number_passport")
+            body_person["passportAddress"] = "" if request.form.get("address_register") is None else request.form.get(
+                "address_register")
+            body_person["livingAddress"] = "" if request.form.get(
+                "address_accommodation") is None else request.form.get("address_accommodation")
 
+            body_person["cardNumber"] = "" if request.form.get("card_number") is None else request.form.get(
+                "card_number")
+            body_person["cardExpDate"] = "" if request.form.get("card_date") is None else request.form.get(
+                "card_date")
+            body_person["cardIndividual"] = "" if request.form.get(
+                "card_name") is None else request.form.get("card_name")
 
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
