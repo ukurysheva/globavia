@@ -240,6 +240,8 @@ def personal_cabinet():
             firstname = profile_user["userFirstName"]
 
             middlename = profile_user["userMiddleName"]
+            logger.info("middlename")
+            logger.info(middlename)
             phone_number = profile_user["userPhoneNum"]
             passport_number = profile_user["passportNumber"]
             passport_series = profile_user["passportSeries"]
