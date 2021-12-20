@@ -293,9 +293,14 @@ def personal_cabinet():
                 "middlename")
             body_person["userEmail"] = profile_user["userEmail"] if request.form.get(
                 "email") is None else request.form.get("email")
+
+
             body_person["userPhoneNum"] = profile_user["userPhoneNum"] if request.form.get(
                 "phone_number") is None else request.form.get(
                 "phone_number")
+
+
+
             body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get(
                 "seria_passport")
 
@@ -311,7 +316,7 @@ def personal_cabinet():
             body_person["cardExpDate"] = "" if request.form.get("card_date") is None else request.form.get(
                 "card_date")
             logger.info("Now I'm here")
-            # body_person["cardIndividual"] = request.form["card_name"]
+            body_person["cardIndividual"] = request.form["card_name"]
 
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
