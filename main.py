@@ -68,23 +68,27 @@ def index():
 
         return render_template('index.html', countries=countries, direction=direction)
     elif request.method == "POST":
+        body_ticket = {}
+
         from_country: Optional[str] = request.form.get("from")
         to_country = request.form.get("to")
 
         departure_time_raw = request.form.get("depature")
 
         month_dep, day_dep, year_dep = departure_time_raw.split('/')
+        departure_time_string = year_dep + "-" + month_dep + "-" + day_dep
         departure_time = datetime.date(year=int(year_dep), month=int(month_dep), day=int(day_dep))
 
         return_time_raw = request.form.get("return")
 
         month_ret, day_ret, year_ret = return_time_raw.split('/')
+        return_time_string = year_ret + "-" + month_ret + "-" + day_ret
         return_time = datetime.date(year=int(year_ret), month=int(month_ret), day=int(day_ret))
 
         clas = request.form.get("clas")
         weihgt_luggage = request.form.get("weight")
 
-        food_flag = request.form.get("food_flg")
+        food_flag = "N" if request.form.get("food_flg") is None else request.form.get("food_flg")
         directs = request.form.get("trip_to_from")
 
         logger.info(from_country)
@@ -95,6 +99,15 @@ def index():
         logger.info(weihgt_luggage)
 
         logger.info(food_flag)
+
+        body_ticket["class"] = clas
+        body_ticket["countryIdFrom"] = from_country
+        body_ticket["countryIdTo"] = to_country
+        body_ticket["dateFrom"] = departure_time_string
+        body_ticket["dateTo"] = return_time_string
+        body_ticket["foodFlg"] = weihgt_luggage
+        body_ticket["maxLuggageWeightKg"] = food_flag
+        body_ticket["bothWays"] = directs
 
         if from_country == to_country:
             return redirect("/")
@@ -107,6 +120,8 @@ def index():
                     if departure_time < return_time:
                         # Формируем запрос на бронь билетов
                         if access_token_user is not None:
+                            response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
+                            logger.info(response.text)
                             return redirect('/personal_cabinet')
                         else:
                             return redirect('/user/login')
@@ -264,16 +279,20 @@ def personal_cabinet():
 
             body_person = {}
 
-            body_person["userLastName"] = profile_user["userLastName"] if request.form.get("familyname") is None else request.form.get(
+            body_person["userLastName"] = profile_user["userLastName"] if request.form.get(
+                "familyname") is None else request.form.get(
                 "familyname")
 
-            body_person["userFirstName"] = profile_user["userLastName"] if request.form.get("firstname") is None else request.form.get(
+            body_person["userFirstName"] = profile_user["userLastName"] if request.form.get(
+                "firstname") is None else request.form.get(
                 "firstname")
             body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get(
                 "middlename")
-            body_person["userEmail"] = profile_user["userLastName"] if request.form.get("email") is None else request.form.get("email")
+            body_person["userEmail"] = profile_user["userLastName"] if request.form.get(
+                "email") is None else request.form.get("email")
 
-            body_person["userPhoneNum"] = profile_user["userLastName"] if request.form.get("phone_number") is None else request.form.get(
+            body_person["userPhoneNum"] = profile_user["userLastName"] if request.form.get(
+                "phone_number") is None else request.form.get(
                 "phone_number")
 
             body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get(
