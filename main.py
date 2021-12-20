@@ -105,8 +105,8 @@ def index():
         body_ticket["countryIdTo"] = int(to_country)
         body_ticket["dateFrom"] = departure_time_string
         body_ticket["dateTo"] = return_time_string
-        body_ticket["foodFlg"] = int(weihgt_luggage)
-        body_ticket["maxLuggageWeightKg"] = food_flag
+        body_ticket["foodFlg"] = food_flag
+        body_ticket["maxLuggageWeightKg"] = int(weihgt_luggage)
         body_ticket["bothWays"] = directs
 
         if from_country == to_country:
