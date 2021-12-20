@@ -195,7 +195,9 @@ def purchases():
 
             data = json.loads(response.text)
 
-            order_id = data['id']
+            logger.info(data)
+
+            order_id = str(data['id'])
             classFlg = data['classFlg']
             foodFlg = data['foodFlg']
 
