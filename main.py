@@ -106,9 +106,11 @@ def index():
                 if directs == "Y":
                     if departure_time < return_time:
                         # Формируем запрос на бронь билетов
+                        logger.info(directs)
                         pass
                     else:
-                        redirect('/')
+                        logger.info(directs)
+                        return redirect('/')
                 else:
                     # Формирую запрос на билеты
                     pass
