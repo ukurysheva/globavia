@@ -101,11 +101,11 @@ def index():
         logger.info(food_flag)
 
         body_ticket["class"] = clas
-        body_ticket["countryIdFrom"] = from_country
-        body_ticket["countryIdTo"] = to_country
+        body_ticket["countryIdFrom"] = int(from_country)
+        body_ticket["countryIdTo"] = int(to_country)
         body_ticket["dateFrom"] = departure_time_string
         body_ticket["dateTo"] = return_time_string
-        body_ticket["foodFlg"] = weihgt_luggage
+        body_ticket["foodFlg"] = int(weihgt_luggage)
         body_ticket["maxLuggageWeightKg"] = food_flag
         body_ticket["bothWays"] = directs
 
@@ -120,6 +120,7 @@ def index():
                     if departure_time < return_time:
                         # Формируем запрос на бронь билетов
                         if access_token_user is not None:
+                            logger.info(body_ticket)
                             response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
                             logger.info(response.text)
                             return redirect('/personal_cabinet')
