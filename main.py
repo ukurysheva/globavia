@@ -164,19 +164,19 @@ def index():
     elif request.method == "POST" and request.form.get("flightid") is not None:
         body_buy_ticket = {}
 
-        body_buy_ticket["flightId"] = request.form.get("flightid")
+        body_buy_ticket["flightId"] = int(request.form.get("flightid"))
         body_buy_ticket["classFlg"] = request.form.get("class")
         body_buy_ticket["foodsFlg"] = request.form.get("food_flg")
+
 
 
         headers = {
             'Authorization': 'Bearer ' + access_token_user
         }
         response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_buy_ticket)
-        if response.ok:
-            logger.info('OK')
-        else:
-            logger.info("Not OK")
+        logger.info(response.status_code)
+        logger.info("response.text")
+        logger.info(response.text)
 
         return redirect('/user/purchases')
 
