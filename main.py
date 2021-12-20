@@ -131,7 +131,7 @@ def index():
 
         if from_country == to_country:
             return redirect("/")
-        else:
+        elif from_country != to_country:
             now = datetime.date.today()
             if departure_time >= now:
                 # Прописать условие на то, что если выбрано 2 направления

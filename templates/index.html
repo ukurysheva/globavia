@@ -192,7 +192,10 @@ http://www.tooplate.com/view/2093-flight
                 <td>До {{flight_to['ticketNumFirstAvail']}} кг</td>
                 <td>{{flight_to['foodFlg']}}</td>
                 <td>
-                  <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
+                  <form method="POST">
+                            <input name="flightid" type="hidden" value="{{ flight_to['id'] }}">
+                      <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
+                        </form>
                 </td>
                 {% endfor %}
               </tr>
@@ -211,7 +214,10 @@ http://www.tooplate.com/view/2093-flight
                     <td>До {{flight_back['ticketNumFirstAvail']}} кг</td>
                     <td>{{flight_back['foodFlg']}}</td>
                     <td>
+                        <form method="POST">
+                            <input name="flightid" type="hidden" value="{{ flight_back['id'] }}">
                       <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
+                        </form>
                     </td>
                     {% endfor %}
                 </tr>
