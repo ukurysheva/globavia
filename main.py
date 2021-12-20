@@ -99,7 +99,7 @@ def index():
             flag_tickets = False
             return redirect('/')
 
-    elif request.method == "POST" and request.form['find_tickets']:
+    elif request.method == "POST":
         flights_airlines = None
         body_ticket = {}
 
@@ -160,6 +160,9 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
+        elif int(request.form['flightid']) >= 0:
+            logger.info('I`m here')
+            return redirect('/user/purchases')
 
 
 @app.route('/contact', methods=('GET', 'POST'))
