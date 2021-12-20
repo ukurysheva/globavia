@@ -47,7 +47,7 @@ email_g_user = None
 password_g_user = None
 flag_tickets = False
 flights_airlines = None
-button_flag = False
+countryId = None
 
 # ADMIN
 id_admin = None
@@ -60,7 +60,7 @@ password_g_admin = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines, button_flag
+    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines, countryId
     direction = "/user/login"
     if access_token_user is not None or id_user is not None:
         direction = "/personal_cabinet"
@@ -100,11 +100,12 @@ def index():
             flag_tickets = False
             return redirect('/')
 
-    elif request.method == "POST":
+    elif request.method == "POST" and countryId is None:
         flights_airlines = None
         body_ticket = {}
 
         from_country: Optional[str] = request.form.get("from")
+        countryId = from_country
         to_country = request.form.get("to")
 
         departure_time_raw = request.form.get("depature")
@@ -159,7 +160,7 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
-        elif request.method == "POST":
+        elif request.method == "POST" and countryId is not None:
             logger.info('I`m here')
             return redirect('/user/purchases')
 
