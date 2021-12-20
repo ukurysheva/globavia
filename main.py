@@ -100,7 +100,7 @@ def index():
             flag_tickets = False
             return redirect('/')
 
-    elif request.method == "POST" and countryId is None:
+    elif request.method == "POST" and request.form.get("flightid") is None:
         flights_airlines = None
         body_ticket = {}
 
@@ -160,7 +160,7 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
-        elif request.method == "POST" and countryId is not None:
+        elif request.method == "POST" and request.form.get("flightid") is not None:
             logger.info('I`m here')
             return redirect('/user/purchases')
 
