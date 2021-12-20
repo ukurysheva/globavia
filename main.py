@@ -291,11 +291,11 @@ def personal_cabinet():
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
             }
+            response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
 
-            # if response.ok:
-            logger.info(body_person)
-            logger.info("OK")
-            return redirect("/personal_cabinet")
+            if response.ok:
+                logger.info(json.loads(requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers).text))
+                return redirect("/personal_cabinet")
     else:
         return redirect("/user/login")
 
