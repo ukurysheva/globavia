@@ -72,24 +72,31 @@ def index():
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
         countries = data_hash["data"]
-        flights_to = flights_airlines['to']
-        flights_back = flights_airlines['back']
-        for flight in flights_to:
-            if flight['foodFlg'] == 'Y':
-                flight['foodFlg'] = "Питание включено"
-            else:
-                flight['foodFlg'] = "Питание не включено"
+        try:
+            flights_to = flights_airlines['to']
+            flights_back = flights_airlines['back']
 
-        for flight in flights_back:
-            if flight['foodFlg'] == 'Y':
-                flight['foodFlg'] = "Питание включено"
-            else:
-                flight['foodFlg'] = "Питание не включено"
+            for flight in flights_to:
+                if flight['foodFlg'] == 'Y':
+                    flight['foodFlg'] = "Питание включено"
+                else:
+                    flight['foodFlg'] = "Питание не включено"
 
-        return render_template('index.html', countries=countries, direction=direction,
-                               flights_to=flights_to, flights_back=flights_back)
+            for flight in flights_back:
+                if flight['foodFlg'] == 'Y':
+                    flight['foodFlg'] = "Питание включено"
+                else:
+                    flight['foodFlg'] = "Питание не включено"
+
+            return render_template('index.html', countries=countries, direction=direction,
+                                   flights_to=flights_to, flights_back=flights_back)
+
+        except Exception as e:
+            logger.info(e)
+            return redirect('/')
 
     elif request.method == "POST":
+        flights_airlines = None
         body_ticket = {}
 
         from_country: Optional[str] = request.form.get("from")
@@ -138,6 +145,7 @@ def index():
                             logger.info(response.text)
                             data = json.loads(response.text)
                             flag_tickets = True
+                            flights_airlines = data
                             return redirect('/')
                         else:
                             return redirect('/user/login')
