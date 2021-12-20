@@ -239,8 +239,6 @@ def personal_cabinet():
             firstname = profile_user["userFirstName"]
 
             middlename = profile_user["userMiddleName"]
-            logger.info("middlename")
-            logger.info(middlename)
             phone_number = profile_user["userPhoneNum"]
             passport_number = profile_user["passportNumber"]
             passport_series = profile_user["passportSeries"]
@@ -293,8 +291,11 @@ def personal_cabinet():
             }
             response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_person)
 
+            logger.info(response.text)
             if response.ok:
+                logger.info("I got here")
                 logger.info(json.loads(requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers).text))
+                profile_user = json.loads(requests.request("GET", 'http://gvapi:8000/v1/users', headers=headers).text)
                 return redirect("/personal_cabinet")
     else:
         return redirect("/user/login")
