@@ -45,6 +45,7 @@ refresh_token_user = None
 profile_user = None
 email_g_user = None
 password_g_user = None
+flag_tickets = False
 
 # ADMIN
 id_admin = None
@@ -57,16 +58,18 @@ password_g_admin = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    global id_user, access_token_user, refresh_token_user
+    global id_user, access_token_user, refresh_token_user, flag_tickets
     direction = "/user/login"
     if access_token_user is not None or id_user is not None:
         direction = "/personal_cabinet"
-    if request.method == "GET":
+    if request.method == "GET" and flag_tickets == False:
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
         countries = data_hash["data"]
-
         return render_template('index.html', countries=countries, direction=direction)
+    elif request.method == "GET" and flag_tickets == True:
+        pass
+
     elif request.method == "POST":
         body_ticket = {}
 
@@ -91,15 +94,6 @@ def index():
         food_flag = "N" if request.form.get("food_flg") is None else request.form.get("food_flg")
         directs = request.form.get("trip_to_from")
 
-        logger.info(from_country)
-        logger.info(to_country)
-        logger.info(departure_time_raw)
-        logger.info(return_time_raw)
-        logger.info(clas)
-        logger.info(weihgt_luggage)
-
-        logger.info(food_flag)
-
         body_ticket["class"] = clas
         body_ticket["countryIdFrom"] = int(from_country)
         body_ticket["countryIdTo"] = int(to_country)
@@ -123,7 +117,9 @@ def index():
                             logger.info(body_ticket)
                             response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
                             logger.info(response.text)
-                            return redirect('/personal_cabinet')
+                            data = json.loads(response.text)
+                            # flag_tickets = True
+                            return redirect('/')
                         else:
                             return redirect('/user/login')
                     else:
