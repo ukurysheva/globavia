@@ -47,6 +47,7 @@ email_g_user = None
 password_g_user = None
 flag_tickets = False
 flights_airlines = None
+button_flag = False
 
 # ADMIN
 id_admin = None
@@ -59,7 +60,7 @@ password_g_admin = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines
+    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines, button_flag
     direction = "/user/login"
     if access_token_user is not None or id_user is not None:
         direction = "/personal_cabinet"
@@ -99,7 +100,7 @@ def index():
             flag_tickets = False
             return redirect('/')
 
-    elif request.method == "POST":
+    elif request.method == "POST" and button_flag is False:
         flights_airlines = None
         body_ticket = {}
 
@@ -143,11 +144,10 @@ def index():
                 if directs == "Y":
                     if departure_time < return_time:
                         # Формируем запрос на бронь билетов
-                        logger.info(body_ticket)
                         response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
-                        logger.info(response.text)
                         data = json.loads(response.text)
                         flag_tickets = True
+                        button_flag = True
                         flights_airlines = data
                         return redirect('/')
                     else:
@@ -160,7 +160,8 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
-        elif int(request.form['flightid']) >= 0:
+        elif request.method == "POST" and button_flag == True:
+            button_flag = False
             logger.info('I`m here')
             return redirect('/user/purchases')
 
