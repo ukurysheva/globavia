@@ -72,7 +72,7 @@ def index():
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
         countries = data_hash["data"]
-        if len(flights_airlines['to']) >= 2:
+        if len(flights_airlines['to']) >= 1:
             try:
                 flights_to = flights_airlines['to']
                 flights_back = flights_airlines['back']
