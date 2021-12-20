@@ -167,7 +167,6 @@ http://www.tooplate.com/view/2093-flight
         <table class="table mb-7">
             <thead>
               <tr>
-                <th scope="col">№</th>
                 <th scope="col">Рейс</th>
                 <th scope="col">Дата и время</th>
                 <th scope="col">Билеты</th>
@@ -177,24 +176,45 @@ http://www.tooplate.com/view/2093-flight
               </tr>
             </thead>
             <tbody>
+
               <tr>
-                <th scope="row">1</th>
-                <td>г.Москва (SHU) - Paris (PRS)</td>
-                <td>Вылет: 21.10.2021 15:34 <br>Прилет: 21.10.2021 16:34 </td>
+                  {% for flight_to in flights_to %}
+                <td>{{flight_to['countryFromName']}} ({{flight_to['airportDepName']}}) - {{flight_to['countryToName']}} ({{flight_to['airportLandName']}})</td>
+                <td>Вылет: {{flight_to['departureTime']}} <br>Прилет: {{flight_to['landingTime']}} </td>
                 <td>
                  <select>
-                    <option>Эконом - 8999 руб. (Осталось: 24)</option>
-                    <option>Эконом+ - 10999 руб. (Осталось: 12)</option>
-                    <option>Бизнес-класс+ - 14999 руб. (Осталось: 8)</option>
-                    <option>Первый класс+ - 21999 руб. (Осталось: 7)</option>
+                    <option>Эконом - {{flight_to['costRubEconomy']}} руб. (Осталось: {{flight_to['ticketNumEconomyAvail']}})</option>
+                    <option>Эконом+ - {{flight_to['costRubPrEconomy']}} руб. (Осталось: {{flight_to['ticketNumPrEconomyAvail']}})</option>
+                    <option>Бизнес-класс+ - {{flight_to['costRubBusiness']}} руб. (Осталось: {{flight_to['ticketNumBusinessAvail']}})</option>
+                    <option>Первый класс+ - {{flight_to['costRubFirstClass']}} руб. (Осталось: {{flight_to['ticketNumFirstAvail']}})</option>
                  </select>
                 </td>
-                <td>До 5 кг</td>
-                <td>Включено</td>
+                <td>До {{flight_to['ticketNumFirstAvail']}} кг</td>
+                <td>{{{{flight_to['foodFlg']}}}}</td>
                 <td>
                   <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
                 </td>
+
               </tr>
+              <tr>
+                      {% for flight_back in flights_back %}
+                    <td>{{flight_back['countryFromName']}} ({{flight_back['airportDepName']}}) - {{flight_back['countryToName']}} ({{flight_back['airportLandName']}})</td>
+                    <td>Вылет: {{flight_back['departureTime']}} <br>Прилет: {{flight_back['landingTime']}} </td>
+                    <td>
+                     <select>
+                        <option>Эконом - {{flight_back['costRubEconomy']}} руб. (Осталось: {{flight_back['ticketNumEconomyAvail']}})</option>
+                        <option>Эконом+ - {{flight_back['costRubPrEconomy']}} руб. (Осталось: {{flight_back['ticketNumPrEconomyAvail']}})</option>
+                        <option>Бизнес-класс+ - {{flight_back['costRubBusiness']}} руб. (Осталось: {{flight_back['ticketNumBusinessAvail']}})</option>
+                        <option>Первый класс+ - {{flight_back['costRubFirstClass']}} руб. (Осталось: {{flight_back['ticketNumFirstAvail']}})</option>
+                     </select>
+                    </td>
+                    <td>До {{flight_back['ticketNumFirstAvail']}} кг</td>
+                    <td>{{{{flight_back['foodFlg']}}}}</td>
+                    <td>
+                      <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
+                    </td>
+
+                </tr>
             </tbody>
           </table>
         </div>

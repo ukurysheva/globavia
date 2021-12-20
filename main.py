@@ -46,6 +46,7 @@ profile_user = None
 email_g_user = None
 password_g_user = None
 flag_tickets = False
+flights_airlines = None
 
 # ADMIN
 id_admin = None
@@ -58,7 +59,7 @@ password_g_admin = None
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    global id_user, access_token_user, refresh_token_user, flag_tickets
+    global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines
     direction = "/user/login"
     if access_token_user is not None or id_user is not None:
         direction = "/personal_cabinet"
@@ -68,7 +69,25 @@ def index():
         countries = data_hash["data"]
         return render_template('index.html', countries=countries, direction=direction)
     elif request.method == "GET" and flag_tickets == True:
-        pass
+        r = requests.get('http://gvapi:8000/v1/countries')
+        data_hash = r.json()
+        countries = data_hash["data"]
+        flights_to = flights_airlines['to']
+        flights_back = flights_airlines['back']
+        for flight in flights_to:
+            if flight['foodFlg'] == 'Y':
+                flight['foodFlg'] = "Питание включено"
+            else:
+                flight['foodFlg'] = "Питание не включено"
+
+        for flight in flights_back:
+            if flight['foodFlg'] == 'Y':
+                flight['foodFlg'] = "Питание включено"
+            else:
+                flight['foodFlg'] = "Питание не включено"
+
+        return render_template('index.html', countries=countries, direction=direction,
+                               flights_to=flights_to, flights_back=flights_back)
 
     elif request.method == "POST":
         body_ticket = {}
@@ -118,7 +137,7 @@ def index():
                             response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
                             logger.info(response.text)
                             data = json.loads(response.text)
-                            # flag_tickets = True
+                            flag_tickets = True
                             return redirect('/')
                         else:
                             return redirect('/user/login')
@@ -356,7 +375,7 @@ def admin_login():
             return render_template('index_admin.html', error=data['message'])
         else:
             return render_template('index_admin.html',
-                                    error="Произошла ошибка. Пожалуйста, повторите попытку.")
+                                   error="Произошла ошибка. Пожалуйста, повторите попытку.")
             # return redirect("/admin/sign-in")
 
 
