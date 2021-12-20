@@ -138,17 +138,14 @@ def index():
                 # Иначе начинаем поиски билетов согласно заданным критериям
                 if directs == "Y":
                     if departure_time < return_time:
-                        # Формируем запрос на бронь билетов
-                        if access_token_user is not None:
-                            logger.info(body_ticket)
-                            response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
-                            logger.info(response.text)
-                            data = json.loads(response.text)
-                            flag_tickets = True
-                            flights_airlines = data
-                            return redirect('/')
-                        else:
-                            return redirect('/user/login')
+                    # Формируем запрос на бронь билетов
+                        logger.info(body_ticket)
+                        response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
+                        logger.info(response.text)
+                        data = json.loads(response.text)
+                        flag_tickets = True
+                        flights_airlines = data
+                        return redirect('/')
                     else:
                         return redirect('/')
                 else:
