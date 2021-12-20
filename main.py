@@ -239,34 +239,23 @@ def personal_cabinet():
 
         logger.info(profile_user)
 
-        body_person = {
-            "userEmail": profile_user['userEmail'], "userFirstName": profile_user['userFirstName'],
-            "userLastName": profile_user['userLastName'], "userMiddleName": profile_user['userMiddleName'],
-            "userPhoneNum": profile_user['userPhoneNum'],
-            "passportNumber": profile_user['passportNumber'],
-            "passportSeries": profile_user['passportSeries'],
-            "passportAddress": profile_user['passportAddress'],
-            "livingAddress": profile_user['livingAddress'],
-            'cardNumber': profile_user['cardNumber'],
-            'cardExpDate': profile_user['cardExpDate'],
-            'cardIndividual': profile_user['cardIndividual']
-        }
-
-        familyname: Optional[str] = profile_user["userLastName"]
-        firstname = profile_user["userFirstName"]
-
-        middlename = profile_user["userMiddleName"]
-        phone_number = profile_user["userPhoneNum"]
-        passport_number = profile_user["passportNumber"]
-        passport_series = profile_user["passportSeries"]
-        address_register = profile_user["passportAddress"]
-        address_accommodation = profile_user["livingAddress"]
-
-        card_number = profile_user["cardNumber"]
-        card_date = profile_user["cardExpDate"]
-        card_name = profile_user["cardIndividual"]
 
         if request.method == "GET":
+
+            familyname: Optional[str] = profile_user["userLastName"]
+            firstname = profile_user["userFirstName"]
+
+            middlename = profile_user["userMiddleName"]
+            phone_number = profile_user["userPhoneNum"]
+            passport_number = profile_user["passportNumber"]
+            passport_series = profile_user["passportSeries"]
+            address_register = profile_user["passportAddress"]
+            address_accommodation = profile_user["livingAddress"]
+
+            card_number = profile_user["cardNumber"]
+            card_date = profile_user["cardExpDate"]
+            card_name = profile_user["cardIndividual"]
+
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
             email = profile_user['userEmail']
 
@@ -280,6 +269,20 @@ def personal_cabinet():
                                    card_name=card_name)
 
         elif request.method == "POST":
+
+            body_person = {
+                "userEmail": profile_user['userEmail'], "userFirstName": profile_user['userFirstName'],
+                "userLastName": profile_user['userLastName'], "userMiddleName": profile_user['userMiddleName'],
+                "userPhoneNum": profile_user['userPhoneNum'],
+                "passportNumber": profile_user['passportNumber'],
+                "passportSeries": profile_user['passportSeries'],
+                "passportAddress": profile_user['passportAddress'],
+                "livingAddress": profile_user['livingAddress'],
+                'cardNumber': profile_user['cardNumber'],
+                'cardExpDate': profile_user['cardExpDate'],
+                'cardIndividual': profile_user['cardIndividual']
+            }
+
             logger.info("after post")
 
             body_person["userLastName"] = profile_user["userLastName"] if request.form["familyname"] is None else \
