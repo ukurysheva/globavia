@@ -267,6 +267,7 @@ def personal_cabinet():
             body_person = {}
 
             body_person["userLastName"] = request.form.get("familyname")
+            logger.info(body_person['userLastName'])
 
             body_person["userFirstName"] = request.form.get("firstname")
             body_person["userMiddleName"] = request.form.get("middlename")
