@@ -46,7 +46,6 @@ profile_user = None
 email_g_user = None
 password_g_user = None
 
-
 # ADMIN
 id_admin = None
 access_token_admin = None
@@ -265,26 +264,11 @@ def personal_cabinet():
                                    card_name=card_name)
 
         elif request.method == "POST":
-            """
-            body_person = {
-                "userEmail": "", "userFirstName": "",
-                "userLastName": "", "userMiddleName": "",
-                "userPhoneNum": profile_user['userPhoneNum'],
-                "passportNumber": profile_user['passportNumber'],
-                "passportSeries": profile_user['passportSeries'],
-                "passportAddress": profile_user['passportAddress'],
-                "livingAddress": profile_user['livingAddress'],
-                'cardNumber': profile_user['cardNumber'],
-                'cardExpDate': profile_user['cardExpDate'],
-                'cardIndividual': profile_user['cardIndividual']
-            }
-            """
 
             logger.info("after post")
-            body_person={}
+            body_person = {}
 
             body_person["userLastName"] = request.form.get("familyname")
-            logger.info("I'm here")
 
             body_person["userFirstName"] = request.form.get("firstname")
             body_person["userMiddleName"] = request.form.get("middlename")
@@ -293,21 +277,16 @@ def personal_cabinet():
 
             body_person["userPhoneNum"] = request.form.get("phone_number")
 
-            body_person["passportSeries"] = request.form.get(
-                "seria_passport")
+            body_person["passportSeries"] = request.form.get("seria_passport")
 
-            body_person["passportNumber"] = request.form.get(
-                "number_passport")
-            body_person["passportAddress"] = request.form.get(
-                "address_register")
+            body_person["passportNumber"] = request.form.get("number_passport")
+            body_person["passportAddress"] = request.form.get("address_register")
             body_person["livingAddress"] = request.form.get("address_accommodation")
 
-            body_person["cardNumber"] = "" if request.form.get("card_number") is None else request.form.get(
-                "card_number")
-            body_person["cardExpDate"] = "" if request.form.get("card_date") is None else request.form.get(
-                "card_date")
+            body_person["cardNumber"] = request.form.get("card_number")
+            body_person["cardExpDate"] = request.form.get("card_date")
             logger.info("Now I'm here")
-            # body_person["cardIndividual"] = request.form["card_name"]
+            body_person["cardIndividual"] = request.form.get("card_name")
 
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
