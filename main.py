@@ -45,12 +45,7 @@ refresh_token_user = None
 profile_user = None
 email_g_user = None
 password_g_user = None
-passport_series = " Серия паспорта"
-passport_number = "Номер паспорта"
-phone_number = "Номер телефона"
-address_register = "Место регистрации"
-address_accommodation = "Фактическое место проживания"
-middlename = "Отчество"
+
 
 # ADMIN
 id_admin = None
@@ -144,7 +139,8 @@ def purchases():
 
 @app.route('/user/login', methods=('GET', 'POST'))
 def login():
-    global access_token_user, id_user, refresh_token_user, profile_user, email_g_user, password_g_user
+    global access_token_user, id_user, refresh_token_user, \
+        profile_user, email_g_user, password_g_user
     body_register = {
         "userEmail": "",
         "userPassword": "",
@@ -232,8 +228,7 @@ def login():
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
     global profile_user, access_token_user, refresh_token_user, email_g_user, \
-        password_g_user, passport_number, passport_series, \
-        address_register, address_accommodation, phone_number
+        password_g_user
 
     if access_token_user is not None:
 
