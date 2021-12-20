@@ -239,7 +239,6 @@ def personal_cabinet():
 
         logger.info(profile_user)
 
-
         if request.method == "GET":
 
             familyname: Optional[str] = profile_user["userLastName"]
@@ -269,10 +268,10 @@ def personal_cabinet():
                                    card_name=card_name)
 
         elif request.method == "POST":
-
+            """
             body_person = {
-                "userEmail": profile_user['userEmail'], "userFirstName": profile_user['userFirstName'],
-                "userLastName": profile_user['userLastName'], "userMiddleName": profile_user['userMiddleName'],
+                "userEmail": "", "userFirstName": "",
+                "userLastName": "", "userMiddleName": "",
                 "userPhoneNum": profile_user['userPhoneNum'],
                 "passportNumber": profile_user['passportNumber'],
                 "passportSeries": profile_user['passportSeries'],
@@ -282,37 +281,29 @@ def personal_cabinet():
                 'cardExpDate': profile_user['cardExpDate'],
                 'cardIndividual': profile_user['cardIndividual']
             }
+            """
 
             logger.info("after post")
+            body_person={}
 
-            body_person["userLastName"] = profile_user["userLastName"] if request.form["familyname"] is None else \
-                request.form["familyname"]
+            body_person["userLastName"] = request.form.get("familyname")
             logger.info("I'm here")
 
-            body_person["userFirstName"] = profile_user["userFirstName"] if request.form.get(
-                "firstname") is None else request.form.get(
-                "firstname")
+            body_person["userFirstName"] = request.form.get("firstname")
             body_person["userMiddleName"] = request.form.get("middlename")
             logger.info(request.form.get("middlename"))
-            body_person["userEmail"] = profile_user["userEmail"] if request.form.get(
-                "email") is None else request.form.get("email")
+            body_person["userEmail"] = request.form.get("email")
 
+            body_person["userPhoneNum"] = request.form.get("phone_number")
 
-            body_person["userPhoneNum"] = profile_user["userPhoneNum"] if request.form.get(
-                "phone_number") is None else request.form.get(
-                "phone_number")
-
-
-
-            body_person["passportSeries"] = "" if request.form.get("seria_passport") is None else request.form.get(
+            body_person["passportSeries"] = request.form.get(
                 "seria_passport")
 
-            body_person["passportNumber"] = "" if request.form.get("number_passport") is None else request.form.get(
+            body_person["passportNumber"] = request.form.get(
                 "number_passport")
-            body_person["passportAddress"] = "" if request.form.get("address_register") is None else request.form.get(
+            body_person["passportAddress"] = request.form.get(
                 "address_register")
-            body_person["livingAddress"] = "" if request.form.get(
-                "address_accommodation") is None else request.form.get("address_accommodation")
+            body_person["livingAddress"] = request.form.get("address_accommodation")
 
             body_person["cardNumber"] = "" if request.form.get("card_number") is None else request.form.get(
                 "card_number")
