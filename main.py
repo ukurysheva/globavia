@@ -173,6 +173,10 @@ def index():
             'Authorization': 'Bearer ' + access_token_user
         }
         response = requests.request("POST", 'http://gvapi:8000/v1/users', headers=headers, json=body_buy_ticket)
+        if response.ok:
+            logger.info('OK')
+        else:
+            logger.info("Not OK")
 
         return redirect('/user/purchases')
 
