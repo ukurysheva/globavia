@@ -106,14 +106,18 @@ def index():
                 if directs == "Y":
                     if departure_time < return_time:
                         # Формируем запрос на бронь билетов
-                        logger.info(directs)
-                        pass
+                        if access_token_user is not None:
+                            return redirect('/personal_cabinet')
+                        else:
+                            return redirect('/user/login')
                     else:
-                        logger.info(directs)
                         return redirect('/')
                 else:
                     # Формирую запрос на билеты
-                    return redirect('/')
+                    if access_token_user is not None:
+                        return redirect('/personal_cabinet')
+                    else:
+                        return redirect('/user/login')
             else:
                 return redirect('/')
 

@@ -66,7 +66,7 @@ http://www.tooplate.com/view/2093-flight
                                                 <select required name="from" onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
                                                     {% for dictionary in countries %}
-                                                    <option  value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
+                                                    <option  value="{{ dictionary['countryId'] }}">{{ dictionary['countryName'] }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </fieldset>
@@ -77,7 +77,7 @@ http://www.tooplate.com/view/2093-flight
                                                 <select  required name='to' onchange='this.form.()'>
                                                     <option value="">Выбрать страну...</option>
                                                     {% for dictionary in countries %}
-                                                    <option value="{{ dictionary['countryName'] }}">{{ dictionary['countryName'] }}</option>
+                                                    <option value="{{ dictionary['countryId'] }}">{{ dictionary['countryName'] }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </fieldset>
@@ -127,7 +127,7 @@ http://www.tooplate.com/view/2093-flight
                                                     
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="oneway">Питание включено</label>
-                                                        <input type="checkbox" name="food_flg" id="oneway" value="Included"  onchange="this.form.()">
+                                                        <input type="checkbox" name="food_flg" id="oneway" value="Y"  onchange="this.form.()">
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,7 +137,7 @@ http://www.tooplate.com/view/2093-flight
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="round">Туда и обратно</label>
-                                                        <input type="radio" name="trip_to_from" id="round" value="Y"  onchange='this.form.()'>
+                                                        <input type="radio" checked name="trip_to_from" id="round" value="Y"  onchange='this.form.()'>
                                                     </div>
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="oneway">Только туда</label>
@@ -148,7 +148,7 @@ http://www.tooplate.com/view/2093-flight
                                         </div>
                                         <div class="col-md-6">
                                             <fieldset>
-                                                <button id="buy_in_form" type="submit" id="form-submit" class="btn">Купить билеты</button>
+                                                <button id="buy_in_form" type="submit" id="form-submit" class="btn">Найти билеты</button>
                                             </fieldset>
                                         </div>
                                     </div>
