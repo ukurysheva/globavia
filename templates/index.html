@@ -169,7 +169,6 @@ http://www.tooplate.com/view/2093-flight
               <tr>
                 <th scope="col">Рейс</th>
                 <th scope="col">Дата и время</th>
-                <th scope="col">Билеты</th>
                 <th scope="col">Багаж</th>
                 <th scope="col">Питание</th>
                 <th scope="col">Действия</th>
@@ -181,21 +180,23 @@ http://www.tooplate.com/view/2093-flight
                   {% for flight_to in flights_to %}
                 <td>{{flight_to['countryFromName']}} ({{flight_to['airportDepName']}}) - {{flight_to['countryToName']}} ({{flight_to['airportLandName']}})</td>
                 <td>Вылет: {{flight_to['departureTime']}} <br>Прилет: {{flight_to['landingTime']}} </td>
-                <td>
-                 <select>
-                    <option>Эконом - {{flight_to['costRubEconomy']}} руб. (Осталось: {{flight_to['ticketNumEconomyAvail']}})</option>
-                    <option>Эконом+ - {{flight_to['costRubPrEconomy']}} руб. (Осталось: {{flight_to['ticketNumPrEconomyAvail']}})</option>
-                    <option>Бизнес-класс+ - {{flight_to['costRubBusiness']}} руб. (Осталось: {{flight_to['ticketNumBusinessAvail']}})</option>
-                    <option>Первый класс+ - {{flight_to['costRubFirstClass']}} руб. (Осталось: {{flight_to['ticketNumFirstAvail']}})</option>
-                 </select>
-                </td>
                 <td>До {{flight_to['ticketNumFirstAvail']}} кг</td>
                 <td>{{flight_to['foodFlg']}}</td>
                 <td>
                   <form method="POST">
-                            <input name="flightid" type="hidden" value="{{ flight_to['id'] }}">
-                      <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
-                        </form>
+                    <div>
+                      <select name="class">
+                        <option value="economy" selected>Эконом - {{flight_to['costRubEconomy']}} руб. (Осталось: {{flight_to['ticketNumEconomyAvail']}})</option>
+                        <option value="economy_pr">Эконом+ - {{flight_to['costRubPrEconomy']}} руб. (Осталось: {{flight_to['ticketNumPrEconomyAvail']}})</option>
+                        <option value="business">Бизнес-класс+ - {{flight_to['costRubBusiness']}} руб. (Осталось: {{flight_to['ticketNumBusinessAvail']}})</option>
+                        <option value="first_class">Первый класс+ - {{flight_to['costRubFirstClass']}} руб. (Осталось: {{flight_to['ticketNumFirstAvail']}})</option>
+                     </select>
+                     
+                    </div>
+                    <div><input type="checkbox" value="Y" name="food_flg" >Питание</input></div>
+                    <input name="flightid" type="hidden" value="{{ flight_to['id'] }}">
+                    <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
+                    </form>
                 </td>
                 {% endfor %}
               </tr>
@@ -203,21 +204,23 @@ http://www.tooplate.com/view/2093-flight
                       {% for flight_back in flights_back %}
                     <td>{{flight_back['countryFromName']}} ({{flight_back['airportDepName']}}) - {{flight_back['countryToName']}} ({{flight_back['airportLandName']}})</td>
                     <td>Вылет: {{flight_back['departureTime']}} <br>Прилет: {{flight_back['landingTime']}} </td>
-                    <td>
-                     <select>
-                        <option>Эконом - {{flight_back['costRubEconomy']}} руб. (Осталось: {{flight_back['ticketNumEconomyAvail']}})</option>
-                        <option>Эконом+ - {{flight_back['costRubPrEconomy']}} руб. (Осталось: {{flight_back['ticketNumPrEconomyAvail']}})</option>
-                        <option>Бизнес-класс+ - {{flight_back['costRubBusiness']}} руб. (Осталось: {{flight_back['ticketNumBusinessAvail']}})</option>
-                        <option>Первый класс+ - {{flight_back['costRubFirstClass']}} руб. (Осталось: {{flight_back['ticketNumFirstAvail']}})</option>
-                     </select>
-                    </td>
                     <td>До {{flight_back['ticketNumFirstAvail']}} кг</td>
                     <td>{{flight_back['foodFlg']}}</td>
                     <td>
                         <form method="POST">
+                            <div>
+                              <select name="class">
+                                <option value="economy" selected>Эконом - {{flight_back['costRubEconomy']}} руб. (Осталось: {{flight_back['ticketNumEconomyAvail']}})</option>
+                                <option value="economy_pr">Эконом+ - {{flight_back['costRubPrEconomy']}} руб. (Осталось: {{flight_back['ticketNumPrEconomyAvail']}})</option>
+                                <option value="business">Бизнес-класс+ - {{flight_back['costRubBusiness']}} руб. (Осталось: {{flight_back['ticketNumBusinessAvail']}})</option>
+                                <option value="first_class">Первый класс+ - {{flight_back['costRubFirstClass']}} руб. (Осталось: {{flight_back['ticketNumFirstAvail']}})</option>
+                             </select>
+                             
+                            </div>
+                            <div><input type="checkbox" value="Y" name="food_flg" >Питание</input></div>
                             <input name="flightid" type="hidden" value="{{ flight_back['id'] }}">
-                      <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
-                        </form>
+                            <button id ="buy_ticket" type="submit" class="btn btn-info ms-1">Купить</button>
+                            </form>
                     </td>
                     {% endfor %}
                 </tr>
