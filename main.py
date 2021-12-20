@@ -100,7 +100,7 @@ def index():
             flag_tickets = False
             return redirect('/')
 
-    elif request.method == "POST" and button_flag is False:
+    elif request.method == "POST":
         flights_airlines = None
         body_ticket = {}
 
@@ -147,7 +147,6 @@ def index():
                         response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
                         data = json.loads(response.text)
                         flag_tickets = True
-                        button_flag = True
                         flights_airlines = data
                         return redirect('/')
                     else:
@@ -160,7 +159,7 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
-        elif request.method == "POST" and button_flag is True:
+        elif request.method == "POST":
             logger.info('I`m here')
             return redirect('/user/purchases')
 
@@ -173,7 +172,6 @@ def contact():
 @app.route('/user/purchases', methods=('GET', 'POST'))
 def purchases():
     global access_token_user, profile_user, button_flag
-    button_flag = False
 
     if access_token_user is not None:
         if request.method == "GET":
@@ -181,7 +179,7 @@ def purchases():
             email = profile_user['userEmail']
             FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
                 "userMiddleName"]
-            passport = profile_user['passportNumber'] + " " + profile_user["passportSeries"]
+            passport = profile_user['passportSeries'] + " " + profile_user["passportNumber"]
             address_reg = profile_user['passportAddress']
             address_liv = profile_user['livingAddress']
             card_number = profile_user['cardNumber']
