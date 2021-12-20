@@ -72,27 +72,31 @@ def index():
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
         countries = data_hash["data"]
-        try:
-            flights_to = flights_airlines['to']
-            flights_back = flights_airlines['back']
+        if len(flights_airlines['to']) >= 2:
+            try:
+                flights_to = flights_airlines['to']
+                flights_back = flights_airlines['back']
 
-            for flight in flights_to:
-                if flight['foodFlg'] == 'Y':
-                    flight['foodFlg'] = "Питание включено"
-                else:
-                    flight['foodFlg'] = "Питание не включено"
+                for flight in flights_to:
+                    if flight['foodFlg'] == 'Y':
+                        flight['foodFlg'] = "Питание включено"
+                    else:
+                        flight['foodFlg'] = "Питание не включено"
 
-            for flight in flights_back:
-                if flight['foodFlg'] == 'Y':
-                    flight['foodFlg'] = "Питание включено"
-                else:
-                    flight['foodFlg'] = "Питание не включено"
+                for flight in flights_back:
+                    if flight['foodFlg'] == 'Y':
+                        flight['foodFlg'] = "Питание включено"
+                    else:
+                        flight['foodFlg'] = "Питание не включено"
 
-            return render_template('index.html', countries=countries, direction=direction,
-                                   flights_to=flights_to, flights_back=flights_back)
+                return render_template('index.html', countries=countries, direction=direction,
+                                       flights_to=flights_to, flights_back=flights_back)
 
-        except Exception as e:
-            logger.info(e)
+            except Exception as e:
+                logger.info(e)
+                return redirect('/')
+        else:
+            flag_tickets = False
             return redirect('/')
 
     elif request.method == "POST":
