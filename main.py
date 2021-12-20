@@ -160,9 +160,9 @@ def index():
                         return redirect('/user/login')
             else:
                 return redirect('/')
-        elif request.method == "POST" and request.form.get("flightid") is not None:
-            logger.info('I`m here')
-            return redirect('/user/purchases')
+    elif request.method == "POST" and request.form.get("flightid") is not None:
+        logger.info('I`m here')
+        return redirect('/user/purchases')
 
 
 @app.route('/contact', methods=('GET', 'POST'))
