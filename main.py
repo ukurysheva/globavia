@@ -99,7 +99,7 @@ def index():
             flag_tickets = False
             return redirect('/')
 
-    elif request.method == "POST":
+    elif request.method == "POST" and request.form['find_tickets']:
         flights_airlines = None
         body_ticket = {}
 

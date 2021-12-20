@@ -31,7 +31,7 @@ http://www.tooplate.com/view/2093-flight
 
 <body>
 
-    
+
     <section class="banner" id="top">
         <div class="container">
             <div class="row">
@@ -94,7 +94,7 @@ http://www.tooplate.com/view/2093-flight
                                                 <input name="return" type="text" class="form-control date" id="return" placeholder="Выбрать дату..." required="" onchange='this.form.()'>
                                             </fieldset>
                                         </div>
-                                       
+
 					<div class="col-md-6">
                                             <fieldset>
                                                 <label for="return">Класс билетов</label>
@@ -105,7 +105,7 @@ http://www.tooplate.com/view/2093-flight
                                                     <option value="business">Бизнес-класс</option>
                                                     <option value="first_class">Первый класс</option>
                                                    </select>
-                                                
+
                                             </fieldset>
                                         </div>
 					<div class="col-md-6">
@@ -118,13 +118,13 @@ http://www.tooplate.com/view/2093-flight
                                                     <option value="15">до 15 кг</option>
                                                     <option value="20">до 20 кг</option>
                                                    </select>
-                                                
+
                                             </fieldset>
                                         </div>
 					<div class="col-md-6">
                                             <div class="radio-select">
                                                 <div class="row">
-                                                    
+
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                                         <label for="oneway">Питание включено</label>
                                                         <input type="checkbox" name="food_flg" id="oneway" value="Y"  onchange="this.form.()">
@@ -148,7 +148,7 @@ http://www.tooplate.com/view/2093-flight
                                         </div>
                                         <div class="col-md-6">
                                             <fieldset>
-                                                <button id="buy_in_form" type="submit" id="form-submit" class="btn">Найти билеты</button>
+                                                <button name="find_tickets" type="submit" id="form-submit" class="btn">Найти билеты</button>
                                             </fieldset>
                                         </div>
                                     </div>
@@ -191,7 +191,7 @@ http://www.tooplate.com/view/2093-flight
                         <option value="business">Бизнес-класс+ - {{flight_to['costRubBusiness']}} руб. (Осталось: {{flight_to['ticketNumBusinessAvail']}})</option>
                         <option value="first_class">Первый класс+ - {{flight_to['costRubFirstClass']}} руб. (Осталось: {{flight_to['ticketNumFirstAvail']}})</option>
                      </select>
-                     
+
                     </div>
                     <div><input type="checkbox" value="Y" name="food_flg" >Питание</input></div>
                     <input name="flightid" type="hidden" value="{{ flight_to['id'] }}">
@@ -215,7 +215,7 @@ http://www.tooplate.com/view/2093-flight
                                 <option value="business">Бизнес-класс+ - {{flight_back['costRubBusiness']}} руб. (Осталось: {{flight_back['ticketNumBusinessAvail']}})</option>
                                 <option value="first_class">Первый класс+ - {{flight_back['costRubFirstClass']}} руб. (Осталось: {{flight_back['ticketNumFirstAvail']}})</option>
                              </select>
-                             
+
                             </div>
                             <div><input type="checkbox" value="Y" name="food_flg" >Питание</input></div>
                             <input name="flightid" type="hidden" value="{{ flight_back['id'] }}">
@@ -247,7 +247,7 @@ http://www.tooplate.com/view/2093-flight
                                         <li><a href="#wednesday">Среда</a></li>
                                         <li><a href="#thursday">Четверг</a></li>
                                         <li><a href="#friday">Пятница</a></li>
-                                    </ul>    
+                                    </ul>
                                 </div>
                                 <div class="col-md-12">
                                     <section id="second-tab-group" class="weathergroup">
@@ -539,7 +539,7 @@ http://www.tooplate.com/view/2093-flight
     </section>
 
 
-    
+
     <div class="tabs-content" id="recommended-hotel">
         <div class="container">
             <div class="row">
@@ -748,7 +748,7 @@ http://www.tooplate.com/view/2093-flight
                 </div>
                 <div class="col-md-12">
                     <p>Copyright &copy; 2021 GlobalAvia
-                
+
                 | Дизайн: <a href="http://www.tooplate.com/view/2093-flight" target="_parent"><em>MISIS DESIGN</em></a></p>
                 </div>
             </div>
@@ -756,14 +756,14 @@ http://www.tooplate.com/view/2093-flight
     </footer>
 
 
-    
+
 
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../static/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
     <script src="../static/js/vendor/bootstrap.min.js"></script>
-    
+
     <script src="../static/js/datepicker.js"></script>
     <script src="../static/js/plugins.js"></script>
     <script src="../static/js/main.js"></script>
@@ -772,7 +772,7 @@ http://www.tooplate.com/view/2093-flight
     <script type="text/javascript">
     $(document).ready(function() {
 
-        
+
 
         // navigation click actions 
         $('.scroll-link').on('click', function(event){
@@ -783,7 +783,7 @@ http://www.tooplate.com/view/2093-flight
         // scroll to top action
         $('.scroll-top').on('click', function(event) {
             event.preventDefault();
-            $('html, body').animate({scrollTop:0}, 'slow');         
+            $('html, body').animate({scrollTop:0}, 'slow');
         });
         // mobile nav toggle
         $('#nav-toggle').on('click', function (event) {
