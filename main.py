@@ -292,8 +292,8 @@ def personal_cabinet():
             body_person["userFirstName"] = profile_user["userFirstName"] if request.form.get(
                 "firstname") is None else request.form.get(
                 "firstname")
-            body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get(
-                "middlename")
+            body_person["userMiddleName"] = request.form.get("middlename")
+            logger.info(request.form.get("middlename"))
             body_person["userEmail"] = profile_user["userEmail"] if request.form.get(
                 "email") is None else request.form.get("email")
 
