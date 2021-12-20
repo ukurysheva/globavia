@@ -274,6 +274,7 @@ def personal_cabinet():
             logger.info("after post")
 
             body_person["userLastName"] = "" if request.form.get("familyname") is None else request.form.get("familyname")
+            logger.info(request.form.get("familyname"))
             body_person["userFirstName"] = "" if request.form.get("firstname") is None else request.form.get("firstname")
             body_person["userMiddleName"] = "" if request.form.get("middlename") is None else request.form.get("middlename")
             body_person["userEmail"] = "" if request.form.get("email") is None else request.form.get("email")
