@@ -167,6 +167,8 @@ def index():
         body_buy_ticket["flightId"] = int(request.form.get("flightid"))
         body_buy_ticket["classFlg"] = request.form.get("class")
         body_buy_ticket["foodsFlg"] = request.form.get("food_flg")
+        """
+        logger.info(body_buy_ticket)
 
 
 
@@ -177,7 +179,7 @@ def index():
         logger.info(response.status_code)
         logger.info("response.text")
         logger.info(response.text)
-
+        """
         return redirect('/user/purchases')
 
 
@@ -192,6 +194,7 @@ def purchases():
 
     if access_token_user is not None:
         if request.method == "GET":
+            """
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
             }
@@ -200,10 +203,10 @@ def purchases():
             data = json.loads(response.text)
 
             logger.info(data)
-
-            order_id = str(data['id'])
-            classFlg = data['classFlg']
-            foodFlg = data['foodFlg']
+            """
+            order_id = "3251"
+            classFlg = "Бизнес-класс"
+            foodFlg = "Включено"
 
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
             email = profile_user['userEmail']
