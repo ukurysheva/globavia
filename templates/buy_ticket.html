@@ -89,6 +89,18 @@
 									{{message}}
 						  	</div>
 							</article>
+							{% elif error %}
+							<article class="ticket">
+								<div class="ticket__body message">
+									{{error}}
+						  	</div>
+							</article>
+							{% elif success %}
+							<article class="ticket">
+								<div class="ticket__body message">
+									{{success}}
+						  	</div>
+							</article>
 							{% endif %}
 
 						</div>

@@ -235,10 +235,16 @@ def purchases():
                 headers = {
                     'Authorization': 'Bearer ' + access_token_user
                 }
-                response = requests.request("POST", 'http://gvapi:8000/v1/users/purchases/' + flight_id + '/pay', headers=headers, json=body_buy_ticket)
+                response = requests.request("POST", 'http://gvapi:8000/v1/users/purchases/' + flight_id + '/pay', headers=headers, json=body_pay_ticket)
                 logger.info(response.status_code)
                 logger.info("response.text")
                 logger.info(response.text)
+                if response.ok:
+                    return render_template('buy_ticket.html', success = "Билет успешно оплачен и доступен в вашем аккаунте.Удачных вам путешествий!", name=name,\
+                    FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
+                else:
+                    return render_template('buy_ticket.html', error = "Не удалось осуществить покупку билета. Пожалуйста, повторите попытку.", name=name,\
+                    FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
             else:
                 return render_template('buy_ticket.html', error = "Не удалось осуществить покупку билета. Пожалуйста, повторите попытку.", name=name,\
                 FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
