@@ -164,6 +164,7 @@ http://www.tooplate.com/view/2093-flight
 
     <div class="tabs-content" id="weather">
         <div class="container">
+        {% if flights_to or flights_back %}
         <table class="table mb-7">
             <thead>
               <tr>
@@ -177,7 +178,8 @@ http://www.tooplate.com/view/2093-flight
             <tbody>
 
               <tr>
-                  {% for flight_to in flights_to %}
+
+                {% for flight_to in flights_to %}
                 <td>{{flight_to['countryFromName']}} ({{flight_to['airportDepName']}}) - {{flight_to['countryToName']}} ({{flight_to['airportLandName']}})</td>
                 <td>Вылет: {{flight_to['departureTime']}} <br>Прилет: {{flight_to['landingTime']}} </td>
                 <td>До {{flight_to['ticketNumFirstAvail']}} кг</td>
@@ -187,9 +189,9 @@ http://www.tooplate.com/view/2093-flight
                     <div>
                       <select name="class">
                         <option value="economy" selected>Эконом - {{flight_to['costRubEconomy']}} руб. (Осталось: {{flight_to['ticketNumEconomyAvail']}})</option>
-                        <option value="economy_pr">Эконом+ - {{flight_to['costRubPrEconomy']}} руб. (Осталось: {{flight_to['ticketNumPrEconomyAvail']}})</option>
+                        <option value="pr_economy">Эконом+ - {{flight_to['costRubPrEconomy']}} руб. (Осталось: {{flight_to['ticketNumPrEconomyAvail']}})</option>
                         <option value="business">Бизнес-класс+ - {{flight_to['costRubBusiness']}} руб. (Осталось: {{flight_to['ticketNumBusinessAvail']}})</option>
-                        <option value="first_class">Первый класс+ - {{flight_to['costRubFirstClass']}} руб. (Осталось: {{flight_to['ticketNumFirstAvail']}})</option>
+                        <option value="first">Первый класс+ - {{flight_to['costRubFirstClass']}} руб. (Осталось: {{flight_to['ticketNumFirstAvail']}})</option>
                      </select>
 
                     </div>
@@ -226,6 +228,11 @@ http://www.tooplate.com/view/2093-flight
                 </tr>
             </tbody>
           </table>
+          {% elif message %}
+          <div style="text-align: center;">
+          <h3 style="color: red;">{{message}}</h3>
+          </div>
+          {% endif %}
         </div>
     </div>
     <div class="tabs-content" id="weather">
