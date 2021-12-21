@@ -219,6 +219,12 @@ def purchases():
             if data:
                 for basket_item in data:
                     basket_item["foodFlg"] = "Включено" if basket_item.get("foodFlg") == 'Y' else "Не включено"
+                    response_ticket = requests.get('http://gvapi:8000/v1/flights/'+str(basket_item["flightId"]))
+                    if response.ok:
+                        data_ticket = response_ticket.json()
+                        logger.info('http://gvapi:8000/v1/flights/'+str(flight_id))
+                        logger.info(data_ticket)
+                        basket_item["airlineName"] = data_ticket.get("airlineName")
 
                 return render_template('buy_ticket.html', basket_content = data, name=name, FIO=FIO, passport=passport, \
                 address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
@@ -364,8 +370,42 @@ def personal_cabinet():
 
             name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
             email = profile_user['userEmail']
+            purchases = []
+            message=""
+            headers = {
+                'Authorization': 'Bearer ' + access_token_user
+            }
+            response = requests.get('http://gvapi:8000/v1/users/purchases', headers=headers)
+            logger.info(response)
+            if response.ok:
+                data = response.json()
+                logger.info(data)
+                if data: 
+                    purchases=data
+                    for ticket in purchases:
+                        flight_id = ticket.get("flightId")
+                        if flight_id:
+                            response_ticket = requests.get('http://gvapi:8000/v1/flights/'+str(flight_id))
+                            data_ticket = response_ticket.json()
+                            logger.info('http://gvapi:8000/v1/flights/'+str(flight_id))
+                            logger.info(data_ticket)
+                            if response.ok and data_ticket:
+                                ticket["countryFromName"] = data_ticket.get("countryFromName")
+                                ticket["countryToName"] = data_ticket.get("countryToName")
+                                ticket["airportFromName"] = data_ticket.get("airportFromName")
+                                ticket["airportLandName"] = data_ticket.get("airportLandName")
+                                ticket["foodFlg"] = "Включено" if data_ticket.get("foodFlg") == 'Y' else "Не включено"
+                                ticket["maxLuggageWeightKg"] = data_ticket.get("maxLuggageWeightKg")
+                            
+                            ticket["payed"] = "Картой" if ticket.get("payed") == 1 else "Нет"
+                else:
+                    message="Оплаченных билетов не найдено"
+            else:
+                message="Оплаченных билетов не найдено"         
+
 
             return render_template('profile_edit_data_and_skills-Bootdey.com.html',
+                                   message=message,purchases=purchases,
                                    name=name, email=email,
                                    familyname=familyname, firstname=firstname, middlename=middlename,
                                    phone_number=phone_number, passport_series=passport_series,
