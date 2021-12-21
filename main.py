@@ -74,11 +74,10 @@ def index():
         r = requests.get('http://gvapi:8000/v1/countries')
         data_hash = r.json()
         countries = data_hash["data"]
-        if len(flights_airlines['to']) >= 1:
+        flights_to = flights_airlines.get('to')
+        flights_back = flights_airlines.get('back')
+        if flights_to and flights_back:
             try:
-                flights_to = flights_airlines['to']
-                flights_back = flights_airlines['back']
-
                 for flight in flights_to:
                     if flight['foodFlg'] == 'Y':
                         flight['foodFlg'] = "Питание включено"
@@ -123,6 +122,12 @@ def index():
 
         clas = request.form.get("clas")
         weihgt_luggage = request.form.get("weight")
+        logger.info(weihgt_luggage)
+        if weihgt_luggage is None or weihgt_luggage == "":
+            logger.info("weihgt_luggage is empty")
+            weihgt_luggage = 0.0
+        else:
+            weihgt_luggage = float(weihgt_luggage)
 
         food_flag = "N" if request.form.get("food_flg") is None else request.form.get("food_flg")
         directs = request.form.get("trip_to_from")
@@ -133,9 +138,9 @@ def index():
         body_ticket["dateFrom"] = departure_time_string
         body_ticket["dateTo"] = return_time_string
         body_ticket["foodFlg"] = food_flag
-        body_ticket["maxLuggageWeightKg"] = int(weihgt_luggage)
+        body_ticket["maxLuggageWeightKg"] = weihgt_luggage
         body_ticket["bothWays"] = directs
-
+        logger.info(body_ticket)
         if from_country == to_country:
             return redirect("/")
         elif from_country != to_country:
@@ -166,12 +171,9 @@ def index():
 
         body_buy_ticket["flightId"] = int(request.form.get("flightid"))
         body_buy_ticket["classFlg"] = request.form.get("class")
-        body_buy_ticket["foodsFlg"] = request.form.get("food_flg")
-        """
+        body_buy_ticket["foodFlg"] = request.form.get("food_flg")
+        
         logger.info(body_buy_ticket)
-
-
-
         headers = {
             'Authorization': 'Bearer ' + access_token_user
         }
@@ -179,7 +181,6 @@ def index():
         logger.info(response.status_code)
         logger.info("response.text")
         logger.info(response.text)
-        """
         return redirect('/user/purchases')
 
 
@@ -191,37 +192,41 @@ def contact():
 @app.route('/user/purchases', methods=('GET', 'POST'))
 def purchases():
     global access_token_user, profile_user, ticket
-
+    logger.info("/user/purchases")
     if access_token_user is not None:
         if request.method == "GET":
-            """
+            
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
             }
             response = requests.request("GET", 'http://gvapi:8000/v1/users/purchases/basket', headers=headers)
-
+            
             data = json.loads(response.text)
+            if data:
+                name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
+                email = profile_user['userEmail']
+                FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
+                    "userMiddleName"]
+                passport = profile_user['passportSeries'] + " " + profile_user["passportNumber"]
+                address_reg = profile_user['passportAddress']
+                address_liv = profile_user['livingAddress']
+                card_number = profile_user['cardNumber']
 
-            logger.info(data)
-            """
-            order_id = "3251"
-            classFlg = "Бизнес-класс"
-            foodFlg = "Включено"
+                for basket_item in data:
+                    order_id = basket_item.get("id")
+                    classFlg =  basket_item.get("economy")
+                    foodFlg = "Включено" if basket_item.get("foodFlg") == 'Y' else "Не включено"
+                    basket_item["name"] = name
+                    basket_item["email"] = email
+                    basket_item["FIO"] = FIO
+                    basket_item["passport"] = passport
+                    basket_item["address_reg"] = address_reg
+                    basket_item["address_liv"] = address_liv
+                    basket_item["card_number"] = card_number
 
-            name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
-            email = profile_user['userEmail']
-            FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
-                "userMiddleName"]
-            passport = profile_user['passportSeries'] + " " + profile_user["passportNumber"]
-            address_reg = profile_user['passportAddress']
-            address_liv = profile_user['livingAddress']
-            card_number = profile_user['cardNumber']
-
-
-
-            return render_template('buy_ticket.html', name=name, email=email, FIO=FIO, passport=passport,
-                                   address_reg=address_reg, address_liv=address_liv, card_number=card_number,
-                                   order_id=order_id, classFlg=classFlg, foodFlg=foodFlg)
+                return render_template('buy_ticket.html', basket_content = data)
+            else
+                return render_template('buy_ticket.html', message = "Текущих забронированных билетов не найдено")
         else:
             pass
     else:

@@ -33,11 +33,14 @@
 				<div class="col-lg-8">
 					<div class="card">
 						<div class="card-body">
+							{ % if basket_content %}
+							{ % for ticket in basket_content %}
 							<article class="ticket">
 								<div class="ticket__body">
 									<section class="ticket__section">
 										<h3>Информация о билете</h3>
-										<p><b>ID: {{ order_id }}</b></p>
+										<p><b>ID: {{ id }}</b></p>
+										<p>Стоимость: {{costRub }}</p>
 										<p>Класс билета: {{classFlg }}</p>
 										<p>Питание: {{foodFlg }}</p>
 										<p>Разрешен багаж: до 5 кг </p>
@@ -45,30 +48,39 @@
 									<section class="ticket__section">
 										<h3>Контактные данные</h3>
 										<p>ФИО: {{FIO}}</p>
-										<p>Паспорт: {{passport}}</p>
-										<p>Адрес регистрации: {{address_reg}}</p>
-										<p>Адрес проживания: {{address_liv}}</p>
+										<p>Паспорт: {% if passport %}{{passport}}{% else %}Нет данных{% endif %}</p>
+										<p>Адрес регистрации: {% if address_reg %}{{address_reg}}{% else %}Нет данных{% endif %}</p>
+										<p>Адрес проживания: {% if address_liv %}{{address_liv}}{% else %}Нет данных{% endif %}</p>
 									</section>
 									<section class="ticket__section">
 										<h3>Способ оплаты</h3>
-										<p>Номер карты: {{card_number}}</p>
+										<p>Номер карты: {% if card_number %}{{card_number}}{% else %}Не найдено{% endif %}</p>
 									</section>
 								</div>
 								<footer class="ticket__footer">
 									<div class="row">
 										<div class="col-sm-2 mb-2 text-secondary">
+											<inout type="hidden" value="{{ id }}">
 											<input type="button" class="btn btn-primary px-4" value="Купить">
 										</div>
 										<div class="col-sm-6 mb-2">
 											<input href="/personal_cabinet" type="button" class="btn btn-primary px-4" value="Изменить данные">
 										</div>
                     <div class="col-sm-4 mb-2">
-											До конца брони: 15 мин
+											До конца брони: {{timeLeft}} мин
 										</div>
 									</div>
 								</footer>
 
 							</article>
+							{% endfor %}
+							{% elif message %}
+							<article class="ticket">
+								<div class="ticket__body message">
+									{{message}}
+						  	</div>
+							</article>
+							{% endif %}
 
 						</div>
 					</div>
