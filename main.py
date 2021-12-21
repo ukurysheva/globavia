@@ -193,7 +193,19 @@ def contact():
 def purchases():
     global access_token_user, profile_user, ticket
     logger.info("/user/purchases")
+    
     if access_token_user is not None:
+        name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
+        email = profile_user['userEmail']
+        FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
+            "userMiddleName"]
+        if profile_user['passportSeries'] and profile_user["passportNumber"]:
+            passport = profile_user['passportSeries'] + " " + profile_user["passportNumber"] 
+        else:
+            passport=""
+        address_reg = profile_user['passportAddress']
+        address_liv = profile_user['livingAddress']
+        card_number = profile_user['cardNumber']
         if request.method == "GET":
             
             headers = {
@@ -202,33 +214,37 @@ def purchases():
             response = requests.request("GET", 'http://gvapi:8000/v1/users/purchases/basket', headers=headers)
             
             data = json.loads(response.text)
+            logger.info(data)
+            
             if data:
-                name = profile_user['userLastName'] + " " + profile_user["userFirstName"][0].upper() + "."
-                email = profile_user['userEmail']
-                FIO = profile_user['userLastName'] + " " + profile_user["userFirstName"] + " " + profile_user[
-                    "userMiddleName"]
-                passport = profile_user['passportSeries'] + " " + profile_user["passportNumber"]
-                address_reg = profile_user['passportAddress']
-                address_liv = profile_user['livingAddress']
-                card_number = profile_user['cardNumber']
-
                 for basket_item in data:
-                    order_id = basket_item.get("id")
-                    classFlg =  basket_item.get("economy")
-                    foodFlg = "Включено" if basket_item.get("foodFlg") == 'Y' else "Не включено"
-                    basket_item["name"] = name
-                    basket_item["email"] = email
-                    basket_item["FIO"] = FIO
-                    basket_item["passport"] = passport
-                    basket_item["address_reg"] = address_reg
-                    basket_item["address_liv"] = address_liv
-                    basket_item["card_number"] = card_number
+                    basket_item["foodFlg"] = "Включено" if basket_item.get("foodFlg") == 'Y' else "Не включено"
 
-                return render_template('buy_ticket.html', basket_content = data)
-            else
-                return render_template('buy_ticket.html', message = "Текущих забронированных билетов не найдено")
+                return render_template('buy_ticket.html', basket_content = data, name=name, FIO=FIO, passport=passport, \
+                address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
+            else:
+                return render_template('buy_ticket.html', message = "Текущих забронированных билетов не найдено", name=name,\
+                FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
+        
+        elif request.method == "POST":
+            flight_id = request.form.get("flightId")
+            logger.info(flight_id)
+            if flight_id:
+                body_pay_ticket = {}
+                body_pay_ticket["payMethod"] = "card"
+                headers = {
+                    'Authorization': 'Bearer ' + access_token_user
+                }
+                response = requests.request("POST", 'http://gvapi:8000/v1/users/purchases/' + flight_id + '/pay', headers=headers, json=body_buy_ticket)
+                logger.info(response.status_code)
+                logger.info("response.text")
+                logger.info(response.text)
+            else:
+                return render_template('buy_ticket.html', error = "Не удалось осуществить покупку билета. Пожалуйста, повторите попытку.", name=name,\
+                FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
         else:
             pass
+
     else:
         return redirect('/user/login')
 
@@ -318,6 +334,7 @@ def login():
 
 @app.route('/personal_cabinet', methods=('GET', 'POST'))
 def personal_cabinet():
+    logger.info("personal_cabinet")
     global profile_user, access_token_user, refresh_token_user, email_g_user, \
         password_g_user
 

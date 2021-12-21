@@ -27,22 +27,30 @@
 									<a href="/contact"><button class="btn btn-outline-primary">FAQ</button></a>
 								</div>
 							</div>
+							<div class="d-flex flex-column align-items-center text-center">
+								<div class="mt-2">
+										<a href="/personal_cabinet">
+												<button class="btn btn-secondary">Аккаунт</button>
+										</a>
+								</div>
+							</div>
+							<hr class="my-4">
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-8">
 					<div class="card">
 						<div class="card-body">
-							{ % if basket_content %}
-							{ % for ticket in basket_content %}
+							{% if basket_content %}
+							{% for ticket in basket_content %}
 							<article class="ticket">
 								<div class="ticket__body">
 									<section class="ticket__section">
 										<h3>Информация о билете</h3>
-										<p><b>ID: {{ id }}</b></p>
-										<p>Стоимость: {{costRub }}</p>
-										<p>Класс билета: {{classFlg }}</p>
-										<p>Питание: {{foodFlg }}</p>
+										<p><b>ID: {{ ticket["id"] }}</b></p>
+										<p>Стоимость: {{ ticket["costRub"] }}</p>
+										<p>Класс билета: {{ ticket["classFlg"] }}</p>
+										<p>Питание: {{ ticket["foodFlg"]  }}</p>
 										<p>Разрешен багаж: до 5 кг </p>
 									</section>
 									<section class="ticket__section">
@@ -60,18 +68,19 @@
 								<footer class="ticket__footer">
 									<div class="row">
 										<div class="col-sm-2 mb-2 text-secondary">
-											<inout type="hidden" value="{{ id }}">
-											<input type="button" class="btn btn-primary px-4" value="Купить">
+											<form id="form-submit" action="" method="post">
+											<input type="hidden" value='{{ticket["id"] }}' name="flightId">
+											<input type="submit" class="btn btn-primary px-4" value="Оплатить">
+											</form>
 										</div>
 										<div class="col-sm-6 mb-2">
-											<input href="/personal_cabinet" type="button" class="btn btn-primary px-4" value="Изменить данные">
+											<a href="/personal_cabinet" type="button" class="btn btn-primary px-4" >Изменить данные</a>
 										</div>
                     <div class="col-sm-4 mb-2">
-											До конца брони: {{timeLeft}} мин
+											До конца брони: {{ ticket["timeLeft"]}} мин
 										</div>
 									</div>
 								</footer>
-
 							</article>
 							{% endfor %}
 							{% elif message %}
