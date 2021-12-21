@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: always
     domainname: globalavia-21.ru
     hostname: globalavia-21
     ports:

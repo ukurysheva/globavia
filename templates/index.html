@@ -91,7 +91,7 @@ http://www.tooplate.com/view/2093-flight
                                         <div class="col-md-6">
                                             <fieldset>
                                                 <label for="return">Дата возвращения:</label>
-                                                <input name="return" type="text" class="form-control date" id="return" placeholder="Выбрать дату..." required="" onchange='this.form.()'>
+                                                <input name="return" type="text" class="form-control date" id="return" placeholder="Выбрать дату..."  onchange='this.form.()'>
                                             </fieldset>
                                         </div>
 
@@ -101,9 +101,9 @@ http://www.tooplate.com/view/2093-flight
 						                        <select  name="clas" onchange="this.form.()">
                                                     <option value="">Выбрать класс...</option>
                                                     <option value="economy">Эконом</option>
-                                                    <option value="economy_pr">Эконом+</option>
+                                                    <option value="pr_economy">Эконом+</option>
                                                     <option value="business">Бизнес-класс</option>
-                                                    <option value="first_class">Первый класс</option>
+                                                    <option value="first">Первый класс</option>
                                                    </select>
 
                                             </fieldset>
@@ -182,7 +182,7 @@ http://www.tooplate.com/view/2093-flight
                 {% for flight_to in flights_to %}
                 <td>{{flight_to['countryFromName']}} ({{flight_to['airportDepName']}}) - {{flight_to['countryToName']}} ({{flight_to['airportLandName']}})</td>
                 <td>Вылет: {{flight_to['departureTime']}} <br>Прилет: {{flight_to['landingTime']}} </td>
-                <td>До {{flight_to['ticketNumFirstAvail']}} кг</td>
+                <td>До {{flight_to['maxLuggageWeightKg']}} кг</td>
                 <td>{{flight_to['foodFlg']}}</td>
                 <td>
                   <form method="POST">
@@ -206,7 +206,7 @@ http://www.tooplate.com/view/2093-flight
                       {% for flight_back in flights_back %}
                     <td>{{flight_back['countryFromName']}} ({{flight_back['airportDepName']}}) - {{flight_back['countryToName']}} ({{flight_back['airportLandName']}})</td>
                     <td>Вылет: {{flight_back['departureTime']}} <br>Прилет: {{flight_back['landingTime']}} </td>
-                    <td>До {{flight_back['ticketNumFirstAvail']}} кг</td>
+                    <td>До {{flight_back['maxLuggageWeightKg']}} кг</td>
                     <td>{{flight_back['foodFlg']}}</td>
                     <td>
                         <form method="POST">

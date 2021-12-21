@@ -170,10 +170,12 @@
                                 {% if purchases %}
                                 {% for ticket in purchases %}
                                 <p><b>ID: {{ticket["id"]}}</b></p>
+                                <p>Авиакомпания: {{ticket["airlineName"]}}</p>
                                 <p>Вылет: {{ticket["departureTime"]}}, {{ticket["countryFromName"]}}, {{ticket["airportDepName"]}} </p>
                                 <p>Прилет: {{ticket["landingTime"]}}, {{ticket["countryToName"]}}, {{ticket["airportLandName"]}} </p>
                                 <p>Питание: {{ticket["foodFlg"]}} </p>
                                 <p>Разрешен багаж: до {{ticket["maxLuggageWeightKg"]}} кг </p>
+                                <p>Класс билета: {{ ticket["classFlg"] }}</p>
                                 <p>Стоимость: {{ticket["costRub"]}} руб.</p>
                                 <p>Оплачено: {{ticket["payed"]}} </p>
                                 <div class="progress mb-3" style="height: 5px">

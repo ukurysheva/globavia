@@ -57,6 +57,7 @@
 										<p><b>ID: {{ ticket["id"] }}</b></p>
 										<p>Вылет: {{ticket["departureTime"]}}, {{ticket["countryFromName"]}}, {{ticket["airportDepName"]}} </p>
 										<p>Прилет: {{ticket["landingTime"]}}, {{ticket["countryToName"]}}, {{ticket["airportLandName"]}} </p>
+										<p>Авиакомпания: {{ticket["airlineName"]}}</p>
 										<p>Питание: {{ticket["foodFlg"]}} </p>
 										<p>Разрешен багаж: до {{ticket["maxLuggageWeightKg"]}} кг </p>
 										<p>Стоимость: {{ ticket["costRub"] }}  руб.</p>
@@ -85,7 +86,7 @@
 										<div class="col-sm-6 mb-2">
 											<a href="/personal_cabinet" type="button" class="btn btn-primary px-4" >Изменить данные</a>
 										</div>
-                    <div class="col-sm-4 mb-2">
+                    <div class="col-sm-4 mb-2 bg-warning text-dark">
 											До конца брони: {{ ticket["timeLeft"]}} мин
 										</div>
 									</div>

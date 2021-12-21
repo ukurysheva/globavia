@@ -63,47 +63,17 @@ password_g_admin = None
 def index():
     global id_user, access_token_user, refresh_token_user, flag_tickets, flights_airlines, ticket
     direction = "/user/login"
+    r = requests.get('http://gvapi:8000/v1/countries')
+    data_hash = r.json()
+    countries = data_hash["data"]
     if access_token_user is not None or id_user is not None:
         direction = "/personal_cabinet"
     if request.method == "GET" and flag_tickets == False:
-        r = requests.get('http://gvapi:8000/v1/countries')
-        data_hash = r.json()
-        countries = data_hash["data"]
+        
         return render_template('index.html', countries=countries, direction=direction)
-    elif request.method == "GET" and flag_tickets == True:
-        r = requests.get('http://gvapi:8000/v1/countries')
-        data_hash = r.json()
-        countries = data_hash["data"]
-        flights_to = flights_airlines.get('to')
-        flights_back = flights_airlines.get('back')
-        if flights_to and flights_back:
-            try:
-                for flight in flights_to:
-                    if flight['foodFlg'] == 'Y':
-                        flight['foodFlg'] = "Питание включено"
-                    else:
-                        flight['foodFlg'] = "Питание не включено"
-
-                for flight in flights_back:
-                    if flight['foodFlg'] == 'Y':
-                        flight['foodFlg'] = "Питание включено"
-                    else:
-                        flight['foodFlg'] = "Питание не включено"
-
-                return render_template('index.html', countries=countries, direction=direction,
-                                       flights_to=flights_to, flights_back=flights_back)
-
-            except Exception as e:
-                logger.info(e)
-                return redirect('/')
-        else:
-            flag_tickets = False
-            return redirect('/')
-
     elif request.method == "POST" and request.form.get("flightid") is None:
-        flights_airlines = None
         body_ticket = {}
-
+        # flag_tickets = True
         from_country: Optional[str] = request.form.get("from")
         countryId = from_country
         to_country = request.form.get("to")
@@ -115,11 +85,12 @@ def index():
         departure_time = datetime.date(year=int(year_dep), month=int(month_dep), day=int(day_dep))
 
         return_time_raw = request.form.get("return")
-
-        month_ret, day_ret, year_ret = return_time_raw.split('/')
-        return_time_string = year_ret + "-" + month_ret + "-" + day_ret
-        return_time = datetime.date(year=int(year_ret), month=int(month_ret), day=int(day_ret))
-
+        if return_time_raw:
+            month_ret, day_ret, year_ret = return_time_raw.split('/')
+            return_time_string = year_ret + "-" + month_ret + "-" + day_ret
+            return_time = datetime.date(year=int(year_ret), month=int(month_ret), day=int(day_ret))
+        else:
+            return_time_string=""
         clas = request.form.get("clas")
         weihgt_luggage = request.form.get("weight")
         logger.info(weihgt_luggage)
@@ -146,41 +117,63 @@ def index():
         elif from_country != to_country:
             now = datetime.date.today()
             if departure_time >= now:
-                # Прописать условие на то, что если выбрано 2 направления
-                # Иначе начинаем поиски билетов согласно заданным критериям
-                if directs == "Y":
-                    if departure_time < return_time:
-                        # Формируем запрос на бронь билетов
-                        response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
-                        data = json.loads(response.text)
-                        flag_tickets = True
-                        flights_airlines = data
-                        return redirect('/')
+                # Формируем запрос на бронь билетов
+                response = requests.request("POST", 'http://gvapi:8000/v1/flights/search', json=body_ticket)
+                data = json.loads(response.text)
+                flights_airlines = data
+                if flights_airlines:
+                    flights_to = flights_airlines.get('to')
+                    flights_back = flights_airlines.get('back')
+                    logger.info("founded flighrs")
+                    logger.info(flights_airlines)
+                    if flights_to or flights_back:
+                        try:
+                            for flight in flights_to:
+                                if flight['foodFlg'] == 'Y':
+                                    flight['foodFlg'] = "Питание включено"
+                                else:
+                                    flight['foodFlg'] = "Питание не включено"
+
+                            for flight in flights_back:
+                                if flight['foodFlg'] == 'Y':
+                                    flight['foodFlg'] = "Питание включено"
+                                else:
+                                    flight['foodFlg'] = "Питание не включено"
+
+                            return render_template('index.html', countries=countries, direction=direction,
+                                                flights_to=flights_to, flights_back=flights_back)
+
+                        except Exception as e:
+                            logger.info(e)
+                            return redirect('/')
                     else:
-                        return redirect('/')
+                        flag_tickets = False
+                        return render_template('index.html', countries=countries, direction=direction,
+                                                message="Билетов по заданным условиям не найдено. Пожалуйста, выберите другие параметры поиска.")
                 else:
-                    # Формирую запрос на билеты
-                    if access_token_user is not None:
-                        return redirect('/personal_cabinet')
-                    else:
-                        return redirect('/user/login')
+                    flag_tickets = False
+                    return render_template('index.html', countries=countries, direction=direction,
+                    message="Билетов по заданным условиям не найдено. Пожалуйста, выберите другие параметры поиска.")
             else:
-                return redirect('/')
+                return render_template('index.html', countries=countries, direction=direction,
+                message="Билетов по заданным условиям не найдено. Пожалуйста, выберите другие параметры поиска.")
     elif request.method == "POST" and request.form.get("flightid") is not None:
         body_buy_ticket = {}
 
         body_buy_ticket["flightId"] = int(request.form.get("flightid"))
         body_buy_ticket["classFlg"] = request.form.get("class")
         body_buy_ticket["foodFlg"] = request.form.get("food_flg")
+
+        if access_token_user is not None or id_user is not None:
+            logger.info(body_buy_ticket)
+            headers = {
+                'Authorization': 'Bearer ' + access_token_user
+            }
+            response = requests.request("POST", 'http://gvapi:8000/v1/users/purchases', headers=headers, json=body_buy_ticket)
+            logger.info(response.status_code)
+            logger.info("response.text")
+            logger.info(response.text)
         
-        logger.info(body_buy_ticket)
-        headers = {
-            'Authorization': 'Bearer ' + access_token_user
-        }
-        response = requests.request("POST", 'http://gvapi:8000/v1/users/purchases', headers=headers, json=body_buy_ticket)
-        logger.info(response.status_code)
-        logger.info("response.text")
-        logger.info(response.text)
         return redirect('/user/purchases')
 
 
@@ -207,7 +200,6 @@ def purchases():
         address_liv = profile_user['livingAddress']
         card_number = profile_user['cardNumber']
         if request.method == "GET":
-            
             headers = {
                 'Authorization': 'Bearer ' + access_token_user
             }
@@ -220,11 +212,17 @@ def purchases():
                 for basket_item in data:
                     basket_item["foodFlg"] = "Включено" if basket_item.get("foodFlg") == 'Y' else "Не включено"
                     response_ticket = requests.get('http://gvapi:8000/v1/flights/'+str(basket_item["flightId"]))
-                    if response.ok:
-                        data_ticket = response_ticket.json()
-                        logger.info('http://gvapi:8000/v1/flights/'+str(flight_id))
+                    data_ticket = response_ticket.json()
+                    if response.ok and data_ticket:
                         logger.info(data_ticket)
                         basket_item["airlineName"] = data_ticket.get("airlineName")
+                        basket_item["maxLuggageWeightKg"] = data_ticket.get("maxLuggageWeightKg")
+                        basket_item["departureTime"] = data_ticket.get("departureTime")
+                        basket_item["countryFromName"] = data_ticket.get("countryFromName")
+                        basket_item["airportDepName"] = data_ticket.get("airportDepName")
+                        basket_item["landingTime"] = data_ticket.get("landingTime")
+                        basket_item["countryToName"] = data_ticket.get("countryToName")
+                        basket_item["airportLandName"] = data_ticket.get("airportLandName")
 
                 return render_template('buy_ticket.html', basket_content = data, name=name, FIO=FIO, passport=passport, \
                 address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
@@ -245,8 +243,14 @@ def purchases():
                 logger.info(response.status_code)
                 logger.info("response.text")
                 logger.info(response.text)
+                data = response.json()
                 if response.ok:
                     return render_template('buy_ticket.html', success = "Билет успешно оплачен и доступен в вашем аккаунте.Удачных вам путешествий!", name=name,\
+                    FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
+                elif data and data.get("message"):
+                    message = data.get("message")
+                    error = "Не удалось осуществить покупку билета. " + message
+                    return render_template('buy_ticket.html', error = error, name=name,\
                     FIO=FIO, passport=passport, address_reg=address_reg,  address_liv=address_liv, card_number=card_number, email=email)
                 else:
                     return render_template('buy_ticket.html', error = "Не удалось осуществить покупку билета. Пожалуйста, повторите попытку.", name=name,\
@@ -392,8 +396,10 @@ def personal_cabinet():
                             if response.ok and data_ticket:
                                 ticket["countryFromName"] = data_ticket.get("countryFromName")
                                 ticket["countryToName"] = data_ticket.get("countryToName")
-                                ticket["airportFromName"] = data_ticket.get("airportFromName")
+                                ticket["airportDepName"] = data_ticket.get("airportDepName")
                                 ticket["airportLandName"] = data_ticket.get("airportLandName")
+                                ticket["departureTime"] = data_ticket.get("departureTime")
+                                ticket["landingTime"] = data_ticket.get("landingTime")
                                 ticket["foodFlg"] = "Включено" if data_ticket.get("foodFlg") == 'Y' else "Не включено"
                                 ticket["maxLuggageWeightKg"] = data_ticket.get("maxLuggageWeightKg")
                             
